@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:~/.h2/jt;Auto_Server=True;IgnoreCase=True;Mode=MySql
+    username: root
+    password: 123@abc
+    driver-class-name: org.h2.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    schema: classpath:sql/schema_h2.sql # 数据库文件C:\Users\xxx\.h2
+    #    data: classpath:sql/initial.sql
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 5
+      idle-timeout: 60000
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+        useLocalTransactionState: true
+        rewriteBatchedStatements: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        elideSetAutoCommits: true
+        maintainTimeStats: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations:
+    - classpath:/mapper/*.xml
+
+server:
+  port: 8000
+
+tpc-server:
+  jt808:
+    enable: true
+    port: 7611
+    alarm-file:
+      host: 127.0.0.1
+      port: 7612
+
+  alarm-file:
+    enable: true
+    port: 7612
+    path: D:/alarm_file/
