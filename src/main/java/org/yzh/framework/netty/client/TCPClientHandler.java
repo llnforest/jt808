@@ -43,6 +43,7 @@ public class TCPClientHandler extends ChannelInboundHandlerAdapter {
             if (messageResponse != null) {
                 channel.writeAndFlush(messageResponse);
                 log.info("<<<<<<<<<<返回消息:{}", request);
+
             }
 
         } catch (Exception e) {

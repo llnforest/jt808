@@ -57,13 +57,16 @@ public class MessageManager {
         String clientId = header.getClientId();
 
         Session session = sessionManager.get(clientId);
-//        if (session == null) {
-//            log.info("<<<<<<<<<<消息发送失败,未注册,{}", request);
-//            return null;
+//        if(session == null){
+//            session = new Session();
 //        }
+        if (session == null) {
+            log.info("<<<<<<<<<<消息发送失败,未注册,{}", request);
+            return null;
+        }
 //
-//        header.setSerialNo(session.nextSerialNo());
-        header.setSerialNo(2);
+        header.setSerialNo(session.nextSerialNo());
+//        header.setSerialNo(2);
 
         String key = getKey(header, clazz);
         SynchronousQueue syncQueue = this.subscribe(key);

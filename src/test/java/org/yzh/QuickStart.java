@@ -23,11 +23,11 @@ public class QuickStart {
                 .setEncoder(new JTMessageEncoder("org.yzh.protocol"))
                 .setHandlerMapping(new DefaultHandlerMapping("org.yzh.web.endpoint"))
                 .setHandlerInterceptor(new JTHandlerInterceptor())
-                .setMultiPacketListener(new JTMultiPacketListener(10))
+                .setMultiPacketListener(new JTMultiPacketListener(5))
                 .setSessionManager(new SessionManager())
                 .build();
 
-        TCPServer tcpServer = new TCPServer("808服务", jtConfig);
+        TCPServer tcpServer = new TCPServer("808服务端开启", jtConfig);
         tcpServer.start();
     }
 }

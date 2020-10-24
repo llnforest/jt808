@@ -42,10 +42,48 @@ public class JT808Endpoint {
     @Autowired
     private DeviceService deviceService;
 
+    @Mapping(types = 终端注册, desc = "终端注册")
+    public T8100 register(T0100 message, Session session) {
+
+        Header header = message.getHeader();
+        if (message.getPlateNo() == null) {
+            session.setProtocolVersion(header.getClientId(), -1);
+            log.warn(">>>>>>>>>>可能为2011版本协议，将在下次请求时尝试解析{},{}", session, message);
+            return null;
+        }
+        T8100 result = new T8100(session.nextSerialNo(), header.getMobileNo());
+        result.setSerialNo(header.getSerialNo());
+        //TODO:处理终端注册的相关业务逻辑
+        System.out.println(message);
+        log.info("result:",result);
+        log.info("message:",message);
+        log.info("ok2");
+//        DeviceInfo device = deviceService.register(message);
+//        if (device != null) {
+//            session.register(header, device);
+//
+//            byte[] bytes = DeviceInfo.toBytes(device);
+//            bytes = EncryptUtils.encrypt(bytes);
+//            String token = Base64.getEncoder().encodeToString(bytes);
+//
+//            result.setResultCode(T8100.Success);
+//            result.setToken(token);
+//        } else {
+//            result.setResultCode(T8100.NotFoundTerminal);
+//        }
+        return result;
+    }
+
+
     @Mapping(types = 终端通用应答, desc = "终端通用应答")
     public Object 终端通用应答(T0001 message) {
         messageManager.response(message);
-        return null;
+        Header header = message.getHeader();
+        T0001 response = new T0001(header.getSerialNo(),header.getMobileNo());
+        response.setReplyId(message.getReplyId());
+        response.setSerialNo(message.getSerialNo());
+        response.setResultCode(0);
+        return response;
     }
 
     @Mapping(types = 终端心跳, desc = "终端心跳")
@@ -69,33 +107,7 @@ public class JT808Endpoint {
         Header header = message.getHeader();
     }
 
-    @Mapping(types = 终端注册, desc = "终端注册")
-    public T8100 register(T0100 message, Session session) {
-        Header header = message.getHeader();
-        if (message.getPlateNo() == null) {
-            session.setProtocolVersion(header.getClientId(), -1);
-            log.warn(">>>>>>>>>>可能为2011版本协议，将在下次请求时尝试解析{},{}", session, message);
-            return null;
-        }
 
-        T8100 result = new T8100(session.nextSerialNo(), header.getMobileNo());
-        result.setSerialNo(header.getSerialNo());
-
-        DeviceInfo device = deviceService.register(message);
-        if (device != null) {
-            session.register(header, device);
-
-            byte[] bytes = DeviceInfo.toBytes(device);
-            bytes = EncryptUtils.encrypt(bytes);
-            String token = Base64.getEncoder().encodeToString(bytes);
-
-            result.setResultCode(T8100.Success);
-            result.setToken(token);
-        } else {
-            result.setResultCode(T8100.NotFoundTerminal);
-        }
-        return result;
-    }
 
     @Mapping(types = 终端鉴权, desc = "终端鉴权")
     public T0001 authentication(T0102 request, Session session) {
