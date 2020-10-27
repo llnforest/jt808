@@ -51,13 +51,17 @@ public class JT808Endpoint {
             log.warn(">>>>>>>>>>可能为2011版本协议，将在下次请求时尝试解析{},{}", session, message);
             return null;
         }
+//        返回终端注册应答
         T8100 result = new T8100(session.nextSerialNo(), header.getMobileNo());
         result.setSerialNo(header.getSerialNo());
         //TODO:处理终端注册的相关业务逻辑
+//        messageManager.offerMessage(message);
         System.out.println(message);
         log.info("result:",result);
         log.info("message:",message);
         log.info("ok2");
+
+
 //        DeviceInfo device = deviceService.register(message);
 //        if (device != null) {
 //            session.register(header, device);
@@ -77,13 +81,9 @@ public class JT808Endpoint {
 
     @Mapping(types = 终端通用应答, desc = "终端通用应答")
     public Object 终端通用应答(T0001 message) {
-        messageManager.response(message);
-        Header header = message.getHeader();
-        T0001 response = new T0001(header.getSerialNo(),header.getMobileNo());
-        response.setReplyId(message.getReplyId());
-        response.setSerialNo(message.getSerialNo());
-        response.setResultCode(0);
-        return response;
+//        AbstractMessage mes = messageManager.pollMessage(message,20000);
+//        System.out.println(mes);
+        return null;
     }
 
     @Mapping(types = 终端心跳, desc = "终端心跳")

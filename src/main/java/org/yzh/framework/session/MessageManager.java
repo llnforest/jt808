@@ -91,9 +91,41 @@ public class MessageManager {
     public boolean response(AbstractMessage message) {
         SynchronousQueue queue = topicSubscribers.get(getKey(message.getHeader(), message.getClass()));
         if (queue != null)
-            return queue.offer(message);
+            return queue.offer(message);//放入
         return false;
     }
+
+    /**
+     * 放入队列
+     * @param message
+     * @return
+     */
+    public boolean offerMessage(AbstractMessage message){
+        String key = getKey(message.getHeader(), message.getClass());
+        SynchronousQueue queue = topicSubscribers.get(key);
+        if(key == null) topicSubscribers.put(key, queue = new SynchronousQueue());
+        return queue.offer(message);//放入
+    }
+
+    /**
+     * 取出队列
+     * @param message
+     * @return
+     */
+    public <T extends AbstractMessage> T pollMessage(AbstractMessage<? extends AbstractHeader> message, long timeout){
+        AbstractHeader header = message.getHeader();
+        String key = getKey(header, message.getClass());
+        SynchronousQueue syncQueue = this.subscribe(key);
+        try {
+            return (T) syncQueue.poll(timeout, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+        } finally {
+            this.unsubscribe(key);
+        }
+        return null;
+
+    }
+
 
     private String getKey(AbstractHeader header, Class clazz) {
         return header.getClientId() + "/" + clazz.getName();
