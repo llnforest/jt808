@@ -27,19 +27,25 @@ public class JTClientEndpoint {
 
     @Mapping(types = 平台通用应答, desc = "平台通用应答")
     public T0001 平台通用应答(T0001 message) {
-
+//        Header header = message.getHeader();
+//        T0001 result = new T0001(mobileNo, serialNo.addAndGet(1));
+//        //TODO
+//        result.setSerialNo(header.getSerialNo());
+//        result.setReplyId(header.getMessageId());
+//        return result;
         return null;
     }
 
     @Mapping(types = 终端注册应答, desc = "终端注册应答")
     public T0001 终端注册应答(T8100 message) {
-        Header header = message.getHeader();
-        T0001 result = new T0001(mobileNo, serialNo.addAndGet(1));
-        //TODO
-        result.setSerialNo(header.getSerialNo());
-        result.setReplyId(header.getMessageId());
-        result.setResultCode(T0001.Success);
-        return result;
+        return null;
+//        Header header = message.getHeader();
+//        T0001 result = new T0001(mobileNo, serialNo.addAndGet(1));
+//        //TODO
+//        result.setSerialNo(header.getSerialNo());
+//        result.setReplyId(header.getMessageId());
+//        result.setResultCode(T0001.Success);
+//        return result;
     }
 
     @Mapping(types = 服务器补传分包请求, desc = "服务器补传分包请求")

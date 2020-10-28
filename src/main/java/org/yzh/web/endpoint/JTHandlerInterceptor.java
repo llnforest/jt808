@@ -78,7 +78,7 @@ public class JTHandlerInterceptor implements HandlerInterceptor {
     /** 调用之后 */
     @Override
     public void afterHandle(AbstractMessage<?> request, AbstractMessage<?> response, Session session) {
-        log.info(">>>>>>>>>>消息请求成功{},{}", session, request);
+        log.info(">>>>>>>>>>收到消息{},{}", session, request);
         log.info("<<<<<<<<<<应答消息{},{}", session, response);
     }
 }

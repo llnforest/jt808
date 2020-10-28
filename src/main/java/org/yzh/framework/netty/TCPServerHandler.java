@@ -14,6 +14,12 @@ import org.yzh.framework.mvc.handler.Handler;
 import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.session.Session;
 import org.yzh.framework.session.SessionManager;
+import org.yzh.protocol.t808.T0001;
+import org.yzh.protocol.t808.T8100;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author yezhihao
@@ -29,6 +35,20 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
     private HandlerInterceptor interceptor;
 
     private SessionManager sessionManager;
+
+    private int retransTimes = 3;//总共重传3次
+
+    private int retransTime = 10;//重传秒数
+
+
+    private Map<Integer, SendMsg> map = new HashMap<>();
+    class SendMsg{
+        public int serialNo;
+        public int times;
+        public long time;
+        public AbstractMessage data;
+
+    }
 
     public TCPServerHandler(HandlerMapping handlerMapping, HandlerInterceptor interceptor, SessionManager sessionManager) {
         this.handlerMapping = handlerMapping;
@@ -66,18 +86,67 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
             log.warn(String.valueOf(request), e);
             response = interceptor.exceptional(request, session, e);
         }
-        time = System.currentTimeMillis() - time;
-        if (time > 200)
+
+        long nowTime = System.currentTimeMillis();
+        time = nowTime - time;
+        if (time > 200){
             log.info("=========消息ID{},处理耗时{}ms,", Integer.toHexString(request.getMessageId()), time);
-        if (response != null)
+        }
+
+        if(request.getClass().getName().equals("org.yzh.protocol.t808.T0001")){//终端通用应答
+//            接收消息消除map
+            T0001 req = (T0001) request;
+            int req_key = req.getSerialNo();
+            if(map.containsKey(req_key)){
+                map.remove(req_key);
+            }
+        }
+
+        if (response != null){
+//            发送消息入map
+            System.out.println(response.getClass().getName());
+            int key = response.getHeader().getSerialNo();
+            SendMsg sendMsg = new SendMsg();
+            sendMsg.times = 0;
+            sendMsg.data = response;
+            sendMsg.serialNo = key;
+            sendMsg.time = nowTime;
+            map.put(sendMsg.serialNo,sendMsg);
+
             ctx.writeAndFlush(response);
+        }
     }
+
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         Channel channel = ctx.channel();
         Session session = sessionManager.newSession(channel);
         channel.attr(Session.KEY).set(session);
+        log.info("-----------active------------");
+        // 每隔三秒重发一次消息
+        ctx.executor().scheduleAtFixedRate(() -> {
+            log.info("1s定时器");
+            if (map.size() > 0) {
+                System.out.println(map);
+                map.forEach((k, v) -> {
+                    if(System.currentTimeMillis() - v.time >= 0){
+                        v.times = v.times + 1;
+                        log.info("定时第"+v.times+"次发送");
+                        if (v.times <= this.retransTimes) {
+                            ctx.writeAndFlush(v.data);
+                            v.time = v.time + this.retransTime*v.times*1000;
+                            // 更新未发送三次的。
+                            map.put(v.serialNo, v);
+                        }else{
+                            log.info("超过"+this.retransTimes+"次发送未收到回复，该条信息不再发送");
+                            map.remove(v.serialNo);
+                        }
+                    }
+
+                });
+            }
+        }, 1, 1, TimeUnit.SECONDS);
         log.info(">>>>>终端连接{}", session);
     }
 
@@ -103,6 +172,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
                 Session session = ctx.channel().attr(Session.KEY).get();
                 log.warn("<<<<<主动断开连接{}", session);
                 ctx.close();
+                ctx.executor().shutdownGracefully();
             }
         }
     }

@@ -19,6 +19,8 @@ import org.yzh.framework.codec.LengthFieldAndDelimiterFrameDecoder;
 import org.yzh.framework.codec.MessageDecoderWrapper;
 import org.yzh.framework.codec.MessageEncoderWrapper;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,6 +37,10 @@ public class TCPServer {
 
     private String name;
     private NettyConfig config;
+
+
+    private int retransTimes = 3;//总共重传3次
+    private int retransTime = 10;//重传秒数
 
     public TCPServer(String name, NettyConfig config) {
         this.name = name;
@@ -55,7 +61,7 @@ public class TCPServer {
                         @Override
                         public void initChannel(NioSocketChannel channel) {
                             channel.pipeline()
-                                    .addLast(new IdleStateHandler(4, 0, 0, TimeUnit.MINUTES))
+                                    .addLast(new IdleStateHandler(1, 0, 0, TimeUnit.MINUTES))
                                     .addLast("frameDecoder", frameDecoder())
                                     .addLast("decoder", new MessageDecoderWrapper(config.decoder))
                                     .addLast("encoder", new MessageEncoderWrapper(config.encoder, config.delimiter[config.delimiter.length - 1].getValue()))
@@ -85,6 +91,7 @@ public class TCPServer {
             return;
         }
         this.isRunning = true;
+        
         new Thread(() -> startInternal()).start();
     }
 

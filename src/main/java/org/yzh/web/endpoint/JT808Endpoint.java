@@ -20,10 +20,7 @@ import org.yzh.web.service.LocationService;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.yzh.protocol.commons.JT808.*;
 
@@ -80,7 +77,7 @@ public class JT808Endpoint {
 
 
     @Mapping(types = 终端通用应答, desc = "终端通用应答")
-    public Object 终端通用应答(T0001 message) {
+    public Object 终端通用应答(T0001 message,Session session) {
 //        AbstractMessage mes = messageManager.pollMessage(message,20000);
 //        System.out.println(mes);
         return null;
