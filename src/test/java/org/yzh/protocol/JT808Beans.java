@@ -76,8 +76,8 @@ public class JT808Beans {
     }
 
     //终端心跳
-    public static RawMessage T0002() {
-        RawMessage bean = new RawMessage();
+    public static T0002 T0002() {
+        T0002 bean = new T0002();
         return bean;
     }
 

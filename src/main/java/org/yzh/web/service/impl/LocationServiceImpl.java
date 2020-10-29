@@ -41,7 +41,8 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public void batchInsert(List<T0200> list) {
-        jdbcBatchInsert(list);
+        log.info("ok");
+//        jdbcBatchInsert(list);
 //        mybatisBatchInsert(list);
     }
 

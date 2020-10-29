@@ -59,7 +59,7 @@ public class JT808Endpoint {
         log.info("ok2");
 
 
-//        DeviceInfo device = deviceService.register(message);
+        DeviceInfo device = deviceService.register(message);
 //        if (device != null) {
 //            session.register(header, device);
 //
@@ -78,13 +78,13 @@ public class JT808Endpoint {
 
     @Mapping(types = 终端通用应答, desc = "终端通用应答")
     public Object 终端通用应答(T0001 message,Session session) {
-//        AbstractMessage mes = messageManager.pollMessage(message,20000);
-//        System.out.println(mes);
         return null;
     }
 
     @Mapping(types = 终端心跳, desc = "终端心跳")
-    public void heartBeat(Header header, Session session) {
+    public Object heartBeat(Header header, Session session) {
+        log.info("收到心跳");
+        return null;
     }
 
     @Mapping(types = 终端注销, desc = "终端注销")
@@ -149,7 +149,8 @@ public class JT808Endpoint {
     @AsyncBatch
     @Mapping(types = 位置信息汇报, desc = "位置信息汇报")
     public void 位置信息汇报(List<T0200> list) {
-        locationService.batchInsert(list);
+        log.info("come in");
+//        locationService.batchInsert(list);
     }
 
     @Mapping(types = 定位数据批量上传, desc = "定位数据批量上传")

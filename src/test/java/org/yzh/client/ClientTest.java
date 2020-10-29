@@ -34,18 +34,21 @@ public class ClientTest {
 
     public static void main(String[] args) {
         while (true) {
-            System.out.println("选择发送的消息：1.注册 2.位置信息上报");
+            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报");
             while (scanner.hasNext()) {
                 int i = scanner.nextInt();
                 switch (i) {
-                    case 0:
+                    case -1:
                         tcpClient.stop();
                         return;
+                    case 0:
+                        tcpClient.writeObject((JT808Beans.H2013(JT808Beans.T0002())));//心跳
+                        break;
                     case 1:
-                        tcpClient.writeObject(JT808Beans.H2013(JT808Beans.T0100()));
+                        tcpClient.writeObject(JT808Beans.H2013(JT808Beans.T0100()));//注册
                         break;
                     case 2:
-                        tcpClient.writeObject(JT808Beans.H2013(JT808Beans.T0200Attributes()));
+                        tcpClient.writeObject(JT808Beans.H2013(JT808Beans.T0200Attributes()));//位置上报
                         break;
                 }
             }

@@ -39,9 +39,6 @@ public class TCPServer {
     private NettyConfig config;
 
 
-    private int retransTimes = 3;//总共重传3次
-    private int retransTime = 10;//重传秒数
-
     public TCPServer(String name, NettyConfig config) {
         this.name = name;
         this.config = config;
@@ -61,7 +58,7 @@ public class TCPServer {
                         @Override
                         public void initChannel(NioSocketChannel channel) {
                             channel.pipeline()
-                                    .addLast(new IdleStateHandler(1, 0, 0, TimeUnit.MINUTES))
+                                    .addLast(new IdleStateHandler(10, 0, 0, TimeUnit.MINUTES))
                                     .addLast("frameDecoder", frameDecoder())
                                     .addLast("decoder", new MessageDecoderWrapper(config.decoder))
                                     .addLast("encoder", new MessageEncoderWrapper(config.encoder, config.delimiter[config.delimiter.length - 1].getValue()))
@@ -91,7 +88,7 @@ public class TCPServer {
             return;
         }
         this.isRunning = true;
-        
+
         new Thread(() -> startInternal()).start();
     }
 
