@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.yzh.framework.session.Session;
 import org.yzh.protocol.t808.T0200;
 import org.yzh.web.mapper.LocationMapper;
-import org.yzh.web.model.entity.LocationDO;
+import org.yzh.web.model.entity.JstLocationDO;
 import org.yzh.web.model.vo.DeviceInfo;
 import org.yzh.web.model.vo.Location;
 import org.yzh.web.model.vo.LocationQuery;
@@ -43,7 +43,7 @@ public class LocationServiceImpl implements LocationService {
     public void batchInsert(List<T0200> list) {
         log.info("ok");
 //        jdbcBatchInsert(list);
-//        mybatisBatchInsert(list);
+        mybatisBatchInsert(list);
     }
 
     private static final String sql = "insert ignore into location(device_time,device_id,mobile_no,plate_no,warning_mark,status,latitude,longitude,altitude,speed,direction,map_fence_id,create_time)values" +
@@ -83,8 +83,8 @@ public class LocationServiceImpl implements LocationService {
                 statement.setInt(j++, request.getStatus());
                 statement.setInt(j++, request.getLatitude());
                 statement.setInt(j++, request.getLongitude());
-                statement.setInt(j++, request.getAltitude());
-                statement.setInt(j++, request.getSpeed());
+                statement.setInt(j++, request.getDriveSpeed());
+                statement.setInt(j++, request.getStarSpeed());
                 statement.setInt(j++, request.getDirection());
                 statement.setInt(j++, 0);
                 statement.setObject(j, now);
@@ -102,7 +102,7 @@ public class LocationServiceImpl implements LocationService {
         Session session;
         String mobileNo, deviceId, plateNo;
         int size = list.size();
-        List<LocationDO> locations = new ArrayList<>(size);
+        List<JstLocationDO> locations = new ArrayList<>(size);
         for (T0200 request : list) {
 
             session = request.getSession();
@@ -115,7 +115,7 @@ public class LocationServiceImpl implements LocationService {
                 plateNo = device.getPlateNo();
             }
 
-            LocationDO location = new LocationDO();
+            JstLocationDO location = new JstLocationDO();
             locations.add(location);
 
             location.setDeviceTime(request.getDateTime());
@@ -126,8 +126,8 @@ public class LocationServiceImpl implements LocationService {
             location.setStatus(request.getStatus());
             location.setLatitude(request.getLatitude());
             location.setLongitude(request.getLongitude());
-            location.setAltitude(request.getAltitude());
-            location.setSpeed(request.getSpeed());
+            location.setDriveSpeed(request.getDriveSpeed());
+            location.setStarSpeed(request.getStarSpeed());
             location.setDirection(request.getDirection());
             location.setMapFenceId(0);
             location.setCreateTime(now);

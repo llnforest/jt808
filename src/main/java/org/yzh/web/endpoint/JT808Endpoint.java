@@ -39,6 +39,17 @@ public class JT808Endpoint {
     @Autowired
     private DeviceService deviceService;
 
+    @Mapping(types = 终端通用应答, desc = "终端通用应答")
+    public Object 终端通用应答(T0001 message,Session session) {
+        return null;
+    }
+
+    @Mapping(types = 终端心跳, desc = "终端心跳")
+    public Object heartBeat(Header header, Session session) {
+        log.info("收到心跳");
+        return null;
+    }
+
     @Mapping(types = 终端注册, desc = "终端注册")
     public T8100 register(T0100 message, Session session) {
 
@@ -54,12 +65,10 @@ public class JT808Endpoint {
         //TODO:处理终端注册的相关业务逻辑
 //        messageManager.offerMessage(message);
         System.out.println(message);
-        log.info("result:",result);
-        log.info("message:",message);
-        log.info("ok2");
 
 
-        DeviceInfo device = deviceService.register(message);
+//        DeviceInfo device = deviceService.register(message);
+
 //        if (device != null) {
 //            session.register(header, device);
 //
@@ -72,20 +81,11 @@ public class JT808Endpoint {
 //        } else {
 //            result.setResultCode(T8100.NotFoundTerminal);
 //        }
-        return result;
-    }
-
-
-    @Mapping(types = 终端通用应答, desc = "终端通用应答")
-    public Object 终端通用应答(T0001 message,Session session) {
         return null;
     }
 
-    @Mapping(types = 终端心跳, desc = "终端心跳")
-    public Object heartBeat(Header header, Session session) {
-        log.info("收到心跳");
-        return null;
-    }
+
+
 
     @Mapping(types = 终端注销, desc = "终端注销")
     public void 终端注销(Header header, Session session) {
@@ -149,8 +149,7 @@ public class JT808Endpoint {
     @AsyncBatch
     @Mapping(types = 位置信息汇报, desc = "位置信息汇报")
     public void 位置信息汇报(List<T0200> list) {
-        log.info("come in");
-//        locationService.batchInsert(list);
+        locationService.batchInsert(list);
     }
 
     @Mapping(types = 定位数据批量上传, desc = "定位数据批量上传")

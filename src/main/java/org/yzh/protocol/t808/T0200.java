@@ -25,8 +25,8 @@ public class T0200 extends AbstractMessage<Header> {
     private int status;
     private int latitude;
     private int longitude;
-    private int altitude;
-    private int speed;
+    private int driveSpeed;
+    private int starSpeed;
     private int direction;
     private LocalDateTime dateTime;
     private List<BytesAttribute> bytesAttributes;
@@ -67,22 +67,22 @@ public class T0200 extends AbstractMessage<Header> {
         this.longitude = longitude;
     }
 
-    @Field(index = 16, type = DataType.WORD, desc = "海拔")
-    public int getAltitude() {
-        return altitude;
+    @Field(index = 16, type = DataType.WORD, desc = "行驶记录速度")
+    public int getDriveSpeed() {
+        return driveSpeed;
     }
 
-    public void setAltitude(int altitude) {
-        this.altitude = altitude;
+    public void setDriveSpeed(int driveSpeed) {
+        this.driveSpeed = driveSpeed;
     }
 
-    @Field(index = 18, type = DataType.WORD, desc = "速度")
-    public int getSpeed() {
-        return speed;
+    @Field(index = 18, type = DataType.WORD, desc = "卫星定位速度")
+    public int getStarSpeed() {
+        return starSpeed;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public void setStarSpeed(int starSpeed) {
+        this.starSpeed = starSpeed;
     }
 
     @Field(index = 20, type = DataType.WORD, desc = "方向")
@@ -94,7 +94,7 @@ public class T0200 extends AbstractMessage<Header> {
         this.direction = direction;
     }
 
-    @Field(index = 22, type = DataType.BCD8421, length = 6, desc = "时间")
+    @Field(index = 21, type = DataType.BCD8421, length = 6, desc = "时间")
     public LocalDateTime getDateTime() {
         return dateTime;
     }
@@ -103,7 +103,7 @@ public class T0200 extends AbstractMessage<Header> {
         this.dateTime = dateTime;
     }
 
-    @Field(index = 28, type = DataType.LIST, desc = "位置附加信息")
+    @Field(index = 27, type = DataType.LIST, desc = "位置附加信息")
     public List<BytesAttribute> getBytesAttributes() {
         return bytesAttributes;
     }

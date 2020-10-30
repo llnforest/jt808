@@ -42,13 +42,13 @@ public class ClientTest {
                         tcpClient.stop();
                         return;
                     case 0:
-                        tcpClient.writeObject((JT808Beans.H2013(JT808Beans.T0002())));//心跳
+                        tcpClient.writeObject((JT808Beans.H2019(JT808Beans.T0002())));//心跳
                         break;
                     case 1:
-                        tcpClient.writeObject(JT808Beans.H2013(JT808Beans.T0100()));//注册
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T0100()));//注册
                         break;
                     case 2:
-                        tcpClient.writeObject(JT808Beans.H2013(JT808Beans.T0200Attributes()));//位置上报
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T0200Attributes()));//位置上报
                         break;
                 }
             }

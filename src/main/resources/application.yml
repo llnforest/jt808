@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:h2:file:~/.h2/jt;Auto_Server=True;IgnoreCase=True;Mode=MySql
+    url: jdbc:mysql://101.201.149.34:3306/js_trace?useSSL=false&allowMultiQueries=true&rewriteBatchedStatements=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
     username: root
-    password: 123@abc
-    driver-class-name: org.h2.Driver
+    password: T!fc!Gqy5T@wLqMA
+    driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     schema: classpath:sql/schema_h2.sql # 数据库文件C:\Users\xxx\.h2
     #    data: classpath:sql/initial.sql

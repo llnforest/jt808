@@ -5,7 +5,7 @@ import org.yzh.web.commons.DateUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class LocationDO {
+public class JstLocationDO {
 
     private String deviceId;
     private String mobileNo;
@@ -14,8 +14,8 @@ public class LocationDO {
     private Integer status;
     private Integer latitude;
     private Integer longitude;
-    private Integer altitude;
-    private Integer speed;
+    private Integer driveSpeed;
+    private Integer starSpeed;
     private Integer direction;
     private LocalDateTime deviceTime;
     private LocalDate deviceDate;
@@ -78,20 +78,20 @@ public class LocationDO {
         this.longitude = longitude;
     }
 
-    public Integer getAltitude() {
-        return altitude;
+    public Integer getDriveSpeed() {
+        return driveSpeed;
     }
 
-    public void setAltitude(Integer altitude) {
-        this.altitude = altitude;
+    public void setDriveSpeed(Integer driveSpeed) {
+        this.driveSpeed = driveSpeed;
     }
 
-    public Integer getSpeed() {
-        return speed;
+    public Integer getStarSpeed() {
+        return starSpeed;
     }
 
-    public void setSpeed(Integer speed) {
-        this.speed = speed;
+    public void setStarSpeed(Integer starSpeed) {
+        this.starSpeed = starSpeed;
     }
 
     public Integer getDirection() {
@@ -145,7 +145,7 @@ public class LocationDO {
         if (getClass() != that.getClass()) {
             return false;
         }
-        LocationDO other = (LocationDO) that;
+        JstLocationDO other = (JstLocationDO) that;
         return (this.getDeviceTime() == null ? other.getDeviceTime() == null : this.getDeviceTime().equals(other.getDeviceTime()))
                 && (this.getDeviceId() == null ? other.getDeviceId() == null : this.getDeviceId().equals(other.getDeviceId()));
     }

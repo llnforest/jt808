@@ -46,6 +46,7 @@ public class JTConfig implements InitializingBean, DisposableBean {
                 .setHandlerInterceptor(handlerInterceptor())
                 .setMultiPacketListener(multiPacketListener())
                 .build();
+        System.out.println("----------808服务------------");
         return new TCPServer("808服务", jtConfig);
     }
 

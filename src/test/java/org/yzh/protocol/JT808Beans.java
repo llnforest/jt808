@@ -34,11 +34,12 @@ public class JT808Beans {
         Message type = message.getClass().getAnnotation(Message.class);
         if (type != null)
             header.setMessageId(type.value()[0]);
-        header.setMobileNo("12345678901");
+        header.setMobileNo("122345678901");
         header.setSerialNo((int) Short.MAX_VALUE);
         header.setEncryption(0);
         header.setReserved(false);
         message.setHeader(header);
+
         return message;
     }
 
@@ -158,8 +159,8 @@ public class JT808Beans {
         bean.setStatus(2048);
         bean.setLatitude(116307629);
         bean.setLongitude(40058359);
-        bean.setAltitude(312);
-        bean.setSpeed(3);
+        bean.setDriveSpeed(5);
+        bean.setStarSpeed(3);
         bean.setDirection(99);
         bean.setDateTime(TIME);
         return bean;
@@ -172,8 +173,8 @@ public class JT808Beans {
         bean.setStatus(2048 * 2);
         bean.setLatitude(116307629 * 2);
         bean.setLongitude(40058359 * 2);
-        bean.setAltitude(312 * 2);
-        bean.setSpeed(3 * 2);
+        bean.setDriveSpeed(5 * 2);
+        bean.setStarSpeed(3 * 2);
         bean.setDirection(99 * 2);
         bean.setDateTime(TIME.plusYears(1));
         return bean;

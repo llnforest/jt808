@@ -2,7 +2,7 @@ package org.yzh.web.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-import org.yzh.web.model.entity.LocationDO;
+import org.yzh.web.model.entity.JstLocationDO;
 import org.yzh.web.model.vo.Location;
 import org.yzh.web.model.vo.LocationQuery;
 
@@ -16,6 +16,6 @@ public interface LocationMapper {
 
     Location get(@Param("deviceId") String deviceId, @Param("deviceTime") LocalDateTime deviceTime);
 
-    int batchInsert(@Param("list") List<LocationDO> list);
+    int batchInsert(@Param("list") List<JstLocationDO> list);
 
 }
