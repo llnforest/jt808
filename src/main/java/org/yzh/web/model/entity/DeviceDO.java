@@ -4,50 +4,30 @@ import java.time.LocalDateTime;
 
 public class DeviceDO {
 
-    private String deviceId;
-    private String mobileNo;
+    private int id;
     private String plateNo;
+    private String plateColor;
     private String imei;
-    private Integer state;
-    private Boolean online;
-    private LocalDateTime deviceTime;
     private LocalDateTime registerTime;
-    private LocalDateTime installTime;
-    private Boolean bind;
-    private Boolean deleted;
-    private Integer protocolVersion;
-    private String softwareVersion;
-    private String hardwareVersion;
-    private String deviceModel;
-    private String makerId;
+    private String devnum;
+    private String termtype;
+    private String vender;
+    private String venderId;
+    private String model;
+    private String sn;
     private int cityId;
     private int provinceId;
-    private String creator;
     private LocalDateTime createTime;
 
     public DeviceDO() {
     }
 
-    public DeviceDO(String deviceId, Boolean online, LocalDateTime deviceTime) {
-        this.deviceId = deviceId;
-        this.online = online;
-        this.deviceTime = deviceTime;
+    public int getId() {
+        return id;
     }
 
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public String getMobileNo() {
-        return mobileNo;
-    }
-
-    public void setMobileNo(String mobileNo) {
-        this.mobileNo = mobileNo;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPlateNo() {
@@ -58,36 +38,20 @@ public class DeviceDO {
         this.plateNo = plateNo;
     }
 
+    public String getPlateColor() {
+        return plateColor;
+    }
+
+    public void setPlateColor(String plateColor) {
+        this.plateColor = plateColor;
+    }
+
     public String getImei() {
         return imei;
     }
 
     public void setImei(String imei) {
         this.imei = imei;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    public Boolean getOnline() {
-        return online;
-    }
-
-    public void setOnline(Boolean online) {
-        this.online = online;
-    }
-
-    public LocalDateTime getDeviceTime() {
-        return deviceTime;
-    }
-
-    public void setDeviceTime(LocalDateTime deviceTime) {
-        this.deviceTime = deviceTime;
     }
 
     public LocalDateTime getRegisterTime() {
@@ -98,68 +62,52 @@ public class DeviceDO {
         this.registerTime = registerTime;
     }
 
-    public LocalDateTime getInstallTime() {
-        return installTime;
+    public String getDevnum() {
+        return devnum;
     }
 
-    public void setInstallTime(LocalDateTime installTime) {
-        this.installTime = installTime;
+    public void setDevnum(String devnum) {
+        this.devnum = devnum;
     }
 
-    public Boolean getBind() {
-        return bind;
+    public String getTermtype() {
+        return termtype;
     }
 
-    public void setBind(Boolean bind) {
-        this.bind = bind;
+    public void setTermtype(String termtype) {
+        this.termtype = termtype;
     }
 
-    public Boolean getDeleted() {
-        return deleted;
+    public String getVender() {
+        return vender;
     }
 
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
+    public void setVender(String vender) {
+        this.vender = vender;
     }
 
-    public Integer getProtocolVersion() {
-        return protocolVersion;
+    public String getVenderId() {
+        return venderId;
     }
 
-    public void setProtocolVersion(Integer protocolVersion) {
-        this.protocolVersion = protocolVersion;
+    public void setVenderId(String venderId) {
+        this.venderId = venderId;
     }
 
-    public String getSoftwareVersion() {
-        return softwareVersion;
+    public String getModel() {
+        return model;
     }
 
-    public void setSoftwareVersion(String softwareVersion) {
-        this.softwareVersion = softwareVersion;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public String getHardwareVersion() {
-        return hardwareVersion;
+    public String getSn() {
+        return sn;
     }
 
-    public void setHardwareVersion(String hardwareVersion) {
-        this.hardwareVersion = hardwareVersion;
-    }
-
-    public String getDeviceModel() {
-        return deviceModel;
-    }
-
-    public void setDeviceModel(String deviceModel) {
-        this.deviceModel = deviceModel;
-    }
-
-    public String getMakerId() {
-        return makerId;
-    }
-
-    public void setMakerId(String makerId) {
-        this.makerId = makerId;
+    public void setSn(String sn) {
+        this.sn = sn;
     }
 
     public int getCityId() {
@@ -178,42 +126,11 @@ public class DeviceDO {
         this.provinceId = provinceId;
     }
 
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
     public LocalDateTime getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
-    }
-
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null) {
-            return false;
-        }
-        if (getClass() != that.getClass()) {
-            return false;
-        }
-        DeviceDO other = (DeviceDO) that;
-        return (this.getDeviceId() == null ? other.getDeviceId() == null : this.getDeviceId().equals(other.getDeviceId()));
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getDeviceId() == null) ? 0 : getDeviceId().hashCode());
-        return result;
     }
 }

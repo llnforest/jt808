@@ -64,24 +64,11 @@ public class JT808Endpoint {
         result.setSerialNo(header.getSerialNo());
         //TODO:处理终端注册的相关业务逻辑
 //        messageManager.offerMessage(message);
-        System.out.println(message);
 
 
-//        DeviceInfo device = deviceService.register(message);
+        deviceService.register(message,result);
 
-//        if (device != null) {
-//            session.register(header, device);
-//
-//            byte[] bytes = DeviceInfo.toBytes(device);
-//            bytes = EncryptUtils.encrypt(bytes);
-//            String token = Base64.getEncoder().encodeToString(bytes);
-//
-//            result.setResultCode(T8100.Success);
-//            result.setToken(token);
-//        } else {
-//            result.setResultCode(T8100.NotFoundTerminal);
-//        }
-        return null;
+        return result;
     }
 
 

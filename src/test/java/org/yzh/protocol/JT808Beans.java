@@ -87,9 +87,10 @@ public class JT808Beans {
         T0100 bean = new T0100();
         bean.setProvinceId(31);
         bean.setCityId(115);
-        bean.setMakerId("4");
-        bean.setDeviceModel("BSJ-GF-06");
-        bean.setDeviceId("test123");
+        bean.setVenderId("4");
+        bean.setModel("BSJ-GF-06");
+        bean.setSn("test123");
+        bean.setImei("2123123131212312321");
         bean.setPlateColor(1);
         bean.setPlateNo("测A888888");
         return bean;
@@ -344,11 +345,12 @@ public class JT808Beans {
 
     //终端注册应答
     public static T8100 T8100() {
-        T8100 bean = new T8100();
-        bean.setSerialNo(38668);
-        bean.setResultCode(T8100.Success);
-        bean.setToken("chwD0SE1fchwD0SE1fchwD0SE1f");
-        return bean;
+//        T8100 bean = new T8100();
+//        bean.setSerialNo(38668);
+//        bean.setResultCode(T8100.Success);
+//        bean.setToken("chwD0SE1fchwD0SE1fchwD0SE1f");
+//        return bean;
+        return null;
     }
 
     //设置终端参数

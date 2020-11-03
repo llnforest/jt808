@@ -27,7 +27,11 @@ public class T8100 extends AbstractMessage<Header> {
 
     private int serialNo;
     private int resultCode;
-    private String token;
+    private String platNum;
+    private String inscode;
+    private String devnum;
+    private String certSign;
+    private String cert;
 
     public T8100() {
     }
@@ -56,13 +60,48 @@ public class T8100 extends AbstractMessage<Header> {
         this.resultCode = resultCode;
     }
 
-    /** 成功后才有该字段 */
-    @Field(index = 3, type = DataType.STRING, desc = "鉴权码")
-    public String getToken() {
-        return token;
+    @Field(index = 3, type = DataType.BYTE, desc = "平台编号")
+    public String getPlatNum() {
+        return platNum;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setPlatNum(String platNum) {
+        this.platNum = platNum;
+    }
+
+    @Field(index = 8, type = DataType.BYTE, desc = "培训机构编号")
+    public String getInscode() {
+        return inscode;
+    }
+
+    public void setInscode(String inscode) {
+        this.inscode = inscode;
+    }
+
+    @Field(index = 24, type = DataType.BYTE, desc = "计时终端编号")
+    public String getDevnum() {
+        return devnum;
+    }
+
+    public void setDevnum(String devnum) {
+        this.devnum = devnum;
+    }
+
+    @Field(index = 40, type = DataType.BYTE, desc = "证书口令")
+    public String getCertSign() {
+        return certSign;
+    }
+
+    public void setCertSign(String certSign) {
+        this.certSign = certSign;
+    }
+
+    @Field(index = 52, type = DataType.BYTE, desc = "终端证书")
+    public String getCert() {
+        return cert;
+    }
+
+    public void setCert(String cert) {
+        this.cert = cert;
     }
 }
