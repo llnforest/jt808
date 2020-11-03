@@ -92,14 +92,21 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public DeviceInfo authentication(T0102 request) {
+    public Boolean authentication(T0102 request) {
         String token = request.getToken();
         byte[] bytes;
         try {
-//            bytes = Base64.getDecoder().decode(token);
-//            bytes = EncryptUtils.decrypt(bytes);
-//            DeviceInfo device = DeviceInfo.formBytes(bytes);
-//
+            //解密获得devnum
+            bytes = Base64.getDecoder().decode(token);
+            bytes = EncryptUtils.decrypt(bytes);
+            String devnum = "";
+
+            DeviceDO deviceDO = deviceMapper.getByDevnum(devnum);
+            if(deviceDO == null){
+                return false;
+            }else{
+                return true;
+            }
 //            LocalDate expiresAt = device.getIssuedAt().plusDays(device.getValidAt());
 //            if (expiresAt.isBefore(LocalDate.now())) {
 //                log.warn("鉴权失败：过期的token，{}", token);
@@ -115,10 +122,24 @@ public class DeviceServiceImpl implements DeviceService {
 //                deviceMapper.update(record);
 //            }
 //            return device;
-            return null;
         } catch (Exception e) {
             log.warn("鉴权失败：错误的token，{}", e.getMessage());
-            return null;
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean logout(String mobile) {
+        try {
+            DeviceDO deviceDO = deviceMapper.getByMobile(mobile);
+            if(deviceDO == null){
+                return false;
+            }
+            deviceDO.setStatus(2);
+            deviceMapper.update(deviceDO);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

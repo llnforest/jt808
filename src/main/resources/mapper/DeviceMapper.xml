@@ -5,7 +5,7 @@
     <select id="isRegister" parameterType="java.lang.String" resultType="org.yzh.web.model.entity.DeviceDO">
         select *
         from js_device
-        where sn = #{sn,jdbcType=VARCHAR} and plate_no = #{plateNo,jdbcType=VARCHAR} and is_register = 1
+        where sn = #{sn,jdbcType=VARCHAR} and plate_no = #{plateNo,jdbcType=VARCHAR} and status = 1
     </select>
 
     <select id="getBySn" parameterType="java.lang.String" resultType="org.yzh.web.model.entity.DeviceDO">
@@ -14,10 +14,16 @@
         where sn = #{sn,jdbcType=VARCHAR}
     </select>
 
-    <select id="getByMobileNo" parameterType="java.lang.String" resultType="org.yzh.web.model.entity.DeviceDO">
+    <select id="getByMobile" parameterType="java.lang.String" resultType="org.yzh.web.model.entity.DeviceDO">
         select *
         from js_device
-        where mobile_no = #{mobileNo,jdbcType=VARCHAR}
+        where mobile = #{mobile,jdbcType=VARCHAR} where status = 1
+    </select>
+
+    <select id="getByDevnum" parameterType="java.lang.String" resultType="org.yzh.web.model.entity.DeviceDO">
+        select *
+        from js_device
+        where devnum = #{devnum,jdbcType=VARCHAR} where status = 1
     </select>
 
     <insert id="insert" parameterType="org.yzh.web.model.entity.DeviceDO">
@@ -67,25 +73,22 @@
     <update id="update" parameterType="org.yzh.web.model.entity.DeviceDO">
         update device
         <set>
-            <if test="mobileNo != null">mobile_no = #{mobileNo,jdbcType=VARCHAR},</if>
+            <if test="mobile != null">mobile = #{mobile,jdbcType=VARCHAR},</if>
             <if test="plateNo != null">plate_no = #{plateNo,jdbcType=CHAR},</if>
+            <if test="plateColor != null">plate_color = #{plateColor,jdbcType=TINYINT},</if>
+            <if test="vender != null">vender = #{vender,jdbcType=CHAR},</if>
+            <if test="sn != null">sn = #{sn,jdbcType=CHAR},</if>
+            <if test="devnum != null">devnum = #{devnum,jdbcType=CHAR},</if>
             <if test="imei != null">imei = #{imei,jdbcType=VARCHAR},</if>
-            <if test="state != null">state = #{state,jdbcType=TINYINT},</if>
+            <if test="status != null">status = #{status,jdbcType=TINYINT},</if>
             <if test="online != null">online = #{online,jdbcType=BOOLEAN},</if>
-            <if test="deviceTime != null">device_time = #{deviceTime,jdbcType=TIMESTAMP},</if>
             <if test="registerTime != null">register_time = #{registerTime,jdbcType=TIMESTAMP},</if>
-            <if test="installTime != null">install_time = #{installTime,jdbcType=TIMESTAMP},</if>
-            <if test="bind != null">bind = #{bind,jdbcType=BOOLEAN},</if>
-            <if test="deleted != null">deleted = #{deleted,jdbcType=BOOLEAN},</if>
-            <if test="protocolVersion != null">protocol_version = #{protocolVersion,jdbcType=TINYINT},</if>
-            <if test="softwareVersion != null">software_version = #{softwareVersion,jdbcType=VARCHAR},</if>
-            <if test="hardwareVersion != null">hardware_version = #{hardwareVersion,jdbcType=VARCHAR},</if>
-            <if test="deviceModel != null">device_model = #{deviceModel,jdbcType=VARCHAR},</if>
-            <if test="makerId != null">maker_id = #{makerId,jdbcType=VARCHAR},</if>
+            <if test="model != null">mmodel = #{model,jdbcType=VARCHAR},</if>
+            <if test="venderId != null">vender_id = #{venderId,jdbcType=VARCHAR},</if>
             <if test="cityId != null">city_id = #{cityId,jdbcType=SMALLINT},</if>
             <if test="provinceId != null">province_id = #{provinceId,jdbcType=TINYINT},</if>
         </set>
-        where device_id = #{deviceId,jdbcType=VARCHAR}
+        where id = #{deviceId,jdbcType=INT}
     </update>
 
     <delete id="delete" parameterType="java.lang.String">

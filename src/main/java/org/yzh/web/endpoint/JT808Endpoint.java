@@ -54,30 +54,56 @@ public class JT808Endpoint {
     public T8100 register(T0100 message, Session session) {
 
         Header header = message.getHeader();
-        if (message.getPlateNo() == null) {
-            session.setProtocolVersion(header.getClientId(), -1);
-            log.warn(">>>>>>>>>>可能为2011版本协议，将在下次请求时尝试解析{},{}", session, message);
-            return null;
-        }
 //        返回终端注册应答
         T8100 result = new T8100(session.nextSerialNo(), header.getMobileNo());
         result.setSerialNo(header.getSerialNo());
         //TODO:处理终端注册的相关业务逻辑
-//        messageManager.offerMessage(message);
-
-
         deviceService.register(message,result);
 
+        return result;
+    }
+
+    @Mapping(types = 终端注销, desc = "终端注销")
+    public T0001 终端注销(T0003 request, Session session) {
+        Header header = request.getHeader();
+
+        T0001 result = new T0001(session.nextSerialNo(), header.getMobileNo());
+        result.setSerialNo(header.getSerialNo());
+        result.setReplyId(header.getMessageId());
+        Boolean isLogout = deviceService.logout(header.getMobileNo());
+        if (isLogout) {
+            result.setResultCode(T0001.Success);
+            return result;
+        }
+        result.setResultCode(T0001.Failure);
+        return result;
+
+
+    }
+
+    @Mapping(types = 终端鉴权, desc = "终端鉴权")
+    public T0001 authentication(T0102 request, Session session) {
+        Header header = request.getHeader();
+
+        T0001 result = new T0001(session.nextSerialNo(), header.getMobileNo());
+        result.setSerialNo(header.getSerialNo());
+        result.setReplyId(header.getMessageId());
+        //TODO:处理终端注册的相关业务逻辑
+        Boolean isAuth = deviceService.authentication(request);
+        if (isAuth) {
+//            session.register(header, device);
+            result.setResultCode(T0001.Success);
+            return result;
+        }
+        log.warn("终端鉴权失败，{}{}", session, request);
+        result.setResultCode(T0001.Failure);
         return result;
     }
 
 
 
 
-    @Mapping(types = 终端注销, desc = "终端注销")
-    public void 终端注销(Header header, Session session) {
-        session.invalidate();
-    }
+
 
     @Mapping(types = 查询服务器时间, desc = "查询服务器时间")
     public T8004 查询服务器时间(Header header, Session session) {
@@ -93,24 +119,7 @@ public class JT808Endpoint {
 
 
 
-    @Mapping(types = 终端鉴权, desc = "终端鉴权")
-    public T0001 authentication(T0102 request, Session session) {
-        Header header = request.getHeader();
 
-        T0001 result = new T0001(session.nextSerialNo(), header.getMobileNo());
-        result.setSerialNo(header.getSerialNo());
-        result.setReplyId(header.getMessageId());
-
-        DeviceInfo device = deviceService.authentication(request);
-        if (device != null) {
-            session.register(header, device);
-            result.setResultCode(T0001.Success);
-            return result;
-        }
-        log.warn("终端鉴权失败，{}{}", session, request);
-        result.setResultCode(T0001.Failure);
-        return result;
-    }
 
     @Mapping(types = 查询终端参数应答, desc = "查询终端参数应答")
     public void 查询终端参数应答(T0104 message) {

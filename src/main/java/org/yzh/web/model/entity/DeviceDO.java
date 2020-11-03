@@ -15,6 +15,8 @@ public class DeviceDO {
     private String venderId;
     private String model;
     private String sn;
+    private String mobile;
+    private int status;
     private int cityId;
     private int provinceId;
     private LocalDateTime createTime;
@@ -110,6 +112,15 @@ public class DeviceDO {
         this.sn = sn;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+
     public int getCityId() {
         return cityId;
     }
@@ -124,6 +135,14 @@ public class DeviceDO {
 
     public void setProvinceId(int provinceId) {
         this.provinceId = provinceId;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public LocalDateTime getCreateTime() {

@@ -12,7 +12,9 @@ public interface DeviceMapper {
 
     DeviceDO getBySn(String sn);
 
-    DeviceDO getByMobileNo(String mobileNo);
+    DeviceDO getByDevnum(String devnum);
+
+    DeviceDO getByMobile(String mobile);
 
     int insert(DeviceDO record);
 

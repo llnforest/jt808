@@ -16,12 +16,20 @@ import org.yzh.protocol.commons.JT808;
 public class T0102 extends AbstractMessage<Header> {
 
     /** 终端重连后上报鉴权码 */
+    private int timeStamp;
     private String token;
-    private String imei;
-    private String version;
 
-    @Fs({@Field(index = 0, type = DataType.STRING, desc = "鉴权码", version = 0),
-            @Field(index = 1, type = DataType.STRING, lengthSize = 1, desc = "鉴权码", version = 1)})
+    @Field(index = 0, type = DataType.DWORD, desc = "时间戳")
+    public int getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(int timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+
+    @Field(index = 4, type = DataType.STRING, length = 256, desc = "鉴权密文")
     public String getToken() {
         return token;
     }
@@ -30,22 +38,4 @@ public class T0102 extends AbstractMessage<Header> {
         this.token = token;
     }
 
-
-    @Field(index = 2, type = DataType.STRING, length = 15, desc = "终端IMEI", version = 1)
-    public String getImei() {
-        return imei;
-    }
-
-    public void setImei(String imei) {
-        this.imei = imei;
-    }
-
-    @Field(index = 17, type = DataType.STRING, length = 20, desc = "软件版本号", version = 1)
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
 }
