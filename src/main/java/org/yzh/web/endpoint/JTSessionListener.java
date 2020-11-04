@@ -21,7 +21,7 @@ public class JTSessionListener implements SessionListener {
     @Override
     public void sessionDestroyed(Session session) {
         DeviceInfo device = (DeviceInfo) session.getSubject();
-        if (device != null)
-            deviceMapper.update(new DeviceDO(device.getDeviceId(), false, LocalDateTime.now()));
+//        if (device != null)
+//            deviceMapper.update();
     }
 }

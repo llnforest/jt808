@@ -106,8 +106,7 @@ public class JT808Beans {
     public static T0102 T0102_2019() {
         T0102 bean = new T0102();
         bean.setToken("pmYGzGukO8K4Z5lpIOTg8dqb3eprYaHBbXSPLtdbyG8=");
-        bean.setImei("123456789012345");
-        bean.setVersion("3.7.15");
+        bean.setTimeStamp(12345678);
         return bean;
     }
 
