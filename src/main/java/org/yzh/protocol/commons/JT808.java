@@ -38,6 +38,10 @@ public interface JT808 {
     int 数据压缩上报 = 0x0901;
     int 终端RSA公钥 = 0x0A00;
 
+    int 平台登录请求 = 0X01F0;
+    int 平台登录应答 = 0X81F0;
+    int 平台登出请求 = 0X01F1;
+
     int 终端上行消息保留 = 0x0F00 - 0x0FFF;
 
     int 平台通用应答 = 0x8001;

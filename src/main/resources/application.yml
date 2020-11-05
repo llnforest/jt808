@@ -38,6 +38,7 @@ server:
 
 tpc-server:
   jt808:
+    client: true
     enable: true
     port: 7611
     alarm-file:

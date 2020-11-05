@@ -52,8 +52,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         AbstractMessage response;
         Channel channel = ctx.channel();
         Session session = channel.attr(Session.KEY).get();
-        log.info("session.key is2 :{}",session.getId());
-        request.setSession(session);
+//        request.setSession(session);
         long time = session.access();
 
         try {
@@ -105,9 +104,6 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         Channel channel = ctx.channel();
         Session session = sessionManager.newSession(channel);
         channel.attr(Session.KEY).set(session);
-        log.info("session.key is1 :{}",Session.KEY);
-        log.info("channel is1 :{}",channel.id());
-        log.info("-----------active------------");
         // 检查消息，触发重发机制
         MsgUtils.checkMsg(ctx);
         log.info(">>>>>终端连接{}", session);

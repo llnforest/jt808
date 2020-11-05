@@ -82,6 +82,12 @@ public class JT808Beans {
         return bean;
     }
 
+    //终端心跳
+    public static T0003 T0003() {
+        T0003 bean = new T0003();
+        return bean;
+    }
+
     //终端注册
     public static T0100 T0100() {
         T0100 bean = new T0100();

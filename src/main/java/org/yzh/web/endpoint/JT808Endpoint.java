@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.yzh.framework.commons.ClientChannelUtils;
 import org.yzh.framework.mvc.annotation.AsyncBatch;
 import org.yzh.framework.mvc.annotation.Endpoint;
 import org.yzh.framework.mvc.annotation.Mapping;
@@ -45,14 +46,14 @@ public class JT808Endpoint {
     }
 
     @Mapping(types = 终端心跳, desc = "终端心跳")
-    public Object heartBeat(Header header, Session session) {
+    public Object heartBeat(Header message, Session session) {
+        log.info("心跳{}",message);
         log.info("收到心跳");
         return null;
     }
 
     @Mapping(types = 终端注册, desc = "终端注册")
     public T8100 register(T0100 message, Session session) {
-
         Header header = message.getHeader();
 //        返回终端注册应答
         T8100 result = new T8100(session.nextSerialNo(), header.getMobileNo());
@@ -60,6 +61,7 @@ public class JT808Endpoint {
         //TODO:处理终端注册的相关业务逻辑
         deviceService.register(message,result);
 
+//        ClientChannelUtils.getClient().writeObject(message);//转发
         return result;
     }
 

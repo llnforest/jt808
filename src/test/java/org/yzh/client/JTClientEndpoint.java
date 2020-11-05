@@ -25,6 +25,13 @@ public class JTClientEndpoint {
 
     private String mobileNo = "12345678901";
 
+    @Mapping(types = 平台登录应答, desc = "平台登录应答")
+    public T8090 平台登录应答(T8090 message) {
+        message.getResult();
+        return null;
+    }
+
+
     @Mapping(types = 平台通用应答, desc = "平台通用应答")
     public T0001 平台通用应答(T0001 message) {
 //        Header header = message.getHeader();

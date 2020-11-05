@@ -17,7 +17,7 @@ public class Header extends AbstractHeader {
     /** 消息体属性 */
     protected int properties;
     /** 协议版本号 */
-    protected int versionNo;
+    protected int versionNo = 1;
     /** 手机号 */
     protected String mobileNo;
     /** 消息序列号 */

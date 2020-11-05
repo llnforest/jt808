@@ -26,8 +26,9 @@ public class DefaultLoadStrategy extends LoadStrategy {
         List<Class<?>> types = ClassUtils.getClassList(basePackage);
         for (Class<?> type : types) {
             Class<?> aClass = getMessageClass(type);
-            if (aClass != null)
+            if (aClass != null){
                 initClass(typeClassMapping, aClass);
+            }
         }
         Introspector.flushCaches();
     }

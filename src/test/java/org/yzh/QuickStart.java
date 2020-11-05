@@ -16,7 +16,7 @@ public class QuickStart {
 
     public static void main(String[] args) {
         NettyConfig jtConfig = new NettyConfig.Builder()
-                .setPort(7611)
+                .setPort(7615)
                 .setMaxFrameLength(1024)
                 .setDelimiters(new byte[][]{{0x7e}})
                 .setDecoder(new JTMessageDecoder("org.yzh.protocol"))
