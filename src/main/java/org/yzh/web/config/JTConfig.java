@@ -23,6 +23,8 @@ import org.yzh.web.endpoint.JTHandlerInterceptor;
 import org.yzh.web.endpoint.JTMultiPacketListener;
 import org.yzh.web.endpoint.JTSessionListener;
 
+import java.util.Date;
+
 @Configuration
 @ConditionalOnProperty(value = "tpc-server.jt808.enable", havingValue = "true")
 public class JTConfig implements InitializingBean, DisposableBean {
@@ -47,6 +49,7 @@ public class JTConfig implements InitializingBean, DisposableBean {
                 .setMultiPacketListener(multiPacketListener())
                 .build();
         System.out.println("----------808服务------------");
+        System.out.println(new Date().getTime());
         return new TCPServer("808服务", jtConfig);
     }
 

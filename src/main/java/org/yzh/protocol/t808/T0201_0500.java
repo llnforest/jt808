@@ -7,9 +7,12 @@ import org.yzh.framework.orm.model.DataType;
 import org.yzh.protocol.basics.BytesAttribute;
 import org.yzh.protocol.basics.Header;
 import org.yzh.protocol.commons.JT808;
+import org.yzh.protocol.commons.transform.Attribute;
+import org.yzh.protocol.commons.transform.PositionAttributeUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yezhihao
@@ -18,28 +21,16 @@ import java.util.List;
 @Message({JT808.位置信息查询应答, JT808.车辆控制应答})
 public class T0201_0500 extends AbstractMessage<Header> {
 
-    private int serialNo;
     private int warningMark;
     private int status;
     private int latitude;
     private int longitude;
-    private int altitude;
-    private int speed;
+    private int driveSpeed;
+    private int starSpeed;
     private int direction;
     private LocalDateTime dateTime;
 
-    private List<BytesAttribute> bytesAttributes;
-
-    @Field(index = 0, type = DataType.WORD, desc = "应答流水号")
-    public int getSerialNo() {
-        return serialNo;
-    }
-
-    public void setSerialNo(int serialNo) {
-        this.serialNo = serialNo;
-    }
-
-    @Field(index = 2, type = DataType.DWORD, desc = "报警标志")
+    @Field(index = 0, type = DataType.DWORD, desc = "报警标志")
     public int getWarningMark() {
         return warningMark;
     }
@@ -48,7 +39,7 @@ public class T0201_0500 extends AbstractMessage<Header> {
         this.warningMark = warningMark;
     }
 
-    @Field(index = 6, type = DataType.DWORD, desc = "状态")
+    @Field(index = 4, type = DataType.DWORD, desc = "状态")
     public int getStatus() {
         return status;
     }
@@ -57,7 +48,7 @@ public class T0201_0500 extends AbstractMessage<Header> {
         this.status = status;
     }
 
-    @Field(index = 10, type = DataType.DWORD, desc = "纬度")
+    @Field(index = 8, type = DataType.DWORD, desc = "纬度")
     public int getLatitude() {
         return latitude;
     }
@@ -66,7 +57,7 @@ public class T0201_0500 extends AbstractMessage<Header> {
         this.latitude = latitude;
     }
 
-    @Field(index = 14, type = DataType.DWORD, desc = "经度")
+    @Field(index = 12, type = DataType.DWORD, desc = "经度")
     public int getLongitude() {
         return longitude;
     }
@@ -75,25 +66,25 @@ public class T0201_0500 extends AbstractMessage<Header> {
         this.longitude = longitude;
     }
 
-    @Field(index = 18, type = DataType.WORD, desc = "海拔")
-    public int getAltitude() {
-        return altitude;
+    @Field(index = 16, type = DataType.WORD, desc = "行驶记录速度")
+    public int getDriveSpeed() {
+        return driveSpeed;
     }
 
-    public void setAltitude(int altitude) {
-        this.altitude = altitude;
+    public void setDriveSpeed(int driveSpeed) {
+        this.driveSpeed = driveSpeed;
     }
 
-    @Field(index = 20, type = DataType.WORD, desc = "速度")
-    public int getSpeed() {
-        return speed;
+    @Field(index = 18, type = DataType.WORD, desc = "卫星定位速度")
+    public int getStarSpeed() {
+        return starSpeed;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public void setStarSpeed(int starSpeed) {
+        this.starSpeed = starSpeed;
     }
 
-    @Field(index = 22, type = DataType.WORD, desc = "方向")
+    @Field(index = 20, type = DataType.WORD, desc = "方向")
     public int getDirection() {
         return direction;
     }
@@ -102,7 +93,7 @@ public class T0201_0500 extends AbstractMessage<Header> {
         this.direction = direction;
     }
 
-    @Field(index = 24, type = DataType.BCD8421, length = 6, desc = "时间")
+    @Field(index = 21, type = DataType.BCD8421, length = 6, desc = "时间")
     public LocalDateTime getDateTime() {
         return dateTime;
     }
@@ -111,12 +102,4 @@ public class T0201_0500 extends AbstractMessage<Header> {
         this.dateTime = dateTime;
     }
 
-    @Field(index = 30, type = DataType.LIST, desc = "位置附加信息")
-    public List<BytesAttribute> getBytesAttributes() {
-        return bytesAttributes;
-    }
-
-    public void setBytesAttributes(List<BytesAttribute> bytesAttributes) {
-        this.bytesAttributes = bytesAttributes;
-    }
 }

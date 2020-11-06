@@ -11,7 +11,9 @@ import org.yzh.framework.mvc.annotation.Mapping;
 import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.session.MessageManager;
 import org.yzh.framework.session.Session;
+import org.yzh.protocol.basics.BytesParameter;
 import org.yzh.protocol.basics.Header;
+import org.yzh.protocol.commons.transform.ParameterType;
 import org.yzh.protocol.t808.*;
 import org.yzh.web.commons.DateUtils;
 import org.yzh.web.commons.EncryptUtils;
@@ -46,8 +48,8 @@ public class JT808Endpoint {
     }
 
     @Mapping(types = 终端心跳, desc = "终端心跳")
-    public Object heartBeat(Header message, Session session) {
-        log.info("心跳{}",message);
+    public Object heartBeat(Header header, Session session) {
+        log.info("心跳{}",header);
         log.info("收到心跳");
         return null;
     }
@@ -79,8 +81,6 @@ public class JT808Endpoint {
         }
         result.setResultCode(T0001.Failure);
         return result;
-
-
     }
 
     @Mapping(types = 终端鉴权, desc = "终端鉴权")
@@ -102,6 +102,86 @@ public class JT808Endpoint {
         return result;
     }
 
+    //异步批量处理默认 4线程 最大累积100条记录处理一次 最大等待时间1秒
+    @AsyncBatch
+    @Mapping(types = 位置信息汇报, desc = "位置信息汇报")
+    public void 位置信息汇报(List<T0200> list) {
+        locationService.batchInsert(list);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    @Mapping(types = 设置终端参数, desc = "设置终端参数")
+    public T0001 设置终端参数(T8103 request, Session session) {
+        Header header = request.getHeader();
+        T0001 result = new T0001(session.nextSerialNo(), header.getMobileNo());
+        result.setSerialNo(header.getSerialNo());
+        result.setReplyId(header.getMessageId());
+        result.setResultCode(T0001.Success);
+        return result;
+    }
+
+
+    @Mapping(types = 查询终端参数, desc = "查询终端参数")
+    public T0104 查询终端参数(Header header,Session session) {
+        T0104 result = new T0104();
+        result.setSerialNo(header.getSerialNo());
+        result.setPacketNum(5);
+        ParameterType[] values = ParameterType.values();
+        for (int i = 0; i < 38; i++) {
+            ParameterType p = values[i];
+            switch (p.type) {
+                case BYTE:
+                case WORD:
+                case DWORD:
+                    result.addParameter(new BytesParameter(p.id, 1));
+                default:
+                    result.addParameter(new BytesParameter(p.id,"O8gYkVE6kfz8ec6Y"));
+            }
+        }
+        return result;
+    }
+
+    @Mapping(types = 查询指定终端参数, desc = "查询指定终端参数")
+    public T0104 查询指定终端参数(T8106 request,Session session) {
+        Header header = request.getHeader();
+        T0104 result = new T0104();
+        result.setSerialNo(header.getSerialNo());
+        result.setPacketNum(5);
+        ParameterType[] values = ParameterType.values();
+        for (int i = 0; i < 38; i++) {
+            ParameterType p = values[i];
+            switch (p.type) {
+                case BYTE:
+                case WORD:
+                case DWORD:
+                    result.addParameter(new BytesParameter(p.id, 1));
+                default:
+                    result.addParameter(new BytesParameter(p.id,"O8gYkVE6kfz8ec6Y"));
+            }
+        }
+        return result;
+    }
+
+    @Mapping(types = 终端控制, desc = "终端控制")
+    public T0001 终端控制(T8105 request, Session session) {
+        Header header = request.getHeader();
+        T0001 result = new T0001(session.nextSerialNo(), header.getMobileNo());
+        result.setSerialNo(header.getSerialNo());
+        result.setReplyId(header.getMessageId());
+        result.setResultCode(T0001.Success);
+        return result;
+    }
+
+
 
 
 
@@ -119,17 +199,15 @@ public class JT808Endpoint {
         Header header = message.getHeader();
     }
 
-
-
-
-
-    @Mapping(types = 查询终端参数应答, desc = "查询终端参数应答")
-    public void 查询终端参数应答(T0104 message) {
+    @Mapping(types = 位置信息查询, desc = "位置信息查询")
+    public T0201_0500 位置信息查询(T0201_0500 message) {
+        T0201_0500 result = new T0201_0500();//位置信息查询应答
         Header header = message.getHeader();
-        String mobileNo = header.getMobileNo();
-        Integer replyId = header.getSerialNo();
-        messageManager.response(message);
+        return result;
     }
+
+
+
 
     @Mapping(types = 查询终端属性应答, desc = "查询终端属性应答")
     public void 查询终端属性应答(T0107 message) {
@@ -143,12 +221,6 @@ public class JT808Endpoint {
         Header header = message.getHeader();
     }
 
-    //异步批量处理默认 4线程 最大累积100条记录处理一次 最大等待时间1秒
-    @AsyncBatch
-    @Mapping(types = 位置信息汇报, desc = "位置信息汇报")
-    public void 位置信息汇报(List<T0200> list) {
-        locationService.batchInsert(list);
-    }
 
     @Mapping(types = 定位数据批量上传, desc = "定位数据批量上传")
     public void 定位数据批量上传(T0704 message) {
@@ -163,13 +235,7 @@ public class JT808Endpoint {
         locationService.batchInsert(list);
     }
 
-    @Mapping(types = {位置信息查询应答, 车辆控制应答}, desc = "位置信息查询应答/车辆控制应答")
-    public void 位置信息查询应答(T0201_0500 message) {
-        Header header = message.getHeader();
-        String mobileNo = header.getMobileNo();
-        Integer replyId = header.getSerialNo();
-        messageManager.response(message);
-    }
+
 
     @Mapping(types = 事件报告, desc = "事件报告")
     public void 事件报告(T0301 message, Session session) {

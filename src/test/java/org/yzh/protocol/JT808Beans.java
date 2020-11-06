@@ -211,18 +211,14 @@ public class JT808Beans {
     //位置信息查询应答|车辆控制应答
     public static T0201_0500 T0201_0500() {
         T0201_0500 bean = new T0201_0500();
-        bean.setSerialNo(26722);
         bean.setWarningMark(10842);
         bean.setStatus(29736);
         bean.setLatitude(41957);
         bean.setLongitude(56143);
-        bean.setAltitude(48243);
-        bean.setSpeed(10001);
         bean.setDirection(300);
         bean.setDateTime(TIME);
         List<BytesAttribute> attributes = new ArrayList<>();
         attributes.add(new BytesAttribute(1, "123".getBytes()));
-        bean.setBytesAttributes(attributes);
         return bean;
     }
 
@@ -361,6 +357,7 @@ public class JT808Beans {
     //设置终端参数
     public static T8103 T8103() {
         T8103 bean = new T8103();
+        bean.setPacketNum(5);
         ParameterType[] values = ParameterType.values();
         for (int i = 0; i < 38; i++) {
             ParameterType p = values[i];

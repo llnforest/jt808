@@ -22,6 +22,7 @@ public class T0104 extends AbstractMessage<Header> {
 
     private int serialNo;
     private int total;
+    private int packetNum;
     private List<BytesParameter> bytesParameters;
 
     @Field(index = 0, type = DataType.WORD, desc = "应答流水号")
@@ -44,7 +45,16 @@ public class T0104 extends AbstractMessage<Header> {
         this.total = total;
     }
 
-    @Field(index = 3, type = DataType.LIST, desc = "参数项列表")
+    @Field(index = 3, type = DataType.BYTE, desc = "应答参数个数")
+    public int getPacketNum() {
+        return packetNum;
+    }
+
+    public void setPacketNum(int packetNum) {
+        this.packetNum = packetNum;
+    }
+
+    @Field(index = 4, type = DataType.LIST, desc = "参数项列表")
     public List<BytesParameter> getBytesParameters() {
         return bytesParameters;
     }

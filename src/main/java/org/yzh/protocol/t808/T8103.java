@@ -21,6 +21,7 @@ import java.util.Map;
 public class T8103 extends AbstractMessage<Header> {
 
     private int total;
+    private int packetNum;
     private List<BytesParameter> bytesParameters;
 
     public T8103() {
@@ -41,7 +42,16 @@ public class T8103 extends AbstractMessage<Header> {
         this.total = total;
     }
 
-    @Field(index = 1, type = DataType.LIST, desc = "参数项列表")
+    @Field(index = 1, type = DataType.BYTE, desc = "分包参数个数")
+    public int getPacketNum() {
+        return packetNum;
+    }
+
+    public void setPacketNum(int packetNum) {
+        this.packetNum = packetNum;
+    }
+
+    @Field(index = 2, type = DataType.LIST, desc = "参数项列表")
     public List<BytesParameter> getBytesParameters() {
         return bytesParameters;
     }
