@@ -35,7 +35,7 @@ public class ClientTest {
     public static void main(String[] args) {
         System.out.println(tcpClient);
         while (true) {
-            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报 3.注销");
+            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报 3.注销 4.上行");
             while (scanner.hasNext()) {
                 int i = scanner.nextInt();
                 switch (i) {
@@ -53,6 +53,9 @@ public class ClientTest {
                         break;
                     case 3:
                         tcpClient.writeObject("1111");//心跳
+                        break;
+                    case 4:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900()));//上行
                         break;
                 }
             }

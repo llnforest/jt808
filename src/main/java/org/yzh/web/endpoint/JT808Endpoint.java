@@ -111,7 +111,14 @@ public class JT808Endpoint {
 
 
 
-
+    @Mapping(types = 数据上行透传, desc = "数据上行透传")
+    public T8900_0900 数据上行透传(T8900_0900 request, Session session) {
+        Header header = request.getHeader();
+        log.info("type：{}",request.getType());
+        T8900_0900_content content = request.getContent();
+        log.info("type：{}",content.getMsgId());
+        return null;
+    }
 
 
 

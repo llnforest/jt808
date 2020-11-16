@@ -12,12 +12,12 @@ import org.yzh.protocol.commons.MessageId;
  */
 public class Header extends AbstractHeader {
 
-    /** 消息类型 */
+    /** 协议版本号 */
+    protected int versionNo = 1;
+    /** 消息ID */
     protected int messageId;
     /** 消息体属性 */
     protected int properties;
-    /** 协议版本号 */
-    protected int versionNo = 1;
     /** 手机号 */
     protected String mobileNo;
     /** 消息序列号 */
@@ -46,26 +46,7 @@ public class Header extends AbstractHeader {
         this.mobileNo = mobileNo;
     }
 
-    @Field(index = 0, type = DataType.WORD, desc = "消息ID")
-    @Override
-    public int getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(int messageId) {
-        this.messageId = messageId;
-    }
-
-    @Field(index = 2, type = DataType.WORD, desc = "消息体属性")
-    public int getProperties() {
-        return properties;
-    }
-
-    public void setProperties(int properties) {
-        this.properties = properties;
-    }
-
-    @Field(index = 4, type = DataType.BYTE, desc = "协议版本号", version = 1)
+    @Field(index = 0, type = DataType.BYTE, desc = "协议版本号", version = 1)
     @Override
     public int getVersionNo() {
         return versionNo;
@@ -75,9 +56,29 @@ public class Header extends AbstractHeader {
         this.versionNo = versionNo;
     }
 
+    @Field(index = 1, type = DataType.WORD, desc = "消息ID")
+    @Override
+    public int getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(int messageId) {
+        this.messageId = messageId;
+    }
+
+    @Field(index = 3, type = DataType.WORD, desc = "消息体属性")
+    public int getProperties() {
+        return properties;
+    }
+
+    public void setProperties(int properties) {
+        this.properties = properties;
+    }
+
+
     @Fs({@Field(index = 4, type = DataType.BCD8421, length = 6, desc = "终端手机号", version = -1),
             @Field(index = 4, type = DataType.BCD8421, length = 6, desc = "终端手机号", version = 0),
-            @Field(index = 5, type = DataType.BCD8421, length = 10, desc = "终端手机号", version = 1)})
+            @Field(index = 5, type = DataType.BCD8421, length = 8, desc = "终端手机号", version = 1)})
     public String getMobileNo() {
         return mobileNo;
     }
@@ -88,7 +89,7 @@ public class Header extends AbstractHeader {
 
     @Fs({@Field(index = 10, type = DataType.WORD, desc = "流水号", version = -1),
             @Field(index = 10, type = DataType.WORD, desc = "流水号", version = 0),
-            @Field(index = 15, type = DataType.WORD, desc = "流水号", version = 1)})
+            @Field(index = 13, type = DataType.WORD, desc = "流水号", version = 1)})
     public int getSerialNo() {
         return serialNo;
     }
@@ -98,7 +99,7 @@ public class Header extends AbstractHeader {
     }
 
     @Fs({@Field(index = 12, type = DataType.WORD, desc = "消息包总数", version = 0),
-            @Field(index = 17, type = DataType.WORD, desc = "消息包总数", version = 1)})
+            @Field(index = 15, type = DataType.WORD, desc = "消息包总数", version = 1)})
     @Override
     public Integer getPackageTotal() {
         if (isSubpackage())
@@ -111,7 +112,7 @@ public class Header extends AbstractHeader {
     }
 
     @Fs({@Field(index = 14, type = DataType.WORD, desc = "包序号", version = 0),
-            @Field(index = 19, type = DataType.WORD, desc = "包序号", version = 1)})
+            @Field(index = 16, type = DataType.WORD, desc = "包序号", version = 1)})
     @Override
     public Integer getPackageNo() {
         if (isSubpackage())
@@ -207,9 +208,9 @@ public class Header extends AbstractHeader {
         final StringBuilder sb = new StringBuilder(102);
         sb.append(MessageId.get(messageId));
         sb.append('[');
-        sb.append("messageId=").append(messageId);
+        sb.append("versionNo=").append(versionNo);
+        sb.append(", messageId=").append(messageId);
         sb.append(", properties=").append(properties);
-        sb.append(", versionNo=").append(versionNo);
         sb.append(", mobileNo=").append(mobileNo);
         sb.append(", serialNo=").append(serialNo);
         if (isSubpackage()) {

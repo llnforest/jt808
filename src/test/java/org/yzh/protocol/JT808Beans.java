@@ -630,8 +630,15 @@ public class JT808Beans {
     //数据上行透传|数据下行透传
     public static T8900_0900 T8900_0900() {
         T8900_0900 bean = new T8900_0900();
-        bean.setType(T8900_0900.GNSSLocation);
-        bean.setContent("asdzxcqwe12335".getBytes());
+        T8900_0900_content content = new T8900_0900_content();
+        content.setMsgId(0x0101);
+        content.setMsgAttr(0x0101);
+        content.setDataLength(0);
+        content.setPacketNo(1);
+        content.setTerminalNo("100121313Ab111");
+        bean.setContent(content);
+//        bean.setContent(content.getBytes());
+//        bean.setContent("1".getBytes());
         return bean;
     }
 
