@@ -49,6 +49,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         if (!(msg instanceof AbstractMessage))
             return;
         AbstractMessage request = (AbstractMessage) msg;
+        log.info("收到》》{}",request);
         AbstractMessage response;
         Channel channel = ctx.channel();
         Session session = channel.attr(Session.KEY).get();

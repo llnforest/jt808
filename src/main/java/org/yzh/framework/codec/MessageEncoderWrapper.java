@@ -22,12 +22,14 @@ public class MessageEncoderWrapper extends MessageToByteEncoder<AbstractMessage>
     private byte[] delimiter;
 
     public MessageEncoderWrapper(MessageEncoder encoder, byte[] delimiter) {
+        log.info("加密1");
         this.encoder = encoder;
         this.delimiter = delimiter;
     }
 
     @Override
     protected void encode(ChannelHandlerContext ctx, AbstractMessage msg, ByteBuf out) {
+        log.info("加密2");
         ByteBuf buf = encoder.encode(msg);
         if (log.isInfoEnabled())
             log.info("<<<<<原始报文[ip={}],hex={}", ctx.channel().remoteAddress(), ByteBufUtil.hexDump(buf));
