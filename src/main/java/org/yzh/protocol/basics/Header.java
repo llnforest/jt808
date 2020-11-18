@@ -5,6 +5,7 @@ import org.yzh.framework.orm.annotation.Fs;
 import org.yzh.framework.orm.model.AbstractHeader;
 import org.yzh.framework.orm.model.DataType;
 import org.yzh.protocol.commons.MessageId;
+import sun.misc.Version;
 
 /**
  * @author yezhihao
@@ -22,6 +23,9 @@ public class Header extends AbstractHeader {
     protected String mobileNo;
     /** 消息序列号 */
     protected int serialNo;
+    /** 保留位 */
+    protected int reserved;
+
     /** 包总数 */
     protected Integer packageTotal;
     /** 包序号 */
@@ -46,7 +50,7 @@ public class Header extends AbstractHeader {
         this.mobileNo = mobileNo;
     }
 
-    @Field(index = 0, type = DataType.BYTE, desc = "协议版本号", version = 1)
+    @Field(index = 0, type = DataType.BYTE, desc = "协议版本号", version = 0)
     @Override
     public int getVersionNo() {
         return versionNo;
@@ -56,7 +60,7 @@ public class Header extends AbstractHeader {
         this.versionNo = versionNo;
     }
 
-    @Field(index = 1, type = DataType.WORD, desc = "消息ID")
+    @Field(index = 1, type = DataType.WORD, desc = "消息ID",version = 0)
     @Override
     public int getMessageId() {
         return messageId;
@@ -66,7 +70,7 @@ public class Header extends AbstractHeader {
         this.messageId = messageId;
     }
 
-    @Field(index = 3, type = DataType.WORD, desc = "消息体属性")
+    @Field(index = 3, type = DataType.WORD, desc = "消息体属性",version = 0)
     public int getProperties() {
         return properties;
     }
@@ -76,9 +80,8 @@ public class Header extends AbstractHeader {
     }
 
 
-    @Fs({@Field(index = 4, type = DataType.BCD8421, length = 6, desc = "终端手机号", version = -1),
-            @Field(index = 4, type = DataType.BCD8421, length = 6, desc = "终端手机号", version = 0),
-            @Field(index = 5, type = DataType.BCD8421, length = 8, desc = "终端手机号", version = 1)})
+
+    @Field(index = 5, type = DataType.BCD8421, length = 8, desc = "终端手机号", version = 0)
     public String getMobileNo() {
         return mobileNo;
     }
@@ -87,9 +90,8 @@ public class Header extends AbstractHeader {
         this.mobileNo = mobileNo;
     }
 
-    @Fs({@Field(index = 10, type = DataType.WORD, desc = "流水号", version = -1),
-            @Field(index = 10, type = DataType.WORD, desc = "流水号", version = 0),
-            @Field(index = 13, type = DataType.WORD, desc = "流水号", version = 1)})
+
+    @Field(index = 13, type = DataType.WORD, desc = "流水号", version = 0)
     public int getSerialNo() {
         return serialNo;
     }
@@ -98,8 +100,18 @@ public class Header extends AbstractHeader {
         this.serialNo = serialNo;
     }
 
-    @Fs({@Field(index = 12, type = DataType.WORD, desc = "消息包总数", version = 0),
-            @Field(index = 15, type = DataType.WORD, desc = "消息包总数", version = 1)})
+    @Field(index = 15, type = DataType.BYTE, desc = "协议版本号", version = 0)
+    @Override
+    public int getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(int reserved) {
+        this.reserved = reserved;
+    }
+
+
+    @Field(index = 16, type = DataType.WORD, desc = "消息包总数", version = 0)
     @Override
     public Integer getPackageTotal() {
         if (isSubpackage())
@@ -111,8 +123,8 @@ public class Header extends AbstractHeader {
         this.packageTotal = packageTotal;
     }
 
-    @Fs({@Field(index = 14, type = DataType.WORD, desc = "包序号", version = 0),
-            @Field(index = 16, type = DataType.WORD, desc = "包序号", version = 1)})
+
+    @Field(index = 18, type = DataType.WORD, desc = "包序号", version = 0)
     @Override
     public Integer getPackageNo() {
         if (isSubpackage())
@@ -127,9 +139,10 @@ public class Header extends AbstractHeader {
     /** 消息头长度 */
     @Override
     public int getHeadLength() {
+        System.out.println(isVersion());
         if (isVersion())
-            return isSubpackage() ? 21 : 17;
-        return isSubpackage() ? 16 : 12;
+            return isSubpackage() ? 20 : 16;
+        return isSubpackage() ? 20 : 16;
     }
 
     private static final int BODY_LENGTH = 0b0000_0011_1111_1111;
@@ -213,6 +226,7 @@ public class Header extends AbstractHeader {
         sb.append(", properties=").append(properties);
         sb.append(", mobileNo=").append(mobileNo);
         sb.append(", serialNo=").append(serialNo);
+        sb.append(", reserved=").append(reserved);
         if (isSubpackage()) {
             sb.append(", packageTotal=").append(packageTotal);
             sb.append(", packageNo=").append(packageNo);

@@ -125,15 +125,17 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
-        if (evt instanceof IdleStateEvent) {
-            IdleStateEvent event = (IdleStateEvent) evt;
-            IdleState state = event.state();
-            if (state == IdleState.READER_IDLE || state == IdleState.WRITER_IDLE) {
-                Session session = ctx.channel().attr(Session.KEY).get();
-                log.warn("<<<<<主动断开连接{}", session);
-                ctx.close();
-                ctx.executor().shutdownGracefully();
-            }
-        }
+        log.info("超时未收到消息了！");
+        //主动断开消息
+//        if (evt instanceof IdleStateEvent) {
+//            IdleStateEvent event = (IdleStateEvent) evt;
+//            IdleState state = event.state();
+//            if (state == IdleState.READER_IDLE || state == IdleState.WRITER_IDLE) {
+//                Session session = ctx.channel().attr(Session.KEY).get();
+//                log.warn("<<<<<主动断开连接{}", session);
+//                ctx.close();
+//                ctx.executor().shutdownGracefully();
+//            }
+//        }
     }
 }

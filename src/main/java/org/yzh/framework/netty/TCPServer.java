@@ -60,7 +60,7 @@ public class TCPServer {
                             channel.pipeline()
                                     .addLast(new IdleStateHandler(10, 0, 0, TimeUnit.MINUTES))
                                     .addLast("frameDecoder", frameDecoder())
-                                    .addLast("decoder", new MessageDecoderWrapper(config.decoder))
+                                    .addLast("decoder",new MessageDecoderWrapper(config.decoder))
                                     .addLast("encoder", new MessageEncoderWrapper(config.encoder, config.delimiter[config.delimiter.length - 1].getValue()))
                                     .addLast("adapter", config.adapter);
                         }

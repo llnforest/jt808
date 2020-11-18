@@ -27,7 +27,8 @@ public abstract class AbstractHeader {
     public abstract String getClientId();
     /** 消息流水号 */
     public abstract int getSerialNo();
-
+    /** 保留位 */
+    public abstract int getReserved();
     public abstract void setSerialNo(int serialNo);
     /** 消息头长度 */
     public abstract int getHeadLength();

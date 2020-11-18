@@ -49,7 +49,7 @@ public class JT808Beans {
         Message type = message.getClass().getAnnotation(Message.class);
         if (type != null)
             header.setMessageId(type.value()[0]);
-        header.setVersionNo(1);
+        header.setVersionNo(0);
         header.setMobileNo("17299841738");
         header.setSerialNo(65535);
         header.setEncryption(0);
