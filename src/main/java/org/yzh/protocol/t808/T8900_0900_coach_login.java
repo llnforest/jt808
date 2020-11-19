@@ -40,7 +40,7 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.type = type;
     }
 
-    @Field(index = 2, type = DataType.WORD, desc = "透传消息Id")
+    @Field(index = 1, type = DataType.WORD, desc = "透传消息Id")
     public int getMsgId() {
         return msgId;
     }
@@ -49,7 +49,7 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.msgId = msgId;
     }
 
-    @Field(index = 4, type = DataType.WORD, desc = "扩展消息属性")
+    @Field(index = 3, type = DataType.WORD, desc = "扩展消息属性")
     public int getMsgAttr() {
         return msgAttr;
     }
@@ -58,7 +58,7 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.msgAttr = msgAttr;
     }
 
-    @Field(index = 6, type = DataType.WORD, desc = "驾培包序号")
+    @Field(index = 5, type = DataType.WORD, desc = "驾培包序号")
     public int getPacketNo() {
         return packetNo;
     }
@@ -67,7 +67,7 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.packetNo = packetNo;
     }
 
-    @Field(index = 8, type = DataType.STRING,length = 16,desc = "终端编号")
+    @Field(index = 7, type = DataType.STRING,length = 16,desc = "终端编号")
     public String getTerminalNo() {
         return terminalNo;
     }
@@ -76,7 +76,7 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 24, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -85,7 +85,7 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 26, type = DataType.STRING,length = 5,desc = "教练员编号")
+    @Field(index = 25, type = DataType.STRING,length = 16,desc = "教练员编号")
     public String getCoachNo() {
         return coachNo;
     }
@@ -94,7 +94,7 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.coachNo = coachNo;
     }
 
-    @Field(index = 31, type = DataType.STRING,length = 18, desc = "教练员身份证号")
+    @Field(index = 41, type = DataType.STRING,length = 18, desc = "教练员身份证号")
     public String getCoachIdentity() {
         return coachIdentity;
     }
@@ -103,7 +103,7 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.coachIdentity = coachIdentity;
     }
 
-    @Field(index = 49, type = DataType.STRING,length = 2, desc = "准教车型")
+    @Field(index = 59, type = DataType.STRING,length = 2, desc = "准教车型")
     public String getCoachType() {
         return coachType;
     }
