@@ -18,6 +18,7 @@ public class T8900_0900_content{
     private int packetNo;
     private int dataLength;
     private String terminalNo;
+    private T8900_0900_coach_up t8900_0900_coach_up;
 
     public T8900_0900_content() {
     }
@@ -67,4 +68,14 @@ public class T8900_0900_content{
     public void setDataLength(int dataLength) {
         this.dataLength = dataLength;
     }
+
+    @Field(index = 24, type = DataType.OBJ,length = 50, desc = "数据内容")
+    public T8900_0900_coach_up getT8900_0900_coach_up() {
+        return t8900_0900_coach_up;
+    }
+
+    public void setT8900_0900_coach_up(T8900_0900_coach_up t8900_0900_coach_up) {
+        this.t8900_0900_coach_up = t8900_0900_coach_up;
+    }
+
 }

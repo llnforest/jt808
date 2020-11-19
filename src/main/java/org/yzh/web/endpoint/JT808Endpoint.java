@@ -116,7 +116,17 @@ public class JT808Endpoint {
         Header header = request.getHeader();
         log.info("type：{}",request.getType());
         T8900_0900_content content = request.getContent();
-        log.info("type：{}",content.getMsgId());
+        int msgId = content.getMsgId();
+        if(msgId == 257){
+            T8900_0900_coach_up t8900_0900_coach_up = content.getT8900_0900_coach_up();
+            log.info("教练编号：{}",t8900_0900_coach_up.getCoachNo());
+            log.info("身份证号：{}",t8900_0900_coach_up.getCoachIdentity());
+            log.info("车型：{}",t8900_0900_coach_up.getCoachType());
+            T0200 t0200 = t8900_0900_coach_up.getT0200();
+            log.info("行驶速度：{}",t0200.getDriveSpeed());
+        }
+        log.info("msgId：{}",content.getMsgId());
+        log.info("terminalNo:{}",content.getTerminalNo());
         return null;
     }
 
@@ -318,10 +328,10 @@ public class JT808Endpoint {
         messageManager.response(message);
     }
 
-    @Mapping(types = 数据上行透传, desc = "数据上行透传")
-    public void passthrough(T8900_0900 message, Session session) {
-        Header header = message.getHeader();
-    }
+//    @Mapping(types = 数据上行透传, desc = "数据上行透传")
+//    public void passthrough(T8900_0900 message, Session session) {
+//        Header header = message.getHeader();
+//    }
 
     @Mapping(types = 数据压缩上报, desc = "数据压缩上报")
     public void gzipPack(T0901 message, Session session) {

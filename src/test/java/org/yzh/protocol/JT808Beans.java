@@ -354,6 +354,51 @@ public class JT808Beans {
         return null;
     }
 
+    //数据上行透传|数据下行透传
+    public static T8900_0900 T8900_0900() {
+        T8900_0900 bean = new T8900_0900();
+        T8900_0900_content content = new T8900_0900_content();
+        content.setMsgId(0x0101);
+        content.setMsgAttr(0x0101);
+        content.setDataLength(0);
+        content.setPacketNo(1);
+        content.setTerminalNo("100121313Ab111");
+
+        T8900_0900_coach_up t8900_0900_coach_up = new T8900_0900_coach_up();
+        t8900_0900_coach_up.setCoachIdentity("34242519911221811x");
+        t8900_0900_coach_up.setCoachNo("J0071sa");
+        t8900_0900_coach_up.setCoachType("C1");
+
+        T0200 t0200 = new T0200();
+        t0200.setWarningMark(1024 * 2);
+        t0200.setStatus(2048 * 2);
+        t0200.setLatitude(116307629 * 2);
+        t0200.setLongitude(40058359 * 2);
+        t0200.setDriveSpeed(5 * 2);
+        t0200.setStarSpeed(3 * 2);
+        t0200.setDirection(99 * 2);
+        t0200.setDateTime(TIME.plusYears(1));
+
+        t8900_0900_coach_up.setT0200(t0200);
+        content.setT8900_0900_coach_up(t8900_0900_coach_up);
+        bean.setContent(content);
+//        bean.setContent(content.getBytes());
+//        bean.setContent("1".getBytes());
+        return bean;
+    }
+
+    public static T8900_0900_coach_login t8900_0900_coach_login(){
+        T8900_0900_coach_login bean = new T8900_0900_coach_login();
+        bean.setType(0x13);
+        bean.setMsgId(0x0101);
+        bean.setTerminalNo("100121313Ab000");
+        bean.setCoachNo("000");
+        bean.setCoachIdentity("34242519911221811x");
+        bean.setCoachType("C1");
+        return bean;
+    }
+
+
     //设置终端参数
     public static T8103 T8103() {
         T8103 bean = new T8103();
@@ -627,20 +672,7 @@ public class JT808Beans {
         return bean;
     }
 
-    //数据上行透传|数据下行透传
-    public static T8900_0900 T8900_0900() {
-        T8900_0900 bean = new T8900_0900();
-        T8900_0900_content content = new T8900_0900_content();
-        content.setMsgId(0x0101);
-        content.setMsgAttr(0x0101);
-        content.setDataLength(0);
-        content.setPacketNo(1);
-        content.setTerminalNo("100121313Ab111");
-        bean.setContent(content);
-//        bean.setContent(content.getBytes());
-//        bean.setContent("1".getBytes());
-        return bean;
-    }
+
 
     //事件设置
     public static T8301 T8301() {

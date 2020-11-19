@@ -32,8 +32,6 @@ public abstract class MessageEncoder {
     public ByteBuf encode(AbstractMessage message) {
         AbstractHeader header = message.getHeader();
         int version = header.getVersionNo();
-        log.info("class:{}",message.getClass());
-        log.info("version:{}",version);
         BeanMetadata bodyMetadata = MessageHelper.getBeanMetadata(message.getClass(), version);
         ByteBuf bodyBuf;
         if (bodyMetadata != null) {

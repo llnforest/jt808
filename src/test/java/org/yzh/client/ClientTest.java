@@ -57,6 +57,9 @@ public class ClientTest {
                     case 4:
                         tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900()));//上行
                         break;
+                    case 5:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_coach_login()));//上行
+                        break;
                 }
             }
         }

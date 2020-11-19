@@ -11,7 +11,7 @@ import org.yzh.protocol.commons.JT808;
  * @author yezhihao
  * @home https://gitee.com/yezhihao/jt808-server
  */
-@Message({JT808.数据上行透传, JT808.数据下行透传})
+//@Message({JT808.数据上行透传, JT808.数据下行透传})
 public class T8900_0900_tmp extends AbstractMessage<Header> {
 
     /** GNSS模块详细定位数据 */

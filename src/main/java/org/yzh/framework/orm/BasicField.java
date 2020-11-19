@@ -1,6 +1,7 @@
 package org.yzh.framework.orm;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yzh.framework.orm.annotation.Field;
@@ -44,7 +45,11 @@ public abstract class BasicField<T> implements Comparable<BasicField> {
     public boolean readTo(ByteBuf buf, Object target) throws Exception {
         if (!buf.isReadable(length))
             return false;
+        log.info("length:{}",length);
+        log.info("buf:{}", ByteBufUtil.hexDump(buf));
         Object value = readValue(buf, length);
+
+        log.info("value:{}",value);
         writeMethod.invoke(target, value);
         return true;
     }

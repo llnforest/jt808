@@ -38,9 +38,12 @@ public class BeanMetadata<T> {
         try {
             target = typeClass.newInstance();
             for (int i = 0; i < fields.length; i++) {
+
                 field = fields[i];
+                log.info("field:{}",field);
                 if (!field.readTo(source, target))
                     break;
+                log.info("target:{}",target);
                 isEmpty = false;
             }
         } catch (Exception e) {

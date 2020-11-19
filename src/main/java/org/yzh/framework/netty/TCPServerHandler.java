@@ -48,6 +48,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if (!(msg instanceof AbstractMessage))
             return;
+        log.info("收到消息：{}",msg);
         AbstractMessage request = (AbstractMessage) msg;
         log.info("收到》》{}",request);
         AbstractMessage response;
@@ -58,6 +59,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
         try {
             Handler handler = handlerMapping.getHandler(request.getMessageId());
+            log.info("handler:{}",handler);
             if (handler != null) {
                 if (!interceptor.beforeHandle(request, session))
                     return;

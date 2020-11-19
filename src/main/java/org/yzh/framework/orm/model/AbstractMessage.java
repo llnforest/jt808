@@ -47,6 +47,13 @@ public abstract class AbstractMessage<T extends AbstractHeader> implements Seria
         return header.getMessageId();
     }
 
+//    public int getChildType() {
+//        if (header == null)
+//            return 0;
+//        if(header.getMessageId())
+//        return header.getMessageId();
+//    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder(512);

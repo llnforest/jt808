@@ -14,7 +14,7 @@ import sun.misc.Version;
 public class Header extends AbstractHeader {
 
     /** 协议版本号 */
-    protected int versionNo = 1;
+    protected int versionNo = 0;
     /** 消息ID */
     protected int messageId;
     /** 消息体属性 */
@@ -50,7 +50,7 @@ public class Header extends AbstractHeader {
         this.mobileNo = mobileNo;
     }
 
-    @Field(index = 0, type = DataType.BYTE, desc = "协议版本号", version = 0)
+    @Field(index = 0, type = DataType.BYTE, desc = "协议版本号")
     @Override
     public int getVersionNo() {
         return versionNo;
@@ -60,7 +60,7 @@ public class Header extends AbstractHeader {
         this.versionNo = versionNo;
     }
 
-    @Field(index = 1, type = DataType.WORD, desc = "消息ID",version = 0)
+    @Field(index = 1, type = DataType.WORD, desc = "消息ID")
     @Override
     public int getMessageId() {
         return messageId;
@@ -70,7 +70,7 @@ public class Header extends AbstractHeader {
         this.messageId = messageId;
     }
 
-    @Field(index = 3, type = DataType.WORD, desc = "消息体属性",version = 0)
+    @Field(index = 3, type = DataType.WORD, desc = "消息体属性")
     public int getProperties() {
         return properties;
     }
@@ -81,7 +81,7 @@ public class Header extends AbstractHeader {
 
 
 
-    @Field(index = 5, type = DataType.BCD8421, length = 8, desc = "终端手机号", version = 0)
+    @Field(index = 5, type = DataType.BCD8421, length = 8, desc = "终端手机号")
     public String getMobileNo() {
         return mobileNo;
     }
@@ -91,7 +91,7 @@ public class Header extends AbstractHeader {
     }
 
 
-    @Field(index = 13, type = DataType.WORD, desc = "流水号", version = 0)
+    @Field(index = 13, type = DataType.WORD, desc = "流水号")
     public int getSerialNo() {
         return serialNo;
     }
@@ -100,7 +100,7 @@ public class Header extends AbstractHeader {
         this.serialNo = serialNo;
     }
 
-    @Field(index = 15, type = DataType.BYTE, desc = "协议版本号", version = 0)
+    @Field(index = 15, type = DataType.BYTE, desc = "协议版本号")
     @Override
     public int getReserved() {
         return reserved;
@@ -111,7 +111,7 @@ public class Header extends AbstractHeader {
     }
 
 
-    @Field(index = 16, type = DataType.WORD, desc = "消息包总数", version = 0)
+//    @Field(index = 16, type = DataType.WORD, desc = "消息包总数")
     @Override
     public Integer getPackageTotal() {
         if (isSubpackage())
@@ -124,7 +124,7 @@ public class Header extends AbstractHeader {
     }
 
 
-    @Field(index = 18, type = DataType.WORD, desc = "包序号", version = 0)
+//    @Field(index = 18, type = DataType.WORD, desc = "包序号")
     @Override
     public Integer getPackageNo() {
         if (isSubpackage())
@@ -139,7 +139,6 @@ public class Header extends AbstractHeader {
     /** 消息头长度 */
     @Override
     public int getHeadLength() {
-        System.out.println(isVersion());
         if (isVersion())
             return isSubpackage() ? 20 : 16;
         return isSubpackage() ? 20 : 16;

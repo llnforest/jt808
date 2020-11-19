@@ -11,7 +11,7 @@ import org.yzh.protocol.commons.JT808;
  * @author yezhihao
  * @home https://gitee.com/yezhihao/jt808-server
  */
-@Message({JT808.数据上行透传, JT808.数据下行透传})
+//@Message({JT808.数据上行透传, JT808.数据下行透传})
 public class T8900_0900 extends AbstractMessage<Header> {
 
 
@@ -37,7 +37,7 @@ public class T8900_0900 extends AbstractMessage<Header> {
         this.type = type;
     }
 
-    @Field(index = 1, type = DataType.OBJ, desc = "透传消息内容")
+    @Field(index = 1, type = DataType.OBJ, length=74,desc = "透传消息内容")
     public T8900_0900_content getContent() {
         return content;
     }

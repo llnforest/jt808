@@ -53,12 +53,11 @@ public abstract class MessageDecoder {
         buf = buf.slice(0, buf.readableBytes() - 1);
 
         Class<? extends AbstractHeader> headerClass = (Class<? extends AbstractHeader>) MessageHelper.getHeaderClass();
-        log.info("headerClass:{}",headerClass);
         BeanMetadata<? extends AbstractHeader> headMetadata = MessageHelper.getBeanMetadata(headerClass, version);
         int readerIndex = buf.readerIndex();
 
         AbstractHeader header = headMetadata.decode(buf);
-        log.info("请求头：{}",header);
+        log.info("header:{}",header);
         if (header.isVersion()) {
             buf.readerIndex(readerIndex);
             headMetadata = MessageHelper.getBeanMetadata(headerClass, 0);
@@ -79,6 +78,7 @@ public abstract class MessageDecoder {
         if (bodyMetadata != null) {
 
             int headLen = header.getHeadLength();
+            log.info("消息头长度:{}",headLen);
             int bodyLen = header.getBodyLength();
 
             if (header.isSubpackage()) {
