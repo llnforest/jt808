@@ -94,7 +94,9 @@ public abstract class MessageDecoder {
                 message = bodyMetadata.decode(bodyBuf);
 
             } else {
-                buf.readerIndex(headLen);
+                log.info("消息体buf:{}",ByteBufUtil.hexDump(buf));
+                buf.readerIndex(headLen-1);
+                log.info("消息体buf:{}",ByteBufUtil.hexDump(buf));
                 message = bodyMetadata.decode(buf);
             }
         } else {

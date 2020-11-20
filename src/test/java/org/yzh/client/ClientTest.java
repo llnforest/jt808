@@ -18,6 +18,7 @@ public class ClientTest {
 
     private static TCPClient tcpClient;
 
+    //7611
     static {
         ClientConfig jtConfig = new ClientConfig.Builder()
                 .setIp("127.0.0.1")

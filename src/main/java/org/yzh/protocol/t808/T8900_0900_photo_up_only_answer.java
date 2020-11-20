@@ -12,24 +12,21 @@ import org.yzh.protocol.commons.JT808;
  * @home https://gitee.com/yezhihao/jt808-server
  */
 @Message({JT808.数据上行透传, JT808.数据下行透传})
-public class T8900_0900_coach_login extends AbstractMessage<Header> {
+public class T8900_0900_photo_up_only_answer extends AbstractMessage<Header> {
 
 
 
     private int type = 0x13;
-    private int msgId = 0x0101;
+    private int msgId = 0x0304;
     private int msgAttr;
     private int packetNo;
     private int dataLength;
     private String terminalNo;
 
-    private String coachNo;
-    private String coachIdentity;
-    private String coachType;
+    private int result;
 
-    private T0200 t0200;
 
-    public T8900_0900_coach_login() {
+    public T8900_0900_photo_up_only_answer() {
     }
 
 
@@ -87,40 +84,20 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTES,length = 16,desc = "教练员编号")
-    public String getCoachNo() {
-        return coachNo;
+
+    @Field(index = 25, type = DataType.BYTE,desc = "执行结果")
+    public int getResult() {
+        return result;
     }
 
-    public void setCoachNo(String coachNo) {
-        this.coachNo = coachNo;
+    public void setResult(int result) {
+        this.result = result;
     }
 
-    @Field(index = 41, type = DataType.BYTES,length = 18, desc = "教练员身份证号")
-    public String getCoachIdentity() {
-        return coachIdentity;
-    }
 
-    public void setCoachIdentity(String coachIdentity) {
-        this.coachIdentity = coachIdentity;
-    }
 
-    @Field(index = 59, type = DataType.BYTES,length = 2, desc = "准教车型")
-    public String getCoachType() {
-        return coachType;
-    }
 
-    public void setCoachType(String coachType) {
-        this.coachType = coachType;
-    }
 
-    @Field(index = 61, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
-    public T0200 getT0200() {
-        return t0200;
-    }
 
-    public void setT0200(T0200 t0200) {
-        this.t0200 = t0200;
-    }
 
 }

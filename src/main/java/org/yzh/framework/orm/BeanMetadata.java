@@ -1,6 +1,7 @@
 package org.yzh.framework.orm;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,10 +41,11 @@ public class BeanMetadata<T> {
             for (int i = 0; i < fields.length; i++) {
 
                 field = fields[i];
-                log.info("field:{}",field);
+//                log.info("field:{}",field);
+//                log.info("buf:{}", ByteBufUtil.hexDump(source));
+
                 if (!field.readTo(source, target))
                     break;
-                log.info("target:{}",target);
                 isEmpty = false;
             }
         } catch (Exception e) {

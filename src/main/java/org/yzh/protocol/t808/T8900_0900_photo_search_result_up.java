@@ -12,24 +12,23 @@ import org.yzh.protocol.commons.JT808;
  * @home https://gitee.com/yezhihao/jt808-server
  */
 @Message({JT808.数据上行透传, JT808.数据下行透传})
-public class T8900_0900_coach_login extends AbstractMessage<Header> {
+public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
 
 
 
     private int type = 0x13;
-    private int msgId = 0x0101;
+    private int msgId = 0x0303;
     private int msgAttr;
     private int packetNo;
     private int dataLength;
     private String terminalNo;
 
-    private String coachNo;
-    private String coachIdentity;
-    private String coachType;
+    private int isUp;
+    private int totalNum;
+    private int num;
 
-    private T0200 t0200;
 
-    public T8900_0900_coach_login() {
+    public T8900_0900_photo_search_result_up() {
     }
 
 
@@ -87,40 +86,31 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTES,length = 16,desc = "教练员编号")
-    public String getCoachNo() {
-        return coachNo;
+
+    @Field(index = 25, type = DataType.BYTE,desc = "是否上报结束")
+    public int getIsUp() {
+        return isUp;
     }
 
-    public void setCoachNo(String coachNo) {
-        this.coachNo = coachNo;
+    public void setIsUp(int isUp) {
+        this.isUp = isUp;
     }
 
-    @Field(index = 41, type = DataType.BYTES,length = 18, desc = "教练员身份证号")
-    public String getCoachIdentity() {
-        return coachIdentity;
+    @Field(index = 26, type = DataType.BYTE,desc = "符合条件的照片总数")
+    public int getTotalNum() {
+        return totalNum;
     }
 
-    public void setCoachIdentity(String coachIdentity) {
-        this.coachIdentity = coachIdentity;
+    public void setTotalNum(int totalNum) {
+        this.totalNum = totalNum;
     }
 
-    @Field(index = 59, type = DataType.BYTES,length = 2, desc = "准教车型")
-    public String getCoachType() {
-        return coachType;
+    @Field(index = 27, type = DataType.BYTE,desc = "此次发送的照片数目")
+    public int getNum() {
+        return num;
     }
 
-    public void setCoachType(String coachType) {
-        this.coachType = coachType;
+    public void setNum(int num) {
+        this.num = num;
     }
-
-    @Field(index = 61, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
-    public T0200 getT0200() {
-        return t0200;
-    }
-
-    public void setT0200(T0200 t0200) {
-        this.t0200 = t0200;
-    }
-
 }

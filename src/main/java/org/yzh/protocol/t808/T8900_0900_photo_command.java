@@ -12,24 +12,23 @@ import org.yzh.protocol.commons.JT808;
  * @home https://gitee.com/yezhihao/jt808-server
  */
 @Message({JT808.数据上行透传, JT808.数据下行透传})
-public class T8900_0900_coach_login extends AbstractMessage<Header> {
+public class T8900_0900_photo_command extends AbstractMessage<Header> {
 
 
 
     private int type = 0x13;
-    private int msgId = 0x0101;
+    private int msgId = 0x8301;
     private int msgAttr;
     private int packetNo;
     private int dataLength;
     private String terminalNo;
 
-    private String coachNo;
-    private String coachIdentity;
-    private String coachType;
+    private int upMode;
+    private int channelNo;
+    private int photoSize;
 
-    private T0200 t0200;
 
-    public T8900_0900_coach_login() {
+    public T8900_0900_photo_command() {
     }
 
 
@@ -87,40 +86,31 @@ public class T8900_0900_coach_login extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTES,length = 16,desc = "教练员编号")
-    public String getCoachNo() {
-        return coachNo;
+
+    @Field(index = 25, type = DataType.BYTE,desc = "上传模式")
+    public int getUpMode() {
+        return upMode;
     }
 
-    public void setCoachNo(String coachNo) {
-        this.coachNo = coachNo;
+    public void setUpMode(int upMode) {
+        this.upMode = upMode;
     }
 
-    @Field(index = 41, type = DataType.BYTES,length = 18, desc = "教练员身份证号")
-    public String getCoachIdentity() {
-        return coachIdentity;
+    @Field(index = 26, type = DataType.BYTE,desc = "摄像头通道号")
+    public int getChannelNo() {
+        return channelNo;
     }
 
-    public void setCoachIdentity(String coachIdentity) {
-        this.coachIdentity = coachIdentity;
+    public void setChannelNo(int channelNo) {
+        this.channelNo = channelNo;
     }
 
-    @Field(index = 59, type = DataType.BYTES,length = 2, desc = "准教车型")
-    public String getCoachType() {
-        return coachType;
+    @Field(index = 27, type = DataType.BYTE,desc = "图片尺寸")
+    public int getPhotoSize() {
+        return photoSize;
     }
 
-    public void setCoachType(String coachType) {
-        this.coachType = coachType;
+    public void setPhotoSize(int photoSize) {
+        this.photoSize = photoSize;
     }
-
-    @Field(index = 61, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
-    public T0200 getT0200() {
-        return t0200;
-    }
-
-    public void setT0200(T0200 t0200) {
-        this.t0200 = t0200;
-    }
-
 }

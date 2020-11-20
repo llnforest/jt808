@@ -45,11 +45,10 @@ public abstract class BasicField<T> implements Comparable<BasicField> {
     public boolean readTo(ByteBuf buf, Object target) throws Exception {
         if (!buf.isReadable(length))
             return false;
-        log.info("length:{}",length);
-        log.info("buf:{}", ByteBufUtil.hexDump(buf));
         Object value = readValue(buf, length);
 
-        log.info("value:{}",value);
+//        log.info("length:{}",length);
+//        log.info("value:{}",value);
         writeMethod.invoke(target, value);
         return true;
     }

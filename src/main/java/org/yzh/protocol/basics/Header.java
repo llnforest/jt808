@@ -111,7 +111,7 @@ public class Header extends AbstractHeader {
     }
 
 
-//    @Field(index = 16, type = DataType.WORD, desc = "消息包总数")
+    @Field(index = 16, type = DataType.WORD, desc = "消息包总数")
     @Override
     public Integer getPackageTotal() {
         if (isSubpackage())
@@ -124,7 +124,7 @@ public class Header extends AbstractHeader {
     }
 
 
-//    @Field(index = 18, type = DataType.WORD, desc = "包序号")
+    @Field(index = 18, type = DataType.WORD, desc = "包序号")
     @Override
     public Integer getPackageNo() {
         if (isSubpackage())
