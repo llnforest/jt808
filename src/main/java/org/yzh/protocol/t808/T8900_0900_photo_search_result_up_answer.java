@@ -12,24 +12,21 @@ import org.yzh.protocol.commons.JT808;
  * @home https://gitee.com/yezhihao/jt808-server
  */
 @Message({JT808.数据上行透传, JT808.数据下行透传})
-public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
+public class T8900_0900_photo_search_result_up_answer extends AbstractMessage<Header> {
 
 
 
     private int type = 0x13;
-    private int msgId = 0x0303;
+    private int msgId = 0x8303;
     private int msgAttr;
     private int packetNo;
     private int dataLength;
     private String terminalNo;
 
-    private int isUp;
-    private int needNum;
-    private int totalNum;
-    private String photoNum;
+    private int result;
 
 
-    public T8900_0900_photo_search_result_up() {
+    public T8900_0900_photo_search_result_up_answer() {
     }
 
 
@@ -88,39 +85,19 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
     }
 
 
-    @Field(index = 25, type = DataType.BYTE,desc = "是否上报结束")
-    public int getIsUp() {
-        return isUp;
+    @Field(index = 25, type = DataType.BYTE,desc = "执行结果")
+    public int getResult() {
+        return result;
     }
 
-    public void setIsUp(int isUp) {
-        this.isUp = isUp;
+    public void setResult(int result) {
+        this.result = result;
     }
 
-    @Field(index = 26, type = DataType.BYTE,desc = "符合条件的照片总数")
-    public int getNeedNum() {
-        return needNum;
-    }
 
-    public void setNeedNum(int needNum) {
-        this.needNum = needNum;
-    }
 
-    @Field(index = 27, type = DataType.BYTE,desc = "此次发送的照片数目")
-    public int getTotalNum() {
-        return totalNum;
-    }
 
-    public void setTotalNum(int totalNum) {
-        this.totalNum = totalNum;
-    }
 
-    @Field(index = 28, type = DataType.BYTES,length = 10,desc = "照片编号1")
-    public String getPhotoNum() {
-        return photoNum;
-    }
 
-    public void setPhotoNum(String photoNum) {
-        this.photoNum = photoNum;
-    }
+
 }

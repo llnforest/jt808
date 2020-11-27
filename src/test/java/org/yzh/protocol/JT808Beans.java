@@ -433,6 +433,15 @@ public class JT808Beans {
         return bean;
     }
 
+    //临时位置跟踪控制
+    public static T8202 T8202() {
+        T8202 bean = new T8202();
+        bean.setInterval(5);
+        bean.setValidityPeriod(600);
+        return bean;
+    }
+
+
     //下发终端升级包
     public static T8108 T8108() {
         T8108 bean = new T8108();
@@ -443,13 +452,6 @@ public class JT808Beans {
         return bean;
     }
 
-    //临时位置跟踪控制
-    public static T8202 T8202() {
-        T8202 bean = new T8202();
-        bean.setInterval(5);
-        bean.setValidityPeriod(600);
-        return bean;
-    }
 
     //人工确认报警消息
     public static T8203 T8203() {

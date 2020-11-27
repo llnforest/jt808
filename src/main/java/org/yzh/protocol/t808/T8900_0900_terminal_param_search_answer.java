@@ -12,18 +12,18 @@ import org.yzh.protocol.commons.JT808;
  * @home https://gitee.com/yezhihao/jt808-server
  */
 @Message({JT808.数据上行透传, JT808.数据下行透传})
-public class T8900_0900_terminal_set extends AbstractMessage<Header> {
+public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Header> {
 
 
 
     private int type = 0x13;
-    private int msgId = 0x8501;
+    private int msgId = 0x0503;
     private int msgAttr;
     private int packetNo;
     private int dataLength;
     private String terminalNo;
 
-    private int paramNo;
+    private int result;
     private int photoTime;
     private int upSet;
     private int isReadAdd;
@@ -36,7 +36,8 @@ public class T8900_0900_terminal_set extends AbstractMessage<Header> {
     private int responseTime;
 
 
-    public T8900_0900_terminal_set() {
+
+    public T8900_0900_terminal_param_search_answer() {
     }
 
 
@@ -95,13 +96,13 @@ public class T8900_0900_terminal_set extends AbstractMessage<Header> {
     }
 
 
-    @Field(index = 25, type = DataType.BYTE,desc = "参数编号")
-    public int getParamNo() {
-        return paramNo;
+    @Field(index = 25, type = DataType.BYTE,desc = "执行结果")
+    public int getResult() {
+        return result;
     }
 
-    public void setParamNo(int paramNo) {
-        this.paramNo = paramNo;
+    public void setResult(int result) {
+        this.result = result;
     }
 
     @Field(index = 26, type = DataType.BYTE,desc = "定时拍照时间间隔")
@@ -185,7 +186,7 @@ public class T8900_0900_terminal_set extends AbstractMessage<Header> {
         this.isStudentAcross = isStudentAcross;
     }
 
-    @Field(index = 38, type = DataType.WORD,desc = "响应平台同类消息时间间隔")
+    @Field(index = 38, type = DataType.BYTE,desc = "响应平台同类消息时间间隔")
     public int getResponseTime() {
         return responseTime;
     }

@@ -89,4 +89,120 @@ public class JT808Beans {
         return bean;
     }
 
+    //命令上报学时记录
+    public static T8900_0900_time_up_command t8900_0900_time_up_command() {
+        T8900_0900_time_up_command bean = new T8900_0900_time_up_command();
+        bean.setSearchType(1);//1按时间上传 2按条数上传
+        bean.setStartTime(TIME);
+        bean.setEndTime(TIME);
+        bean.setSearchNum(5);//条数
+        return bean;
+    }
+
+    //立即拍照
+    public static T8900_0900_photo_command t8900_0900_photo_command() {
+        T8900_0900_photo_command bean = new T8900_0900_photo_command();
+        bean.setUpMode(1);//上传模式
+        bean.setChannelNo(0);//通道
+        bean.setPhotoSize(0x01);//图片尺寸
+        return bean;
+    }
+
+    //查询照片
+    public static T8900_0900_photo_search_command t8900_0900_photo_search_command() {
+        T8900_0900_photo_search_command bean = new T8900_0900_photo_search_command();
+        bean.setSearchType(1);//1：按时间查询
+        bean.setStartTime(TIME);
+        bean.setEndTime(TIME);
+        return bean;
+    }
+
+    //上传指定照片
+    public static T8900_0900_photo_up_only t8900_0900_photo_up_only() {
+        T8900_0900_photo_up_only bean = new T8900_0900_photo_up_only();
+        bean.setPhotoNum("11221212");//1：按时间查询
+        return bean;
+    }
+
+    //设置计时终端应用参数
+    public static T8900_0900_terminal_set t8900_0900_terminal_set() {
+        T8900_0900_terminal_set bean = new T8900_0900_terminal_set();
+        bean.setParamNo(1);
+        bean.setPhotoTime(15);
+        bean.setUpSet(1);
+        bean.setIsReadAdd(0);
+        bean.setClassDelayTime(1);
+        bean.setUpSet(3600);
+        bean.setCoachDelayTime(150);
+        bean.setVerifyTime(30);
+        bean.setIsCoachAcross(1);
+        bean.setIsStudentAcross(1);
+        bean.setResponseTime(3);
+        return bean;
+    }
+
+    //设置禁训状态
+    public static T8900_0900_terminal_status t8900_0900_terminal_status() {
+        T8900_0900_terminal_status bean = new T8900_0900_terminal_status();
+        bean.setStatus(1);//1：可用，默认值；2：禁用
+        bean.setMsgLength(0);
+        return bean;
+    }
+
+    //查询计时终端应用参数
+    public static T8900_0900_terminal_param_search t8900_0900_terminal_param_search() {
+        T8900_0900_terminal_param_search bean = new T8900_0900_terminal_param_search();
+        return bean;
+    }
+
+    //设置终端参数
+    public static T8103 T8103() {
+        T8103 bean = new T8103();
+        bean.setPacketNum(5);
+        ParameterType[] values = ParameterType.values();
+        for (int i = 0; i < 38; i++) {
+            ParameterType p = values[i];
+            switch (p.type) {
+                case BYTE:
+                case WORD:
+                case DWORD:
+                    bean.addParameter(new BytesParameter(p.id, R.nextInt()));
+                default:
+                    bean.addParameter(new BytesParameter(p.id, STR16));
+            }
+        }
+        return bean;
+    }
+
+    //查询终端参数
+    public static T8104 T8104() {
+        T8104 bean = new T8104();
+        return bean;
+    }
+
+
+
+    //查询指定终端参数
+    public static T8106 T8106() {
+        T8106 bean = new T8106();
+        bean.setId(new byte[]{1, 3, 5, 7, 9, 127});
+        return bean;
+    }
+
+
+    //终端控制
+    public static T8105 T8105() {
+        T8105 bean = new T8105();
+        bean.setCommand(123);
+        bean.setParameter("as;123;zxc;123;");
+        return bean;
+    }
+
+    //临时位置跟踪控制
+    public static T8202 T8202() {
+        T8202 bean = new T8202();
+        bean.setInterval(5);
+        bean.setValidityPeriod(600);
+        return bean;
+    }
 }

@@ -11,7 +11,7 @@
             <property name="suppressDate" value="false"/>
         </commentGenerator>
 
-        <jdbcConnection driverClass="org.h2.Driver" connectionURL="jdbc:h2:file:~/.h2/jt;Auto_Server=True;IgnoreCase=True;Mode=MySql" userId="root" password="123@abc"/>
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" connectionURL="jdbc:mysql://101.201.149.34:3306/js_trace" userId="root" password="T!fc!Gqy5T@wLqMA"/>
 
         <javaModelGenerator targetPackage="org.yzh.web.model.entity" targetProject="src\main\java">
             <property name="enableSubPackages" value="true"/>
@@ -25,6 +25,6 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="location" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>
+        <table tableName="js_classrecord_up" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>

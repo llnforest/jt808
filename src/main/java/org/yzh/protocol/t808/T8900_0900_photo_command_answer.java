@@ -12,21 +12,24 @@ import org.yzh.protocol.commons.JT808;
  * @home https://gitee.com/yezhihao/jt808-server
  */
 @Message({JT808.数据上行透传, JT808.数据下行透传})
-public class T8900_0900_search_result_up_answer extends AbstractMessage<Header> {
+public class T8900_0900_photo_command_answer extends AbstractMessage<Header> {
 
 
 
     private int type = 0x13;
-    private int msgId = 0x8303;
+    private int msgId = 0x0301;
     private int msgAttr;
     private int packetNo;
     private int dataLength;
     private String terminalNo;
 
     private int result;
+    private int upMode;
+    private int channelNo;
+    private int photoSize;
 
 
-    public T8900_0900_search_result_up_answer() {
+    public T8900_0900_photo_command_answer() {
     }
 
 
@@ -85,7 +88,7 @@ public class T8900_0900_search_result_up_answer extends AbstractMessage<Header> 
     }
 
 
-    @Field(index = 25, type = DataType.BYTE,desc = "执行结果")
+    @Field(index = 25, type = DataType.BYTE,desc = "上传模式")
     public int getResult() {
         return result;
     }
@@ -94,10 +97,30 @@ public class T8900_0900_search_result_up_answer extends AbstractMessage<Header> 
         this.result = result;
     }
 
+    @Field(index = 26, type = DataType.BYTE,desc = "上传模式")
+    public int getUpMode() {
+        return upMode;
+    }
 
+    public void setUpMode(int upMode) {
+        this.upMode = upMode;
+    }
 
+    @Field(index = 27, type = DataType.BYTE,desc = "摄像头通道号")
+    public int getChannelNo() {
+        return channelNo;
+    }
 
+    public void setChannelNo(int channelNo) {
+        this.channelNo = channelNo;
+    }
 
+    @Field(index = 28, type = DataType.BYTE,desc = "图片尺寸")
+    public int getPhotoSize() {
+        return photoSize;
+    }
 
-
+    public void setPhotoSize(int photoSize) {
+        this.photoSize = photoSize;
+    }
 }
