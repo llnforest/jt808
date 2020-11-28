@@ -35,7 +35,7 @@
     select
     <include refid="Base_Column_List" />
     from js_coach
-    where coachnum = #{coachnum,jdbcType=String}
+    where coachnum = #{coachnum,jdbcType=VARCHAR}
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
