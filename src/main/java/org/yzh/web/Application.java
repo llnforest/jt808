@@ -18,8 +18,8 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         log.info("***Spring 启动成功***");
+        System.out.println("选择发送的消息：0.平台登录 1.平台登出 2.命令上报学时记录 3.立即拍照 4.查询照片 5.上传指定照片 6.设置计时终端应用参数 7.设置禁训状态 8.查询计时终端应用参数 9.设置终端参数 10.查询终端参数 11.查询指定终端参数 12.终端控制 13.临时位置跟踪控制");
         while (true) {
-            System.out.println("选择发送的消息：0.平台登录 1.平台登出 2.命令上报学时记录 3.立即拍照 4.查询照片 5.上传指定照片 6.设置计时终端应用参数 7.设置禁训状态 8.查询计时终端应用参数 9.设置终端参数 10.查询终端参数 11.查询指定终端参数 12.终端控制 13.临时位置跟踪控制");
             while (scanner.hasNext()) {
                 int i = scanner.nextInt();
                 switch (i) {
