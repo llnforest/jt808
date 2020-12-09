@@ -38,11 +38,12 @@ public class BeanMetadata<T> {
         BasicField field = null;
         try {
             target = typeClass.newInstance();
+            log.info("target{}",target);
             for (int i = 0; i < fields.length; i++) {
 
                 field = fields[i];
-//                log.info("field:{}",field);
-//                log.info("buf:{}", ByteBufUtil.hexDump(source));
+                log.info("field:{}",field);
+                log.info("buf:{}", ByteBufUtil.hexDump(source));
 
                 if (!field.readTo(source, target))
                     break;
@@ -53,6 +54,8 @@ public class BeanMetadata<T> {
         }
         if (isEmpty)
             return null;
+        log.info("target{}",target);
+
         return target;
     }
 
