@@ -41,6 +41,8 @@ public class MessageDecoderWrapper extends ByteToMessageDecoder {
         log.info("ByteBuf:{}",buf);
         Session session = channel.attr(Session.KEY).get();
         AbstractMessage message = decoder.decode(buf, session.getProtocolVersion());
+        log.info("message:{}",message);
+
         if (message != null)
             out.add(message);
         buf.skipBytes(buf.readableBytes());

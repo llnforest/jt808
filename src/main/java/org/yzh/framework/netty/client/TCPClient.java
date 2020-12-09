@@ -64,7 +64,10 @@ public class TCPClient {
                                         @Override
                                         protected void encode(ChannelHandlerContext ctx, AbstractMessage msg, ByteBuf out) {
                                             ByteBuf buf = config.encoder.encode(msg);
-                                            log.info("<<<<<发送报文[ip={}],hex={}", ctx.channel().remoteAddress(), ByteBufUtil.hexDump(buf));
+                                            System.out.println("消息");
+                                            log.info("消息{}",msg);
+                                            log.info("ok");
+                                            log.info("<<<<<发送报文111[ip={}],hex={}", ctx.channel().remoteAddress(), ByteBufUtil.hexDump(buf));
                                             out.writeBytes(config.delimiter).writeBytes(buf).writeBytes(config.delimiter);
                                         }
                                     })

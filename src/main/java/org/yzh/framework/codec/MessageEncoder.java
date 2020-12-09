@@ -49,6 +49,8 @@ public abstract class MessageEncoder {
 
         BeanMetadata headMetadata = MessageHelper.getBeanMetadata(header.getClass(), version);
         ByteBuf headerBuf = PooledByteBufAllocator.DEFAULT.heapBuffer(headMetadata.getLength(), 2048);
+        log.info("headerBuf:{}",headerBuf);
+        log.info("header:{}",header);
         headMetadata.encode(headerBuf, header);
         ByteBuf allBuf = Unpooled.wrappedBuffer(headerBuf, bodyBuf);
 

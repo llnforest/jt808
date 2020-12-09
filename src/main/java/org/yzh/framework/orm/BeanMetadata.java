@@ -59,6 +59,7 @@ public class BeanMetadata<T> {
     public void encode(ByteBuf source, Object target) {
         BasicField field = null;
         try {
+            log.info("fields长度:{}",fields.length);
             for (int i = 0; i < fields.length; i++) {
                 field = fields[i];
                 field.writeTo(target, source);

@@ -23,6 +23,7 @@ public class DefaultLoadStrategy extends LoadStrategy {
     private Class<? extends AbstractHeader> headerClass = null;
 
     public DefaultLoadStrategy(String basePackage) {
+        System.out.println(basePackage);
         List<Class<?>> types = ClassUtils.getClassList(basePackage);
         for (Class<?> type : types) {
             Class<?> aClass = getMessageClass(type);
@@ -30,6 +31,8 @@ public class DefaultLoadStrategy extends LoadStrategy {
                 initClass(typeClassMapping, aClass);
             }
         }
+        System.out.println(typeIdMapping);
+        System.out.println(typeClassMapping);
         Introspector.flushCaches();
     }
 
@@ -40,6 +43,7 @@ public class DefaultLoadStrategy extends LoadStrategy {
 
     @Override
     public BeanMetadata getBeanMetadata(Object typeId, int version) {
+        System.out.println(typeIdMapping);
         Class<? extends AbstractMessage> typeClass = typeIdMapping.get(typeId);
         if (typeClass == null)
             return null;
@@ -48,6 +52,8 @@ public class DefaultLoadStrategy extends LoadStrategy {
 
     @Override
     public <T> BeanMetadata<T> getBeanMetadata(Class<T> clazz, int version) {
+        System.out.println(clazz.getName());
+        System.out.println(typeClassMapping);
         Map<Integer, BeanMetadata> beanMetadata = typeClassMapping.get(clazz.getName());
         if (beanMetadata != null)
             return beanMetadata.get(version);
@@ -55,6 +61,7 @@ public class DefaultLoadStrategy extends LoadStrategy {
     }
 
     private Class<?> getMessageClass(Class<?> messageClass) {
+        System.out.println(messageClass);
         Class<?> superclass = messageClass.getSuperclass();
         Class<?> result = null;
         if (superclass != null) {
@@ -63,6 +70,8 @@ public class DefaultLoadStrategy extends LoadStrategy {
                 result = messageClass;
 
                 Message type = messageClass.getAnnotation(Message.class);
+                System.out.println(type);
+
                 if (type != null) {
                     int[] values = type.value();
                     for (int value : values)
