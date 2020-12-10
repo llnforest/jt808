@@ -36,7 +36,7 @@ public class ClientTest {
     public static void main(String[] args) {
         System.out.println(tcpClient);
         while (true) {
-            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报 3.注销 4.上行");
+            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报 3.注销 4.上行 5.上报教练登录");
             while (scanner.hasNext()) {
                 int i = scanner.nextInt();
                 switch (i) {
@@ -59,7 +59,7 @@ public class ClientTest {
                         tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900()));//上行
                         break;
                     case 5:
-                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_coach_login()));//上行
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900_student_login()));//上报学员登录
                         break;
                 }
             }

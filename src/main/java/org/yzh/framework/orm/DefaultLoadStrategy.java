@@ -1,5 +1,8 @@
 package org.yzh.framework.orm;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.yzh.framework.codec.MessageDecoder;
 import org.yzh.framework.commons.ClassUtils;
 import org.yzh.framework.orm.annotation.Message;
 import org.yzh.framework.orm.model.AbstractHeader;
@@ -15,6 +18,8 @@ import java.util.Map;
  * @home https://gitee.com/yezhihao/jt808-server
  */
 public class DefaultLoadStrategy extends LoadStrategy {
+    private static final Logger log = LoggerFactory.getLogger(DefaultLoadStrategy.class.getSimpleName());
+
 
     private Map<String, Map<Integer, BeanMetadata>> typeClassMapping = new HashMap(140);
 
@@ -23,7 +28,7 @@ public class DefaultLoadStrategy extends LoadStrategy {
     private Class<? extends AbstractHeader> headerClass = null;
 
     public DefaultLoadStrategy(String basePackage) {
-        System.out.println(basePackage);
+        log.info("basePackage:{}",basePackage);
         List<Class<?>> types = ClassUtils.getClassList(basePackage);
         for (Class<?> type : types) {
             Class<?> aClass = getMessageClass(type);
@@ -31,8 +36,8 @@ public class DefaultLoadStrategy extends LoadStrategy {
                 initClass(typeClassMapping, aClass);
             }
         }
-        System.out.println(typeIdMapping);
-        System.out.println(typeClassMapping);
+        log.info("typeIdMapping:{}",typeIdMapping);
+        log.info("typeClassMapping:{}",typeClassMapping);
         Introspector.flushCaches();
     }
 
@@ -43,7 +48,7 @@ public class DefaultLoadStrategy extends LoadStrategy {
 
     @Override
     public BeanMetadata getBeanMetadata(Object typeId, int version) {
-        System.out.println(typeIdMapping);
+        log.info("typeIdMapping",typeIdMapping);
         Class<? extends AbstractMessage> typeClass = typeIdMapping.get(typeId);
         if (typeClass == null)
             return null;
@@ -52,8 +57,8 @@ public class DefaultLoadStrategy extends LoadStrategy {
 
     @Override
     public <T> BeanMetadata<T> getBeanMetadata(Class<T> clazz, int version) {
-        System.out.println(clazz.getName());
-        System.out.println(typeClassMapping);
+        log.info("clazz.getName:{}",clazz.getName());
+        log.info("typeClassMapping:{}",typeClassMapping);
         Map<Integer, BeanMetadata> beanMetadata = typeClassMapping.get(clazz.getName());
         if (beanMetadata != null)
             return beanMetadata.get(version);
@@ -61,7 +66,7 @@ public class DefaultLoadStrategy extends LoadStrategy {
     }
 
     private Class<?> getMessageClass(Class<?> messageClass) {
-        System.out.println(messageClass);
+        log.info("messageClass:{}",messageClass);
         Class<?> superclass = messageClass.getSuperclass();
         Class<?> result = null;
         if (superclass != null) {
@@ -70,7 +75,7 @@ public class DefaultLoadStrategy extends LoadStrategy {
                 result = messageClass;
 
                 Message type = messageClass.getAnnotation(Message.class);
-                System.out.println(type);
+                log.info("type:{}",type);
 
                 if (type != null) {
                     int[] values = type.value();

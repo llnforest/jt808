@@ -35,6 +35,8 @@ public interface JT808 {
     int 存储多媒体数据检索应答 = 0x0802;
     int 摄像头立即拍摄命令应答 = 0x0805;
     int 数据上行透传 = 0x0900;
+
+
     int 数据压缩上报 = 0x0901;
     int 终端RSA公钥 = 0x0A00;
 

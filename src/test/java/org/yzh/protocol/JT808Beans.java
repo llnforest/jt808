@@ -39,7 +39,6 @@ public class JT808Beans {
         header.setEncryption(0);
         header.setReserved(false);
         message.setHeader(header);
-
         return message;
     }
 
@@ -102,12 +101,26 @@ public class JT808Beans {
         return bean;
     }
 
+    //上报学员登录
+    public static T8900_0900_student_login T8900_0900_student_login(){
+        T8900_0900_student_login bean = new T8900_0900_student_login();
+        bean.setStudentNo("xueyuan001");
+        bean.setCoachNo("jiaolian001");
+        bean.setClassName("21000");
+        bean.setClassId("55");
+        return bean;
+
+    }
+
+
     //终端鉴权
     public static T0102 T0102_2013() {
         T0102 bean = new T0102();
         bean.setToken("pmYGzGukO8K4Z5lpIOTg8dqb3eprYaHBbXSPLtdbyG8=");
         return bean;
     }
+
+
 
     public static T0102 T0102_2019() {
         T0102 bean = new T0102();

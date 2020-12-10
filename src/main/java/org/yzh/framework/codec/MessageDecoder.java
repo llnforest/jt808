@@ -3,6 +3,7 @@ package org.yzh.framework.codec;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
+import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yzh.framework.orm.BeanMetadata;
@@ -11,6 +12,7 @@ import org.yzh.framework.orm.model.AbstractHeader;
 import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.orm.model.RawMessage;
 import org.yzh.framework.session.SessionManager;
+import org.yzh.protocol.codec.JTMessageDecoder;
 
 /**
  * 基础消息解码
@@ -58,12 +60,13 @@ public abstract class MessageDecoder {
 
         AbstractHeader header = headMetadata.decode(buf);
         log.info("header:{}",header);
-        if (header.isVersion()) {
-            buf.readerIndex(readerIndex);
-            headMetadata = MessageHelper.getBeanMetadata(headerClass, 0);
-            header = headMetadata.decode(buf);
-            version = header.getVersionNo();
-        }
+        //如果头部有版本
+//        if (header.isVersion()) {
+//            buf.readerIndex(readerIndex);
+//            headMetadata = MessageHelper.getBeanMetadata(headerClass, 0);
+//            header = headMetadata.decode(buf);
+//            version = header.getVersionNo();
+//        }
         header.setVerified(verified);
 
         if (sessionManager != null) {
@@ -74,15 +77,17 @@ public abstract class MessageDecoder {
         }
 
         AbstractMessage message;
-        BeanMetadata<? extends AbstractMessage> bodyMetadata = MessageHelper.getBeanMetadata(header.getMessageId(), version);
-        if (bodyMetadata != null) {
+        if(header.getMessageId() == 2304){
 
-            int headLen = header.getHeadLength();
-            log.info("消息头长度:{}",headLen);
-            int bodyLen = header.getBodyLength();
+        }
 
-            if (header.isSubpackage()) {
+        int headLen = header.getHeadLength();
+        log.info("消息头长度:{}",headLen);
+        int bodyLen = header.getBodyLength();
 
+        if (header.isSubpackage()) {
+            BeanMetadata<? extends AbstractMessage> bodyMetadata = MessageHelper.getBeanMetadata(header.getMessageId(), version);
+            if(bodyMetadata != null){
                 byte[] bytes = new byte[bodyLen];
                 buf.readBytes(bytes);
 
@@ -93,16 +98,31 @@ public abstract class MessageDecoder {
                 ByteBuf bodyBuf = Unpooled.wrappedBuffer(packages);
                 message = bodyMetadata.decode(bodyBuf);
 
-            } else {
-                log.info("消息体buf:{}",ByteBufUtil.hexDump(buf));
-                buf.readerIndex(headLen-1);
-                log.info("消息体buf:{}",ByteBufUtil.hexDump(buf));
-                message = bodyMetadata.decode(buf);
+            }else{
+                message = new RawMessage<>();
+                log.info("未找到对应的BeanMetadata[{}]", header);
             }
+
         } else {
-            message = new RawMessage<>();
-            log.info("未找到对应的BeanMetadata[{}]", header);
+            log.info("消息体buf:{}",ByteBufUtil.hexDump(buf));
+
+            buf.readerIndex(headLen-1);
+            if(header.getMessageId() == 2304){
+                String hex = "0201";
+                Integer a = Integer.parseInt(hex,16);
+                log.info("a:{}",a);
+            }
+            BeanMetadata<? extends AbstractMessage> bodyMetadata = MessageHelper.getBeanMetadata(header.getMessageId(), version);
+            if(bodyMetadata != null) {
+                log.info("消息体buf:{}", ByteBufUtil.hexDump(buf));
+                message = bodyMetadata.decode(buf);
+            }else{
+                message = new RawMessage<>();
+                log.info("未找到对应的BeanMetadata[{}]", header);
+            }
         }
+
+
 
         message.setHeader(header);
         return message;

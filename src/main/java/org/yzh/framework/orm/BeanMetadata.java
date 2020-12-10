@@ -54,7 +54,7 @@ public class BeanMetadata<T> {
         }
         if (isEmpty)
             return null;
-        log.info("target{}",target);
+        log.info("target:{}",target);
 
         return target;
     }
