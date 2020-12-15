@@ -23,7 +23,7 @@ public class T8804 extends AbstractMessage<Header> {
     }
 
     public T8804(String mobileNo) {
-        super(new Header(mobileNo, JT808.录音开始命令));
+        super(new Header(mobileNo, Integer.parseInt(JT808.录音开始命令.substring(2),16)));
     }
 
     /** 0：停止录音；1：开始录音 */

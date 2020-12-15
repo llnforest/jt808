@@ -27,7 +27,7 @@ public class T8803 extends AbstractMessage<Header> {
     }
 
     public T8803(String mobileNo) {
-        super(new Header(mobileNo, JT808.存储多媒体数据上传));
+        super(new Header(mobileNo, Integer.parseInt(JT808.存储多媒体数据上传.substring(2),16)));
     }
 
     @Field(index = 0, type = DataType.BYTE, desc = "多媒体类型:0.图像；1.音频；2.视频；")

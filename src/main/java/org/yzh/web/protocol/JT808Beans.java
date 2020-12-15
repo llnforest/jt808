@@ -31,8 +31,15 @@ public class JT808Beans {
     public static AbstractMessage H2013(AbstractMessage message) {
         Header header = new Header();
         Message type = message.getClass().getAnnotation(Message.class);
-        if (type != null)
-            header.setMessageId(type.value()[0]);
+        if (type != null){
+            if(type.value()[0].indexOf("_")  > -1){
+                String[] value = type.value()[0].split("_");
+                header.setMessageId(Integer.parseInt(value[0].substring(2),16));
+
+            }else{
+                header.setMessageId(Integer.parseInt(type.value()[0].substring(2),16));
+            }
+        }
         header.setMobileNo("122345678901");
         header.setSerialNo((int) Short.MAX_VALUE);
         header.setEncryption(0);
@@ -46,8 +53,15 @@ public class JT808Beans {
     public static AbstractMessage H2019(AbstractMessage message) {
         Header header = new Header();
         Message type = message.getClass().getAnnotation(Message.class);
-        if (type != null)
-            header.setMessageId(type.value()[0]);
+        if (type != null){
+            if(type.value()[0].indexOf("_")  > -1){
+                String[] value = type.value()[0].split("_");
+                header.setMessageId(Integer.parseInt(value[0].substring(2),16));
+
+            }else{
+                header.setMessageId(Integer.parseInt(type.value()[0].substring(2),16));
+            }
+        }
         header.setVersionNo(1);
         header.setMobileNo("17299841738");
         header.setSerialNo(65535);

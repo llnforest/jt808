@@ -1,5 +1,6 @@
 package org.yzh.protocol.t808;
 
+import io.swagger.models.auth.In;
 import org.yzh.framework.orm.annotation.Field;
 import org.yzh.framework.orm.annotation.Message;
 import org.yzh.framework.orm.model.AbstractMessage;
@@ -22,7 +23,7 @@ public class T8304 extends AbstractMessage<Header> {
     }
 
     public T8304(String mobileNo) {
-        super(new Header(mobileNo, JT808.信息服务));
+        super(new Header(mobileNo, Integer.parseInt(JT808.信息服务.substring(2),16)));
     }
 
     @Field(index = 0, type = DataType.BYTE, desc = "信息类型")

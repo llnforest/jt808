@@ -11,13 +11,13 @@ import org.yzh.protocol.commons.JT808;
  * @author yezhihao
  * @home https://gitee.com/yezhihao/jt808-server
  */
-@Message({JT808.数据上行透传, JT808.数据下行透传})
+@Message({JT808.命令上报学时记录应答})
 public class T8900_0900_time_up_command_answer extends AbstractMessage<Header> {
 
 
 
     private int type = 0x13;
-    private int msgId = 0x8202;
+    private int msgId = 0x0205;
     private int msgAttr;
     private int packetNo;
     private int dataLength;

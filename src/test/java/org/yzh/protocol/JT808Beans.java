@@ -1,5 +1,7 @@
 package org.yzh.protocol;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yzh.framework.commons.transform.Bin;
 import org.yzh.framework.orm.annotation.Message;
 import org.yzh.framework.orm.model.AbstractMessage;
@@ -13,6 +15,7 @@ import org.yzh.protocol.commons.transform.Attribute;
 import org.yzh.protocol.commons.transform.ParameterType;
 import org.yzh.protocol.commons.transform.attribute.*;
 import org.yzh.protocol.t808.*;
+import org.yzh.web.endpoint.JT808Endpoint;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -23,6 +26,7 @@ import java.util.*;
  * @home https://gitee.com/yezhihao/jt808-server
  */
 public class JT808Beans {
+    private static final Logger log = LoggerFactory.getLogger(JT808Beans.class.getSimpleName());
 
     private static final LocalDateTime TIME = LocalDateTime.of(2020, 7, 7, 19, 23, 59);
     private static final String STR16 = "O8gYkVE6kfz8ec6Y";
@@ -32,8 +36,15 @@ public class JT808Beans {
     public static AbstractMessage H2013(AbstractMessage message) {
         Header header = new Header();
         Message type = message.getClass().getAnnotation(Message.class);
-        if (type != null)
-            header.setMessageId(type.value()[0]);
+        if (type != null){
+            if(type.value()[0].indexOf("_")  > -1){
+                String[] value = type.value()[0].split("_");
+                header.setMessageId(Integer.parseInt(value[0].substring(2),16));
+
+            }else{
+                header.setMessageId(Integer.parseInt(type.value()[0].substring(2),16));
+            }
+        }
         header.setMobileNo("122345678901");
         header.setSerialNo((int) Short.MAX_VALUE);
         header.setEncryption(0);
@@ -46,8 +57,15 @@ public class JT808Beans {
     public static AbstractMessage H2019(AbstractMessage message) {
         Header header = new Header();
         Message type = message.getClass().getAnnotation(Message.class);
-        if (type != null)
-            header.setMessageId(type.value()[0]);
+        if (type != null){
+            if(type.value()[0].indexOf("_")  > -1){
+                String[] value = type.value()[0].split("_");
+                header.setMessageId(Integer.parseInt(value[0].substring(2),16));
+
+            }else{
+                header.setMessageId(Integer.parseInt(type.value()[0].substring(2),16));
+            }
+        }
         header.setVersionNo(0);
         header.setMobileNo("17299841738");
         header.setSerialNo(65535);
@@ -55,6 +73,7 @@ public class JT808Beans {
         header.setVersion(true);
         header.setReserved(false);
         message.setHeader(header);
+
         return message;
     }
 
@@ -107,7 +126,7 @@ public class JT808Beans {
         bean.setStudentNo("xueyuan001");
         bean.setCoachNo("jiaolian001");
         bean.setClassName("21000");
-        bean.setClassId("55");
+        bean.setClassId(55);
         return bean;
 
     }

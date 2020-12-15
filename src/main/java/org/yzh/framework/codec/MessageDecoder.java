@@ -77,12 +77,8 @@ public abstract class MessageDecoder {
         }
 
         AbstractMessage message;
-        if(header.getMessageId() == 2304){
-
-        }
 
         int headLen = header.getHeadLength();
-        log.info("消息头长度:{}",headLen);
         int bodyLen = header.getBodyLength();
 
         if (header.isSubpackage()) {
@@ -104,18 +100,19 @@ public abstract class MessageDecoder {
             }
 
         } else {
-            log.info("消息体buf:{}",ByteBufUtil.hexDump(buf));
 
             buf.readerIndex(headLen-1);
-            if(header.getMessageId() == 2304){
-                String hex = "0201";
-                Integer a = Integer.parseInt(hex,16);
-                log.info("a:{}",a);
+            String value= Integer.toHexString(header.getMessageId());
+            String messageId = "0x"+String.format("%04d",Integer.parseInt(value));
+            if(header.getMessageId() == 2304 || header.getMessageId() == 35072){
+                messageId = "0x0900_0x"+ByteBufUtil.hexDump(buf).substring(2,6);
             }
-            BeanMetadata<? extends AbstractMessage> bodyMetadata = MessageHelper.getBeanMetadata(header.getMessageId(), version);
+            BeanMetadata<? extends AbstractMessage> bodyMetadata = MessageHelper.getBeanMetadata(messageId, version);
             if(bodyMetadata != null) {
-                log.info("消息体buf:{}", ByteBufUtil.hexDump(buf));
                 message = bodyMetadata.decode(buf);
+                if(header.getMessageId() == 2304 || header.getMessageId() == 35072){
+                    message.setTypeId(messageId);
+                }
             }else{
                 message = new RawMessage<>();
                 log.info("未找到对应的BeanMetadata[{}]", header);

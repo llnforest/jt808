@@ -37,7 +37,7 @@ public class T8100 extends AbstractMessage<Header> {
     }
 
     public T8100(int serialNo, String mobileNo) {
-        super(new Header(JT808.终端注册应答, serialNo, mobileNo));
+        super(new Header(Integer.parseInt(JT808.终端注册应答.substring(2),16), serialNo, mobileNo));
     }
 
     /** 对应的终端注册消息的流水号 */

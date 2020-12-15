@@ -9,5 +9,6 @@ import org.yzh.framework.mvc.handler.Handler;
 public interface HandlerMapping {
 
     Handler getHandler(int messageId);
+    Handler getHandler(String messageId);
 
 }

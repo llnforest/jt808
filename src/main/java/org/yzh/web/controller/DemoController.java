@@ -75,20 +75,20 @@ public class DemoController {
 
     }
 
-    @ApiOperation(value = "获得通用应答")
-    @GetMapping("res/common")
-    public void getCommonRes(){
-        T0001 request = new T0001("19156017290",1);
-        request.setResultCode(0);
-        request.setSerialNo(0);
-        request.setReplyId(JT808.终端通用应答);
-//        T0001 response = messageManager.request(request, T0001.class);
-//        T0001 response = messageManager.response(request);
-        ByteBuf byteBuf = messageEncoder.encode(request);
-        log.info("111");
-        log.info(ByteBufUtil.hexDump(byteBuf));
-//        log.info(byteBuf);
-    }
+//    @ApiOperation(value = "获得通用应答")
+//    @GetMapping("res/common")
+//    public void getCommonRes(){
+//        T0001 request = new T0001("19156017290",1);
+//        request.setResultCode(0);
+//        request.setSerialNo(0);
+//        request.setReplyId(JT808.终端通用应答);
+////        T0001 response = messageManager.request(request, T0001.class);
+////        T0001 response = messageManager.response(request);
+//        ByteBuf byteBuf = messageEncoder.encode(request);
+//        log.info("111");
+//        log.info(ByteBufUtil.hexDump(byteBuf));
+////        log.info(byteBuf);
+//    }
 
     @ApiOperation(value = "获得编码")
     @GetMapping("res/encode")

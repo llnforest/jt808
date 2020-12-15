@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class HandlerMapping {
 
-    private Map<Integer, Handler> handlerMap = new HashMap(55);
+    private Map<String, Handler> handlerMap = new HashMap(55);
 
     public HandlerMapping(String... packageNames) {
         for (String packageName : packageNames) {
@@ -29,9 +29,9 @@ public class HandlerMapping {
                     if (method.isAnnotationPresent(Mapping.class)) {
                         Mapping annotation = method.getAnnotation(Mapping.class);
                         String desc = annotation.desc();
-                        int[] types = annotation.types();
+                        String[] types = annotation.types();
                         Handler value = new Handler(newInstance(handlerClass), method, desc);
-                        for (int type : types) {
+                        for (String type : types) {
                             handlerMap.put(type, value);
                         }
                     }
@@ -49,7 +49,9 @@ public class HandlerMapping {
     }
 
     public Handler getHandler(Integer key) {
-        return handlerMap.get(key);
+        String value= Integer.toHexString(key);
+        value = String.format("%04d",Integer.parseInt(value));
+        return handlerMap.get("0x"+value);
     }
 
 }

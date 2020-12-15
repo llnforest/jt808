@@ -126,147 +126,144 @@ public class JT808Endpoint {
         return result;
     }
 
-//    @Mapping(types = 数据上行透传, desc = "上报教练员登出")
-//    public T8900_0900_coach_logout_answer 上报教练员登录(T8900_0900_coach_logout request, Session session) {
-//        Header header = request.getHeader();
-//        CoachService service = (CoachService) BeanHelper.getBean("coachServiceImpl");
+    @Mapping(types = 上报教练员登出, desc = "上报教练员登出")
+    public T8900_0900_coach_logout_answer 上报教练员登录(T8900_0900_coach_logout request, Session session) {
+        Header header = request.getHeader();
+        CoachService service = (CoachService) BeanHelper.getBean("coachServiceImpl");
+
+        int loginResult = service.coachLogout(request);
+
+        T8900_0900_coach_logout_answer result = new T8900_0900_coach_logout_answer();
+        result.setLoginResult(loginResult);
+        result.setCoachNo(request.getCoachNo());
+        return result;
+    }
 //
-//        int loginResult = service.coachLogout(request);
-//
-//        T8900_0900_coach_logout_answer result = new T8900_0900_coach_logout_answer();
-//        result.setLoginResult(loginResult);
-//        result.setCoachNo(request.getCoachNo());
-//        return result;
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "上报学员登录")
-//    public T8900_0900_student_login_answer 上报学员登录(T8900_0900_student_login request, Session session) {
+    @Mapping(types = 上报学员登录, desc = "上报学员登录")
+    public T8900_0900_student_login_answer 上报学员登录(T8900_0900_student_login request, Session session) {
+        log.info("进入:{}",request);
+        log.info(request.getStudentNo());
+        return null;
 //        Header header = request.getHeader();
 //        StudentService service = (StudentService) BeanHelper.getBean("studentServiceImpl");
 //
 //        T8900_0900_student_login_answer result = service.studentLogin(request);
 //        return result;
-//    }
+    }
 //
-//    @Mapping(types = 数据上行透传, desc = "上报学员登出")
-//    public T8900_0900_student_logout_answer 上报学员登出(T8900_0900_student_logout request, Session session) {
-//        Header header = request.getHeader();
-//        StudentService service = (StudentService) BeanHelper.getBean("studentServiceImpl");
+    @Mapping(types = 上报学员登出, desc = "上报学员登出")
+    public T8900_0900_student_logout_answer 上报学员登出(T8900_0900_student_logout request, Session session) {
+        Header header = request.getHeader();
+        StudentService service = (StudentService) BeanHelper.getBean("studentServiceImpl");
+
+        T8900_0900_student_logout_answer result = service.studentLogout(request);
+        return result;
+    }
 //
-//        T8900_0900_student_logout_answer result = service.studentLogout(request);
-//        return result;
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "上报学员登出")
-//    public void 上报学员登出(T8900_0900_time_up request, Session session) {
-//        Header header = request.getHeader();
-//        ClassRecordUpService service = (ClassRecordUpService) BeanHelper.getBean("classRecordUpServiceImpl");
-//
-//        JsClassrecordUp result = service.addRecord(request);
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "命令上报学时记录应答")
-//    public void 命令上报学时记录应答(T8900_0900_time_up_command_answer request, Session session) {
-//        Header header = request.getHeader();
-//
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "立即拍照应答")
-//    public void 立即拍照应答(T8900_0900_photo_command_answer request, Session session) {
-//        Header header = request.getHeader();
-//        request.getChannelNo();
-//        request.getResult();
-//        request.getPhotoSize();
-//        request.getUpMode();
-//
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "上报照片查询结果")
-//    public T8900_0900_photo_search_result_up_answer 上报照片查询结果(T8900_0900_photo_search_result_up request, Session session) {
-//        Header header = request.getHeader();
-//        request.getIsUp();
-//        request.getNeedNum();
-//        request.getTotalNum();
-//        request.getPhotoNum();
-//        T8900_0900_photo_search_result_up_answer answer = new T8900_0900_photo_search_result_up_answer();
-//        answer.setResult(1);
-//        return answer;//0：默认应答；1：停止上报，终端收到“停止上报”应答后则停止查询结果的上报；9：其他错误
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "查询照片结果应答")
-//    public void 查询照片结果应答(T8900_0900_photo_search_command_answer request, Session session) {
-//        Header header = request.getHeader();
-//        request.getResult();
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "上传指定照片应答")
-//    public void 上传指定照片应答(T8900_0900_photo_up_only_answer request, Session session) {
-//        Header header = request.getHeader();
-//        request.getResult();
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "照片上传初始化")
-//    public T8900_0900_photo_up_init_answer 照片上传初始化(T8900_0900_photo_up_init request, Session session) {
-//        Header header = request.getHeader();
-//        request.getPhotoNum();
-//
-//        T8900_0900_photo_up_init_answer  answer = new T8900_0900_photo_up_init_answer();
-//        answer.setResult(0);
-//        return answer;
-//
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "上传照片数据包")
-//    public void 上传照片数据包(T8900_0900_photo_up_data request, Session session) {
-//        Header header = request.getHeader();
-//        request.getPhotoNum();
-//        request.getPhotoData();//照片数据
-//
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "设置计时终端应用参数应答")
-//    public void 设置计时终端应用参数应答(T8900_0900_terminal_set_answer request, Session session) {
-//        Header header = request.getHeader();
-//        request.getResult();
-//
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "设置禁训状态应答")
-//    public void 设置禁训状态应答(T8900_0900_terminal_status_answer request, Session session) {
-//        Header header = request.getHeader();
-//        request.getResult();
-//        request.getStatus();
-//
-//    }
-//
-//    @Mapping(types = 数据上行透传, desc = "查询计时终端应用参数应答")
-//    public void 查询计时终端应用参数应答(T8900_0900_terminal_param_search_answer request, Session session) {
-//        Header header = request.getHeader();
-//        request.getResult();
-//
-//    }
+    @Mapping(types = 上报学时记录, desc = "上报学时记录")
+    public void 上报学时记录(T8900_0900_time_up request, Session session) {
+        Header header = request.getHeader();
+        ClassRecordUpService service = (ClassRecordUpService) BeanHelper.getBean("classRecordUpServiceImpl");
+
+        JsClassrecordUp result = service.addRecord(request);
+    }
+
+    @Mapping(types = 命令上报学时记录应答, desc = "命令上报学时记录应答")
+    public void 命令上报学时记录应答(T8900_0900_time_up_command_answer request, Session session) {
+        Header header = request.getHeader();
+
+    }
+
+    @Mapping(types = 立即拍照应答, desc = "立即拍照应答")
+    public void 立即拍照应答(T8900_0900_photo_command_answer request, Session session) {
+        Header header = request.getHeader();
+        request.getChannelNo();
+        request.getResult();
+        request.getPhotoSize();
+        request.getUpMode();
+
+    }
+
+    @Mapping(types = 上报照片查询结果, desc = "上报照片查询结果")
+    public T8900_0900_photo_search_result_up_answer 上报照片查询结果(T8900_0900_photo_search_result_up request, Session session) {
+        Header header = request.getHeader();
+        request.getIsUp();
+        request.getNeedNum();
+        request.getTotalNum();
+        request.getPhotoNum();
+        T8900_0900_photo_search_result_up_answer answer = new T8900_0900_photo_search_result_up_answer();
+        answer.setResult(1);
+        return answer;//0：默认应答；1：停止上报，终端收到“停止上报”应答后则停止查询结果的上报；9：其他错误
+    }
+
+    @Mapping(types = 上传指定照片应答, desc = "上传指定照片应答")
+    public void 上传指定照片应答(T8900_0900_photo_up_only_answer request, Session session) {
+        Header header = request.getHeader();
+        request.getResult();
+    }
+
+    @Mapping(types = 照片上传初始化, desc = "照片上传初始化")
+    public T8900_0900_photo_up_init_answer 照片上传初始化(T8900_0900_photo_up_init request, Session session) {
+        Header header = request.getHeader();
+        request.getPhotoNum();
+
+        T8900_0900_photo_up_init_answer  answer = new T8900_0900_photo_up_init_answer();
+        answer.setResult(0);
+        return answer;
+
+    }
+
+    @Mapping(types = 照片上传数据包, desc = "照片上传数据包")
+    public void 上传照片数据包(T8900_0900_photo_up_data request, Session session) {
+        Header header = request.getHeader();
+        request.getPhotoNum();
+        request.getPhotoData();//照片数据
+
+    }
+
+    @Mapping(types = 设置计时终端应用参数应答, desc = "设置计时终端应用参数应答")
+    public void 设置计时终端应用参数应答(T8900_0900_terminal_set_answer request, Session session) {
+        Header header = request.getHeader();
+        request.getResult();
+
+    }
+
+    @Mapping(types = 设置禁训状态应答, desc = "设置禁训状态应答")
+    public void 设置禁训状态应答(T8900_0900_terminal_status_answer request, Session session) {
+        Header header = request.getHeader();
+        request.getResult();
+        request.getStatus();
+
+    }
+
+    @Mapping(types = 查询计时终端应用参数应答, desc = "查询计时终端应用参数应答")
+    public void 查询计时终端应用参数应答(T8900_0900_terminal_param_search_answer request, Session session) {
+        Header header = request.getHeader();
+        request.getResult();
+
+    }
     //--------------------------------
 
 
 
-//    @Mapping(types = 数据上行透传, desc = "数据上行透传")
-//    public T8900_0900 数据上行透传(T8900_0900 request, Session session) {
-//        Header header = request.getHeader();
-//        log.info("type：{}",request.getType());
-//        T8900_0900_content content = request.getContent();
-//        int msgId = content.getMsgId();
-//        if(msgId == 257){
-//            T8900_0900_coach_up t8900_0900_coach_up = content.getT8900_0900_coach_up();
-//            log.info("教练编号：{}",t8900_0900_coach_up.getCoachNo());
-//            log.info("身份证号：{}",t8900_0900_coach_up.getCoachIdentity());
-//            log.info("车型：{}",t8900_0900_coach_up.getCoachType());
-//            T0200 t0200 = t8900_0900_coach_up.getT0200();
-//            log.info("行驶速度：{}",t0200.getDriveSpeed());
-//        }
-//        log.info("msgId：{}",content.getMsgId());
-//        log.info("terminalNo:{}",content.getTerminalNo());
-//        return null;
-//    }
+    @Mapping(types = 数据上行透传, desc = "数据上行透传")
+    public T8900_0900 数据上行透传(T8900_0900 request, Session session) {
+        Header header = request.getHeader();
+        log.info("type：{}",request.getType());
+        T8900_0900_content content = request.getContent();
+        int msgId = content.getMsgId();
+        if(msgId == 257){
+            T8900_0900_coach_up t8900_0900_coach_up = content.getT8900_0900_coach_up();
+            log.info("教练编号：{}",t8900_0900_coach_up.getCoachNo());
+            log.info("身份证号：{}",t8900_0900_coach_up.getCoachIdentity());
+            log.info("车型：{}",t8900_0900_coach_up.getCoachType());
+            T0200 t0200 = t8900_0900_coach_up.getT0200();
+            log.info("行驶速度：{}",t0200.getDriveSpeed());
+        }
+        log.info("msgId：{}",content.getMsgId());
+        log.info("terminalNo:{}",content.getTerminalNo());
+        return null;
+    }
 
 
 
@@ -345,7 +342,7 @@ public class JT808Endpoint {
     @Mapping(types = 查询服务器时间, desc = "查询服务器时间")
     public T8004 查询服务器时间(Header header, Session session) {
         T8004 result = new T8004(DateUtils.yyMMddHHmmss.format(new Date(System.currentTimeMillis() + 50)));
-        result.setHeader(new Header(查询服务器时间应答, session.nextSerialNo(), header.getClientId()));
+        result.setHeader(new Header(Integer.parseInt(查询服务器时间应答.substring(2),16), session.nextSerialNo(), header.getClientId()));
         return result;
     }
 
@@ -445,7 +442,7 @@ public class JT808Endpoint {
         fos.write(packet);
         fos.close();
         T8800 result = new T8800();
-        result.setHeader(new Header(平台通用应答, session.nextSerialNo(), header.getMobileNo()));
+        result.setHeader(new Header(Integer.parseInt(平台通用应答.substring(2),16), session.nextSerialNo(), header.getMobileNo()));
         result.setMediaId(1);
         return result;
     }
@@ -466,10 +463,6 @@ public class JT808Endpoint {
         messageManager.response(message);
     }
 
-//    @Mapping(types = 数据上行透传, desc = "数据上行透传")
-//    public void passthrough(T8900_0900 message, Session session) {
-//        Header header = message.getHeader();
-//    }
 
     @Mapping(types = 数据压缩上报, desc = "数据压缩上报")
     public void gzipPack(T0901 message, Session session) {

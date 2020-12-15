@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface Message {
 
-    int[] value() default {};
+    String[] value() default {};
 
     String desc() default "";
 

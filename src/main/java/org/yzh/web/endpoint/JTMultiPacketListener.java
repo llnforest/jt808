@@ -25,7 +25,7 @@ public class JTMultiPacketListener extends MultiPacketListener {
         if (retryCount > 5)
             return false;
 
-        T8003 request = new T8003(new Header(JT808.服务器补传分包请求, multiPacket.getClientId()));
+        T8003 request = new T8003(new Header(Integer.parseInt(JT808.服务器补传分包请求.substring(2),16), multiPacket.getClientId()));
         request.setSerialNo(multiPacket.getSerialNo());
         List<Integer> notArrived = multiPacket.getNotArrived();
         byte[] items = new byte[notArrived.size()];

@@ -47,8 +47,6 @@ public abstract class BasicField<T> implements Comparable<BasicField> {
             return false;
         Object value = readValue(buf, length);
 
-        log.info("length:{}",length);
-        log.info("value:{}",value);
         writeMethod.invoke(target, value);
         return true;
     }

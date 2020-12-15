@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface Mapping {
 
-    int[] types();
+    String[] types();
     String desc() default "";
 
 }

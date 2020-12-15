@@ -21,7 +21,7 @@ public class T8805 extends AbstractMessage<Header> {
     }
 
     public T8805(String clientId, int id, int delete) {
-        super(new Header(clientId, JT808.单条存储多媒体数据检索上传命令));
+        super(new Header(clientId, Integer.parseInt(JT808.单条存储多媒体数据检索上传命令.substring(2),16)));
         this.id = id;
         this.delete = delete;
     }

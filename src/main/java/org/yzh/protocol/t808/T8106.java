@@ -21,7 +21,7 @@ public class T8106 extends AbstractMessage<Header> {
     }
 
     public T8106(String mobileNo, byte... id) {
-        super(new Header(mobileNo, JT808.查询指定终端参数));
+        super(new Header(mobileNo, Integer.parseInt(JT808.查询指定终端参数.substring(2),16)));
         this.id = id;
         this.total = id.length;
     }

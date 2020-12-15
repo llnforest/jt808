@@ -26,7 +26,7 @@ public class T8400 extends AbstractMessage<Header> {
     }
 
     public T8400(String clientId, int type, String mobileNo) {
-        super(new Header(clientId, JT808.电话回拨));
+        super(new Header(clientId, Integer.parseInt(JT808.电话回拨.substring(2),16)));
         this.type = type;
         this.mobileNo = mobileNo;
     }

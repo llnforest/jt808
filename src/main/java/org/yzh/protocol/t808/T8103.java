@@ -28,7 +28,7 @@ public class T8103 extends AbstractMessage<Header> {
     }
 
     public T8103(String mobileNo) {
-        super(new Header(mobileNo, JT808.设置终端参数));
+        super(new Header(mobileNo, Integer.parseInt(JT808.设置终端参数.substring(2),16)));
     }
 
     @Field(index = 0, type = DataType.BYTE, desc = "参数总数")

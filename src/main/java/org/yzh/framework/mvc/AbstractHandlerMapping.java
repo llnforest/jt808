@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public abstract class AbstractHandlerMapping implements HandlerMapping {
 
-    private final Map<Integer, Handler> handlerMap = new HashMap(60);
+    private final Map<String, Handler> handlerMap = new HashMap(60);
 
     protected synchronized void registerHandlers(Object bean) {
         Class<?> beanClass = bean.getClass();
@@ -30,7 +30,7 @@ public abstract class AbstractHandlerMapping implements HandlerMapping {
             if (mapping != null) {
 
                 String desc = mapping.desc();
-                int[] types = mapping.types();
+                String[] types = mapping.types();
 
                 AsyncBatch asyncBatch = method.getAnnotation(AsyncBatch.class);
                 Handler handler;
@@ -42,7 +42,7 @@ public abstract class AbstractHandlerMapping implements HandlerMapping {
                     handler = new SimpleHandler(bean, method, desc);
                 }
 
-                for (int type : types) {
+                for (String type : types) {
                     handlerMap.put(type, handler);
                 }
             }
@@ -50,6 +50,12 @@ public abstract class AbstractHandlerMapping implements HandlerMapping {
     }
 
     public Handler getHandler(int messageId) {
+        String value= Integer.toHexString(messageId);
+        value = String.format("%04d",Integer.parseInt(value));
+        return handlerMap.get("0x"+value);
+    }
+
+    public Handler getHandler(String messageId) {
         return handlerMap.get(messageId);
     }
 }

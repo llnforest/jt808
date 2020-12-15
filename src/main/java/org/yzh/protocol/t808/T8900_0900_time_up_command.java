@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @author yezhihao
  * @home https://gitee.com/yezhihao/jt808-server
  */
-@Message({JT808.数据上行透传, JT808.数据下行透传})
+@Message({JT808.命令上报学时记录})
 public class T8900_0900_time_up_command extends AbstractMessage<Header> {
 
 

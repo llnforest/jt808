@@ -26,7 +26,7 @@ public class T8608 extends AbstractMessage<Header> {
     }
 
     public T8608(String mobileNo) {
-        super(new Header(mobileNo, JT808.查询区域或线路数据));
+        super(new Header(mobileNo, Integer.parseInt(JT808.查询区域或线路数据.substring(2),16)));
     }
 
     @Field(index = 0, type = DataType.BYTE, desc = "查询类型")

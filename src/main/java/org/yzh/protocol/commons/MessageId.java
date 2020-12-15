@@ -3,8 +3,6 @@ package org.yzh.protocol.commons;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.yzh.protocol.commons.JSATL12.*;
-import static org.yzh.protocol.commons.JT1078.*;
 import static org.yzh.protocol.commons.JT808.*;
 
 /**
@@ -13,10 +11,12 @@ import static org.yzh.protocol.commons.JT808.*;
  */
 public class MessageId {
 
-    private static final Map<Integer, String> messageId = new HashMap<>(81);
+    private static final Map<String, String> messageId = new HashMap<>(81);
 
     public static String get(int id) {
-        String name = messageId.get(id);
+        String value= Integer.toHexString(id);
+        value = String.format("%04d",Integer.parseInt(value));
+        String name = messageId.get("0x"+value);
         if (name != null)
             return name;
         return "0x" + Integer.toHexString(id);
@@ -50,6 +50,38 @@ public class MessageId {
         messageId.put(存储多媒体数据检索应答, "存储多媒体数据检索应答");
         messageId.put(摄像头立即拍摄命令应答, "摄像头立即拍摄命令应答");
         messageId.put(数据上行透传, "数据上行透传");
+        messageId.put(数据下行透传, "数据下行透传");
+
+        messageId.put(上报教练员登录,"上报教练员登录");
+        messageId.put(教练员登录应答,"教练员登录应答");
+        messageId.put(上报教练员登出,"上报教练员登出");
+        messageId.put(教练员登出应答,"教练员登出应答");
+        messageId.put(上报学员登录,"上报学员登录");
+        messageId.put(学员登录应答,"学员登录应答");
+        messageId.put(上报学员登出,"上报学员登出");
+        messageId.put(学员登出应答,"学员登出应答");
+        messageId.put(上报学时记录,"上报学时记录");
+        messageId.put(命令上报学时记录,"命令上报学时记录");
+        messageId.put(命令上报学时记录应答,"命令上报学时记录应答");
+        messageId.put(立即拍照,"立即拍照");
+        messageId.put(立即拍照应答,"立即拍照应答");
+        messageId.put(查询照片,"查询照片");
+        messageId.put(查询照片应答,"查询照片应答");
+        messageId.put(上报照片查询结果,"上报照片查询结果");
+        messageId.put(上报照片查询结果应答,"上报照片查询结果应答");
+        messageId.put(上传指定照片,"上传指定照片");
+        messageId.put(上传指定照片应答,"上传指定照片应答");
+        messageId.put(照片上传初始化,"照片上传初始化");
+        messageId.put(照片上传初始化应答,"照片上传初始化应答");
+        messageId.put(照片上传数据包,"照片上传数据包");
+        messageId.put(设置计时终端应用参数,"设置计时终端应用参数");
+        messageId.put(设置计时终端应用参数应答,"设置计时终端应用参数应答");
+        messageId.put(设置禁训状态,"设置禁训状态");
+        messageId.put(设置禁训状态应答,"设置禁训状态应答");
+        messageId.put(查询计时终端应用参数,"查询计时终端应用参数");
+        messageId.put(查询计时终端应用参数应答,"查询计时终端应用参数应答");
+
+
         messageId.put(数据压缩上报, "数据压缩上报");
         messageId.put(终端RSA公钥, "终端RSA公钥");
         messageId.put(终端上行消息保留, "终端上行消息保留");
@@ -93,36 +125,7 @@ public class MessageId {
         messageId.put(存储多媒体数据上传, "存储多媒体数据上传");
         messageId.put(录音开始命令, "录音开始命令");
         messageId.put(单条存储多媒体数据检索上传命令, "单条存储多媒体数据检索上传命令");
-        messageId.put(数据下行透传, "数据下行透传");
         messageId.put(平台RSA公钥, "平台RSA公钥");
-        //============================================ 808End
-        messageId.put(终端上传音视频属性, "终端上传音视频属性");
-        messageId.put(终端上传乘客流量, "终端上传乘客流量");
-        messageId.put(终端上传音视频资源列表, "终端上传音视频资源列表");
-        messageId.put(文件上传完成通知, "文件上传完成通知");
-        messageId.put(查询终端音视频属性, "查询终端音视频属性");
-        messageId.put(实时音视频传输请求, "实时音视频传输请求");
-        messageId.put(音视频实时传输控制, "音视频实时传输控制");
-        messageId.put(实时音视频传输状态通知, "实时音视频传输状态通知");
-        messageId.put(平台下发远程录像回放请求, "平台下发远程录像回放请求");
-        messageId.put(平台下发远程录像回放控制, "平台下发远程录像回放控制");
-        messageId.put(查询资源列表, "查询资源列表");
-        messageId.put(文件上传指令, "文件上传指令");
-        messageId.put(文件上传控制, "文件上传控制");
-        messageId.put(云台旋转, "云台旋转");
-        messageId.put(云台调整焦距控制, "云台调整焦距控制");
-        messageId.put(云台调整光圈控制, "云台调整光圈控制");
-        messageId.put(云台雨刷控制, "云台雨刷控制");
-        messageId.put(红外补光控制, "红外补光控制");
-        messageId.put(云台变倍控制, "云台变倍控制");
-        messageId.put(实时音视频流及透传数据传输, "实时音视频流及透传数据传输");
-        //============================================ 1078End
-        messageId.put(报警附件上传指令, "报警附件上传指令");
-        messageId.put(文件上传完成消息应答, "文件上传完成消息应答");
-        messageId.put(报警附件信息消息, "报警附件信息消息");
-        messageId.put(文件信息上传, "文件信息上传");
-        messageId.put(文件上传完成消息, "文件上传完成消息");
-        messageId.put(文件数据上传, "文件数据上传");
-        //============================================ JSATL12End
+
     }
 }

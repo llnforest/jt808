@@ -9,6 +9,8 @@ import org.yzh.framework.session.Session;
 import org.yzh.protocol.commons.JT808;
 import org.yzh.protocol.t808.T0001;
 
+import static org.yzh.protocol.commons.JT808.平台通用应答;
+
 public class JTHandlerInterceptor implements HandlerInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(JTHandlerInterceptor.class.getSimpleName());
@@ -63,9 +65,9 @@ public class JTHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean beforeHandle(AbstractMessage<?> request, Session session) {
         int messageId = request.getMessageId();
-        if (messageId == JT808.终端注册 || messageId == JT808.终端鉴权)
+        if (messageId == Integer.parseInt(JT808.终端注册.substring(2),16) || messageId == Integer.parseInt(JT808.终端鉴权.substring(2),16))
             return true;
-        if (messageId == JT808.位置信息汇报)
+        if (messageId == Integer.parseInt(JT808.位置信息汇报.substring(2),16))
             session.setSnapshot(request);
 
         if (!session.isRegistered()) {

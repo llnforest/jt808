@@ -50,7 +50,7 @@ public class StudentServiceImpl implements StudentService {
                 jsClassrecord.setInscode(jsStudent.getInscode());
                 jsClassrecord.setStunum(jsStudent.getStunum());
                 jsClassrecord.setInscode(jsStudent.getInscode());
-                jsClassrecord.setSubjcode(data.getClassId());
+//                jsClassrecord.setSubjcode(data.getClassId());
                 jsClassrecord.setStarttime(DateUtils.getNowDateStr("yyMMddHHmmss"));
                 jsClassrecord.setStatus(0);
                 jsClassrecordMapper.insertSelective(jsClassrecord);

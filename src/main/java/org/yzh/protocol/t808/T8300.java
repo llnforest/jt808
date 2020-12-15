@@ -36,7 +36,7 @@ public class T8300 extends AbstractMessage<Header> {
     }
 
     public T8300(String mobileNo) {
-        super(new Header(mobileNo, JT808.文本信息下发));
+        super(new Header(mobileNo, Integer.parseInt(JT808.文本信息下发.substring(2),16)));
     }
 
     @Field(index = 0, type = DataType.BYTE, desc = "标志")

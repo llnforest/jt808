@@ -38,10 +38,8 @@ public class MessageDecoderWrapper extends ByteToMessageDecoder {
                 hex = ByteBufUtil.hexDump(buf.slice(0, 32)) + "..." + ByteBufUtil.hexDump(buf.slice(buf.readableBytes() - 32, 32));
             log.info(">>>>>原始报文[ip={}],hex={}", channel.remoteAddress(), hex);
         }
-        log.info("ByteBuf:{}",buf);
         Session session = channel.attr(Session.KEY).get();
         AbstractMessage message = decoder.decode(buf, session.getProtocolVersion());
-        log.info("message:{}",message);
 
         if (message != null)
             out.add(message);

@@ -29,7 +29,7 @@ public class ClassRecordUpServiceImpl implements ClassRecordUpService {
         jsClassrecordUp.setMaxspeed(String.valueOf(data.getSpeed()));
         jsClassrecordUp.setMileage(String.valueOf(data.getKm()));
         jsClassrecordUp.setSubjcode(data.getClassNum());
-        jsClassrecordUp.setClassid(data.getClassId());
+//        jsClassrecordUp.setClassid(data.getClassId());
         jsClassrecordUp.setStatus(data.getStatus());
         jsClassrecordUpMapper.insertSelective(jsClassrecordUp);
         return jsClassrecordUp;

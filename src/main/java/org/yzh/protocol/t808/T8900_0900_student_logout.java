@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @author yezhihao
  * @home https://gitee.com/yezhihao/jt808-server
  */
-@Message({JT808.数据上行透传, JT808.数据下行透传})
+@Message({JT808.上报学员登出})
 public class T8900_0900_student_logout extends AbstractMessage<Header> {
 
 
@@ -29,7 +29,7 @@ public class T8900_0900_student_logout extends AbstractMessage<Header> {
     private LocalDateTime dateTime;
     private int totalTime;
     private int totalKm;
-    private String classId;
+    private int classId;
     private T0200 t0200;
 
     public T8900_0900_student_logout() {
@@ -127,11 +127,11 @@ public class T8900_0900_student_logout extends AbstractMessage<Header> {
     }
 
     @Field(index = 51, type = DataType.DWORD,desc = "课堂ID")
-    public String getClassId() {
+    public int getClassId() {
         return classId;
     }
 
-    public void setClassId(String classId) {
+    public void setClassId(int classId) {
         this.classId = classId;
     }
 

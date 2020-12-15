@@ -21,7 +21,7 @@ public class ClientTest {
     //7611
     static {
         ClientConfig jtConfig = new ClientConfig.Builder()
-                .setIp("127.0.0.1")
+                .setIp("101.201.149.34")
                 .setPort(7611)
                 .setMaxFrameLength(1024)
                 .setDelimiters(new byte[]{0x7e})
@@ -36,7 +36,7 @@ public class ClientTest {
     public static void main(String[] args) {
         System.out.println(tcpClient);
         while (true) {
-            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报 3.注销 4.上行 5.上报教练登录");
+            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报 3.注销 4.上行 5.上报学员登录");
             while (scanner.hasNext()) {
                 int i = scanner.nextInt();
                 switch (i) {

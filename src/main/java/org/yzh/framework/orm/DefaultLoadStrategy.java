@@ -28,7 +28,6 @@ public class DefaultLoadStrategy extends LoadStrategy {
     private Class<? extends AbstractHeader> headerClass = null;
 
     public DefaultLoadStrategy(String basePackage) {
-        log.info("basePackage:{}",basePackage);
         List<Class<?>> types = ClassUtils.getClassList(basePackage);
         for (Class<?> type : types) {
             Class<?> aClass = getMessageClass(type);
@@ -36,8 +35,6 @@ public class DefaultLoadStrategy extends LoadStrategy {
                 initClass(typeClassMapping, aClass);
             }
         }
-        log.info("typeIdMapping:{}",typeIdMapping);
-        log.info("typeClassMapping:{}",typeClassMapping);
         Introspector.flushCaches();
     }
 
@@ -48,7 +45,6 @@ public class DefaultLoadStrategy extends LoadStrategy {
 
     @Override
     public BeanMetadata getBeanMetadata(Object typeId, int version) {
-        log.info("typeIdMapping",typeIdMapping);
         Class<? extends AbstractMessage> typeClass = typeIdMapping.get(typeId);
         if (typeClass == null)
             return null;
@@ -57,8 +53,6 @@ public class DefaultLoadStrategy extends LoadStrategy {
 
     @Override
     public <T> BeanMetadata<T> getBeanMetadata(Class<T> clazz, int version) {
-        log.info("clazz.getName:{}",clazz.getName());
-        log.info("typeClassMapping:{}",typeClassMapping);
         Map<Integer, BeanMetadata> beanMetadata = typeClassMapping.get(clazz.getName());
         if (beanMetadata != null)
             return beanMetadata.get(version);
@@ -66,7 +60,6 @@ public class DefaultLoadStrategy extends LoadStrategy {
     }
 
     private Class<?> getMessageClass(Class<?> messageClass) {
-        log.info("messageClass:{}",messageClass);
         Class<?> superclass = messageClass.getSuperclass();
         Class<?> result = null;
         if (superclass != null) {
@@ -75,11 +68,10 @@ public class DefaultLoadStrategy extends LoadStrategy {
                 result = messageClass;
 
                 Message type = messageClass.getAnnotation(Message.class);
-                log.info("type:{}",type);
 
                 if (type != null) {
-                    int[] values = type.value();
-                    for (int value : values)
+                    String[] values = type.value();
+                    for (String value : values)
                         typeIdMapping.put(value, (Class<? extends AbstractMessage>) messageClass);
                 }
 

@@ -22,7 +22,7 @@ public class T8203 extends AbstractMessage<Header> {
     }
 
     public T8203(String mobileNo, int serialNo, int type) {
-        super(new Header(mobileNo, JT808.人工确认报警消息));
+        super(new Header(mobileNo, Integer.parseInt(JT808.人工确认报警消息.substring(2),16)));
         this.serialNo = serialNo;
         this.type = type;
     }

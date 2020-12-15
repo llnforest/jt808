@@ -81,9 +81,9 @@ public class T0100 extends AbstractMessage<Header> {
     }
 
     /** 国际移动设备标识，ASCII码 */
-    @Fs({@Field(index = 21, type = DataType.BYTE, length = 15, desc = "设备标识ASCII码", version = -1),
-            @Field(index = 36, type = DataType.BYTE, length = 15, desc = "设备标识ASCII码", version = 0),
-            @Field(index = 75, type = DataType.BYTE, length = 15, desc = "设备标识ASCII码", version = 1)})
+    @Fs({@Field(index = 21, type = DataType.BYTES, length = 15, desc = "设备标识ASCII码", version = -1),
+            @Field(index = 36, type = DataType.BYTES, length = 15, desc = "设备标识ASCII码", version = 0),
+            @Field(index = 75, type = DataType.BYTES, length = 15, desc = "设备标识ASCII码", version = 1)})
     public String getImei() {
         return imei;
     }

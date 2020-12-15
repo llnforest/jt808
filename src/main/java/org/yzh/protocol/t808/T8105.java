@@ -21,7 +21,7 @@ public class T8105 extends AbstractMessage<Header> {
     }
 
     public T8105(String mobileNo, int command, String parameter) {
-        super(new Header(mobileNo, JT808.终端控制));
+        super(new Header(mobileNo, Integer.parseInt(JT808.终端控制.substring(2),16)));
         this.command = command;
         this.parameter = parameter;
     }

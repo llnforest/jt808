@@ -25,7 +25,7 @@ public class T8500 extends AbstractMessage<Header> {
     }
 
     public T8500(String mobileNo) {
-        super(new Header(mobileNo, JT808.车辆控制));
+        super(new Header(mobileNo, Integer.parseInt(JT808.车辆控制.substring(2),16)));
     }
 
     @Field(index = 0, type = DataType.BYTE, desc = "控制标志")

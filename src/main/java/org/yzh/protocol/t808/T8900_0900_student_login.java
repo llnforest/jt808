@@ -11,7 +11,7 @@ import org.yzh.protocol.commons.JT808;
  * @author yezhihao
  * @home https://gitee.com/yezhihao/jt808-server
  */
-@Message({JT808.数据上行透传, JT808.数据下行透传})
+@Message({JT808.上报学员登录})
 public class T8900_0900_student_login extends AbstractMessage<Header> {
 
 
@@ -28,7 +28,7 @@ public class T8900_0900_student_login extends AbstractMessage<Header> {
 
     private String className;
 
-    private String classId;
+    private int classId;
 
     private T0200 t0200;
 
@@ -118,11 +118,11 @@ public class T8900_0900_student_login extends AbstractMessage<Header> {
     }
 
     @Field(index = 62, type = DataType.DWORD,desc = "课堂ID")
-    public String getClassId() {
+    public int getClassId() {
         return classId;
     }
 
-    public void setClassId(String classId) {
+    public void setClassId(int classId) {
         this.classId = classId;
     }
 
