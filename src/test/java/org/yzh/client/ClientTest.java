@@ -21,7 +21,7 @@ public class ClientTest {
     //7611
     static {
         ClientConfig jtConfig = new ClientConfig.Builder()
-                .setIp("101.201.149.34")
+                .setIp("127.0.0.1")
                 .setPort(7611)
                 .setMaxFrameLength(1024)
                 .setDelimiters(new byte[]{0x7e})

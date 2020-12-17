@@ -17,7 +17,7 @@ public abstract class AbstractMessage<T extends AbstractHeader> implements Seria
 
     private T header;
 
-    private String typeId;
+    private String markId;
 
     public AbstractMessage() {
     }
@@ -49,12 +49,12 @@ public abstract class AbstractMessage<T extends AbstractHeader> implements Seria
         return header.getMessageId();
     }
 
-    public void setTypeId(String typeId) {
-        this.typeId = typeId;
+    public void setMarkId(String markId) {
+        this.markId = markId;
     }
 
-    public String getTypeId() {
-        return typeId;
+    public String getMarkId() {
+        return markId;
     }
 
 //    public int getChildType() {

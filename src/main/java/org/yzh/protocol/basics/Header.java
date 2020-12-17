@@ -100,7 +100,7 @@ public class Header extends AbstractHeader {
         this.serialNo = serialNo;
     }
 
-    @Field(index = 15, type = DataType.BYTE, desc = "协议版本号")
+    @Field(index = 15, type = DataType.BYTE, desc = "预留")
     @Override
     public int getReserved() {
         return reserved;
@@ -199,16 +199,16 @@ public class Header extends AbstractHeader {
     }
 
     /** 保留位 */
-    public boolean isReserved() {
-        return (properties & RESERVED) == RESERVED;
-    }
-
-    public void setReserved(boolean reserved) {
-        if (reserved)
-            this.properties |= RESERVED;
-        else
-            this.properties ^= (properties & RESERVED);
-    }
+//    public boolean isReserved() {
+//        return (properties & RESERVED) == RESERVED;
+//    }
+//
+//    public void setReserved(boolean reserved) {
+//        if (reserved)
+//            this.properties |= RESERVED;
+//        else
+//            this.properties ^= (properties & RESERVED);
+//    }
 
     @Override
     public String getClientId() {

@@ -59,11 +59,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
         try {
             Handler handler;
-            if(request.getMessageId() == 2304 || request.getMessageId() == 35072){
-                handler = handlerMapping.getHandler(((AbstractMessage) msg).getTypeId());
-            }else{
-                handler = handlerMapping.getHandler(request.getMessageId());
-            }
+            handler = handlerMapping.getHandler(((AbstractMessage) msg).getMarkId());
 //            log.info("handler:{}",handler);
 //            log.info("request:{}",request);
             if (handler != null) {

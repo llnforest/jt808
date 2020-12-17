@@ -60,7 +60,7 @@ public class T8100 extends AbstractMessage<Header> {
         this.resultCode = resultCode;
     }
 
-    @Field(index = 3, type = DataType.BYTE, desc = "平台编号")
+    @Field(index = 3, type = DataType.BYTES,length = 5,desc = "平台编号")
     public String getPlatNum() {
         return platNum;
     }
@@ -69,7 +69,7 @@ public class T8100 extends AbstractMessage<Header> {
         this.platNum = platNum;
     }
 
-    @Field(index = 8, type = DataType.BYTE, desc = "培训机构编号")
+    @Field(index = 8, type = DataType.BYTES,length = 16,desc = "培训机构编号")
     public String getInscode() {
         return inscode;
     }
@@ -78,7 +78,7 @@ public class T8100 extends AbstractMessage<Header> {
         this.inscode = inscode;
     }
 
-    @Field(index = 24, type = DataType.BYTE, desc = "计时终端编号")
+    @Field(index = 24, type = DataType.BYTES,length = 16,desc = "计时终端编号")
     public String getDevnum() {
         return devnum;
     }
@@ -87,7 +87,7 @@ public class T8100 extends AbstractMessage<Header> {
         this.devnum = devnum;
     }
 
-    @Field(index = 40, type = DataType.BYTE, desc = "证书口令")
+    @Field(index = 40, type = DataType.BYTES,length = 12,desc = "证书口令")
     public String getCertSign() {
         return certSign;
     }
@@ -96,7 +96,7 @@ public class T8100 extends AbstractMessage<Header> {
         this.certSign = certSign;
     }
 
-    @Field(index = 52, type = DataType.BYTE, desc = "终端证书")
+    @Field(index = 52, type = DataType.STRING, desc = "终端证书")
     public String getCert() {
         return cert;
     }

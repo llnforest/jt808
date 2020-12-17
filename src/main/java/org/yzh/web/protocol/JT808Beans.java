@@ -43,7 +43,7 @@ public class JT808Beans {
         header.setMobileNo("122345678901");
         header.setSerialNo((int) Short.MAX_VALUE);
         header.setEncryption(0);
-        header.setReserved(false);
+        header.setReserved(0);
         message.setHeader(header);
 
         return message;
@@ -67,7 +67,7 @@ public class JT808Beans {
         header.setSerialNo(65535);
         header.setEncryption(0);
         header.setVersion(true);
-        header.setReserved(false);
+        header.setReserved(0);
         message.setHeader(header);
         return message;
     }

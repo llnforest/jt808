@@ -33,25 +33,25 @@ public class JT808Beans {
     private static final Random R = new Random(1);
 
     /** 2013版消息头 */
-    public static AbstractMessage H2013(AbstractMessage message) {
-        Header header = new Header();
-        Message type = message.getClass().getAnnotation(Message.class);
-        if (type != null){
-            if(type.value()[0].indexOf("_")  > -1){
-                String[] value = type.value()[0].split("_");
-                header.setMessageId(Integer.parseInt(value[0].substring(2),16));
-
-            }else{
-                header.setMessageId(Integer.parseInt(type.value()[0].substring(2),16));
-            }
-        }
-        header.setMobileNo("122345678901");
-        header.setSerialNo((int) Short.MAX_VALUE);
-        header.setEncryption(0);
-        header.setReserved(false);
-        message.setHeader(header);
-        return message;
-    }
+//    public static AbstractMessage H2013(AbstractMessage message) {
+//        Header header = new Header();
+//        Message type = message.getClass().getAnnotation(Message.class);
+//        if (type != null){
+//            if(type.value()[0].indexOf("_")  > -1){
+//                String[] value = type.value()[0].split("_");
+//                header.setMessageId(Integer.parseInt(value[0].substring(2),16));
+//
+//            }else{
+//                header.setMessageId(Integer.parseInt(type.value()[0].substring(2),16));
+//            }
+//        }
+//        header.setMobileNo("122345678901");
+//        header.setSerialNo((int) Short.MAX_VALUE);
+//        header.setEncryption(0);
+//        header.setReserved(0);
+//        message.setHeader(header);
+//        return message;
+//    }
 
     /** 2019版消息头 */
     public static AbstractMessage H2019(AbstractMessage message) {
@@ -68,10 +68,14 @@ public class JT808Beans {
         }
         header.setVersionNo(0);
         header.setMobileNo("17299841738");
-        header.setSerialNo(65535);
-        header.setEncryption(0);
+        header.setSerialNo((int) Short.MAX_VALUE);
+        header.setEncryption(0);//加密方式
         header.setVersion(true);
-        header.setReserved(false);
+        header.setReserved(0);
+//        header.setPackageNo(2);
+//        header.setPackageTotal(2);
+//        header.setSubpackage(true);
+//        log.info("分包：{}",header.isSubpackage());
         message.setHeader(header);
 
         return message;
@@ -114,7 +118,7 @@ public class JT808Beans {
         bean.setVenderId("4");
         bean.setModel("BSJ-GF-06");
         bean.setSn("test123");
-        bean.setImei("2123123131212312321");
+        bean.setImei("123131212312321");
         bean.setPlateColor(1);
         bean.setPlateNo("测A888888");
         return bean;
