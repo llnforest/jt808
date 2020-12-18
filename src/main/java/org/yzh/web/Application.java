@@ -1,10 +1,13 @@
 package org.yzh.web;
 
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.yzh.framework.commons.ClientChannelUtils;
+import org.yzh.framework.netty.websocket.WebSocketChannelHandlerPool;
+import org.yzh.framework.netty.websocket.WebSocketServerHandler;
 import org.yzh.web.protocol.JT808Beans;
 
 import java.util.Scanner;
@@ -64,6 +67,11 @@ public class Application {
                         break;
                     case 13:
                         ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T8202()));
+                        break;
+                    case 14:
+                        log.info("发送数据");
+                        log.info("channelGroup:{}",WebSocketChannelHandlerPool.channelGroup);
+                        WebSocketChannelHandlerPool.channelGroup.writeAndFlush(new TextWebSocketFrame("你个大傻叉"));
                         break;
                 }
             }

@@ -36,6 +36,11 @@ mybatis:
 server:
   port: 8000
 
+websocket:
+  server:
+    port: 7755
+    enable: true
+
 tpc-server:
   jt808:
     client: false
