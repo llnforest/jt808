@@ -23,6 +23,7 @@ import org.yzh.framework.codec.DelimiterBasedFrameDecoder;
 import org.yzh.framework.codec.LengthFieldAndDelimiterFrameDecoder;
 import org.yzh.framework.codec.MessageDecoderWrapper;
 import org.yzh.framework.codec.MessageEncoderWrapper;
+import org.yzh.framework.commons.WsHandlerUtils;
 import org.yzh.framework.netty.NettyConfig;
 
 import java.util.concurrent.TimeUnit;
@@ -73,6 +74,7 @@ public class WebSocketServer {
 
             ChannelFuture channelFuture = bootstrap.bind().sync();
             log.warn("===websocket启动成功, port={}===", port);
+            WsHandlerUtils.setMethodMap();
             channelFuture.channel().closeFuture().sync();
         } catch (Exception e) {
             log.warn("==={}出现异常, port={}===", e);

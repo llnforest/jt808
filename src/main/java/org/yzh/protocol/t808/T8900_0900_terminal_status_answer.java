@@ -18,10 +18,10 @@ public class T8900_0900_terminal_status_answer extends AbstractMessage<Header> {
 
     private int type = 0x13;
     private int msgId = 0x0502;
-    private int msgAttr;
+    private int msgAttr = 0;//2需要应答(不加密) 0不需要应答(不加密) 10需要应答(SHA256加密)  8不需要应答(SHA256加密)
     private int packetNo;
-    private int dataLength;
     private String terminalNo;
+    private int dataLength = 3;
 
     private int result;
     private int status;
@@ -32,6 +32,13 @@ public class T8900_0900_terminal_status_answer extends AbstractMessage<Header> {
     public T8900_0900_terminal_status_answer() {
     }
 
+    public T8900_0900_terminal_status_answer(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_terminal_status_answer(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
@@ -122,5 +129,11 @@ public class T8900_0900_terminal_status_answer extends AbstractMessage<Header> {
 
     public void setMsgContent(String msgContent) {
         this.msgContent = msgContent;
+        try{
+            this.msgLength = msgContent.getBytes("GBK").length;
+            this.dataLength += this.msgLength;
+        }catch (Exception ex){
+            this.msgLength = 0;
+        }
     }
 }

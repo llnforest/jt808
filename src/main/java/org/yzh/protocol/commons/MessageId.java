@@ -1,5 +1,7 @@
 package org.yzh.protocol.commons;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,12 +16,11 @@ public class MessageId {
     private static final Map<String, String> messageId = new HashMap<>(81);
 
     public static String get(int id) {
-        String value= Integer.toHexString(id);
-        value = String.format("%04d",Integer.parseInt(value));
-        String name = messageId.get("0x"+value);
+        String msgId = "0x"+StringUtils.leftPad(Integer.toHexString(id),4,"0");
+        String name = messageId.get(msgId);
         if (name != null)
             return name;
-        return "0x" + Integer.toHexString(id);
+        return msgId;
     }
 
     static {

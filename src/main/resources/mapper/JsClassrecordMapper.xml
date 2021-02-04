@@ -26,11 +26,14 @@
     <result column="part3" jdbcType="VARCHAR" property="part3" />
     <result column="part4" jdbcType="VARCHAR" property="part4" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="sync_status" jdbcType="INTEGER" property="syncStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, inscode, stunum, coachnum, carnum, simunum, platnum, recnum, subjcode, photo1, 
     photo2, photo3, starttime, endtime, duration, mileage, avevelocity, coacmt, total, 
-    part1, part2, part3, part4, status
+    part1, part2, part3, part4, status,sync_status,create_time,update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -38,11 +41,11 @@
     from js_classrecord
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectByStunum" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByStunum" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from js_classrecord
-    where stunum = #{stunum,jdbcType=VARCHAR} and status = #{status,jdbcType=INTEGER}
+    where stunum = #{stunum,jdbcType=VARCHAR} and status = #{status,jdbcType=INTEGER} order by id desc limit 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from js_classrecord
@@ -56,7 +59,8 @@
       endtime, duration, mileage, 
       avevelocity, coacmt, total, 
       part1, part2, part3, 
-      part4, status)
+      part4, status,sync_status,create_time,
+      update_time)
     values (#{id,jdbcType=INTEGER}, #{inscode,jdbcType=CHAR}, #{stunum,jdbcType=CHAR}, 
       #{coachnum,jdbcType=CHAR}, #{carnum,jdbcType=CHAR}, #{simunum,jdbcType=CHAR}, #{platnum,jdbcType=CHAR}, 
       #{recnum,jdbcType=CHAR}, #{subjcode,jdbcType=CHAR}, #{photo1,jdbcType=VARCHAR}, 
@@ -64,7 +68,8 @@
       #{endtime,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR}, #{mileage,jdbcType=VARCHAR}, 
       #{avevelocity,jdbcType=VARCHAR}, #{coacmt,jdbcType=VARCHAR}, #{total,jdbcType=VARCHAR}, 
       #{part1,jdbcType=VARCHAR}, #{part2,jdbcType=VARCHAR}, #{part3,jdbcType=VARCHAR}, 
-      #{part4,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+      #{part4,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},#{syncStatus,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP}))
   </insert>
   <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsClassrecord">
     insert into js_classrecord
@@ -141,6 +146,15 @@
       <if test="status != null">
         status,
       </if>
+      <if test="syncStatus != null">
+        syncStatus,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -214,6 +228,15 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="syncStatus != null">
+        #{syncStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -289,6 +312,15 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="syncStatus != null">
+        sync_status = #{syncStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -316,7 +348,10 @@
       part2 = #{part2,jdbcType=VARCHAR},
       part3 = #{part3,jdbcType=VARCHAR},
       part4 = #{part4,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      sync_status = #{syncStatus,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -3,6 +3,7 @@ package org.yzh.framework.commons;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yzh.framework.orm.model.AbstractMessage;
@@ -36,8 +37,7 @@ public class CommonUtils {
      * @return
      */
     public static String getMarkId(int messageId, ByteBuf bodyBuf){
-        String messageIdString= Integer.toHexString(messageId);
-        String markId = "0x"+String.format("%04d",Integer.parseInt(messageIdString));
+        String markId = "0x"+ StringUtils.leftPad(Integer.toHexString(messageId),4,"0");
 
         if(isTransparent(messageId)) {
             markId = markId + "_0x" + ByteBufUtil.hexDump(bodyBuf).substring(2,6);

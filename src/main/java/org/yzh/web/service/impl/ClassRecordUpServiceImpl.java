@@ -25,11 +25,17 @@ public class ClassRecordUpServiceImpl implements ClassRecordUpService {
         jsClassrecordUp.setCoachnum(data.getCoachNo());
         jsClassrecordUp.setRnum(data.getTimeNo());
         jsClassrecordUp.setStunum(data.getStudentNo());
-        jsClassrecordUp.setUptype(data.getUpType());
+        jsClassrecordUp.setUpType(data.getUpType());
         jsClassrecordUp.setMaxspeed(String.valueOf(data.getSpeed()));
         jsClassrecordUp.setMileage(String.valueOf(data.getKm()));
-        jsClassrecordUp.setSubjcode(data.getClassNum());
-//        jsClassrecordUp.setClassid(data.getClassId());
+
+        jsClassrecordUp.setSubCode(data.getClassNum());
+
+        jsClassrecordUp.setClassCode(Integer.valueOf(data.getClassNum().substring(0,1)));
+        jsClassrecordUp.setTrainCode(data.getClassNum().substring(1,3));
+        jsClassrecordUp.setPartCode(Integer.valueOf(data.getClassNum().substring(3,4)));
+        jsClassrecordUp.setProjectCode(data.getClassNum().substring(4,6));
+        jsClassrecordUp.setClassId(String.valueOf(data.getClassId()));
         jsClassrecordUp.setStatus(data.getStatus());
         jsClassrecordUpMapper.insertSelective(jsClassrecordUp);
         return jsClassrecordUp;

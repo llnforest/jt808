@@ -1,5 +1,6 @@
 package org.yzh.web.service.impl;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +9,15 @@ import org.yzh.protocol.t808.T0100;
 import org.yzh.protocol.t808.T0102;
 import org.yzh.protocol.t808.T8100;
 import org.yzh.web.commons.EncryptUtils;
-import org.yzh.web.mapper.DeviceMapper;
-import org.yzh.web.model.entity.DeviceDO;
-import org.yzh.web.model.vo.DeviceInfo;
+import org.yzh.web.mapper.JsDeviceAuthRecordMapper;
+import org.yzh.web.mapper.JsDeviceMapper;
+import org.yzh.web.model.entity.JsDevice;
+import org.yzh.web.model.entity.JsDeviceAuthRecord;
 import org.yzh.web.service.DeviceService;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class DeviceServiceImpl implements DeviceService {
@@ -23,71 +25,55 @@ public class DeviceServiceImpl implements DeviceService {
     private static final Logger log = LoggerFactory.getLogger(DeviceServiceImpl.class.getSimpleName());
 
     @Autowired
-    private DeviceMapper deviceMapper;
+    private JsDeviceMapper jsDeviceMapper;
+
+    @Autowired
+    private JsDeviceAuthRecordMapper jsDeviceAuthRecordMapper;
 
     @Override
     public T8100 register(T0100 request,T8100 t8100) {
         String sn = request.getSn();
         String plateNo = request.getPlateNo();
-        DeviceDO deviceDO = deviceMapper.isRegister(sn,plateNo);
-        if(deviceDO == null){
-            t8100.setResultCode(t8100.NotFoundTerminal);
-        }else{
-            t8100.setPlatNum("");
-            t8100.setInscode("");
-            t8100.setDevnum(deviceDO.getDevnum());
-            t8100.setCertSign("");
-            t8100.setCert("");
-        }
-
-//        if (device == null)//TODO 根据自身业务选择是否校验设备ID
-//            return null;
-        //判断车辆和终端是否注册
-
-        //判断车辆是否注册
-
-        //判断车辆是否存在
-
-        //判断终端是否注册
-
+        t8100.setResultCode(T8100.Success);
         //判断终端是否存在
+        JsDevice jsDevice = jsDeviceMapper.isExistsDev(sn);
+        if(jsDevice == null && t8100.getResultCode() == t8100.Success){
+            //终端不存在
+            t8100.setResultCode(t8100.NotFoundTerminal);
+        }
+        //判断终端是否注册
+        jsDevice = jsDeviceMapper.isRegisterDev(sn);
+        if(jsDevice != null && t8100.getResultCode() == t8100.Success){
+            //终端已注册
+            t8100.setResultCode(t8100.AlreadyRegisteredTerminal);
+        }
+        jsDevice = jsDeviceMapper.isExistsCar(request.getPlateColor(),plateNo);
+        if(jsDevice == null && t8100.getResultCode() == t8100.Success){
+            //车辆不存在
+            t8100.setResultCode(t8100.NotFoundVehicle);
+        }
+        jsDevice = jsDeviceMapper.isRegisterCar(request.getPlateColor(),plateNo);
+        if(jsDevice != null && t8100.getResultCode() == t8100.Success){
+            //车辆已注册
+            t8100.setResultCode(t8100.AlreadyRegisteredVehicle);
+        }
+        jsDevice = jsDeviceMapper.isCanRegister(sn,plateNo);
+        if(jsDevice == null && t8100.getResultCode() == t8100.Success){
+            //终端不存在
+            t8100.setResultCode(t8100.NotFoundTerminal);
+        }
+        if(t8100.getResultCode() != t8100.Success) return t8100;
 
+        jsDevice.setStatus(1);
+        jsDevice.setRegisterTime(new Date());
+        log.info("ok");
+        jsDeviceMapper.updateByPrimaryKeySelective(jsDevice);
+        t8100.setPlatNum("aaa");
+        t8100.setInscode(jsDevice.getInscode());
+        t8100.setDevnum(jsDevice.getDevnum());
+        t8100.setCertSign(jsDevice.getPasswd());
+        t8100.setCert(jsDevice.getCert());
 
-//        LocalDateTime now = LocalDateTime.now();
-//
-//        DeviceDO record = new DeviceDO();
-//        record.setDeviceId(deviceId);
-//        record.setMobileNo(request.getHeader().getMobileNo());
-//        record.setPlateNo(request.getPlateNo());
-//        record.setOnline(true);
-//        record.setBind(true);
-//        record.setDeviceModel(request.getDeviceModel());
-//        record.setMakerId(request.getMakerId());
-//        record.setCityId(request.getCityId());
-//        record.setProvinceId(request.getProvinceId());
-//        record.setDeviceTime(now);
-//        record.setRegisterTime(now);
-//        if (deviceDO == null || deviceDO.getInstallTime() == null)
-//            record.setInstallTime(now);
-//
-//        int protocolVersion = request.getSession().getProtocolVersion();
-//        if (protocolVersion != -1)
-//            protocolVersion = request.getHeader().getVersionNo();
-//        record.setProtocolVersion(protocolVersion);
-//
-//        int row = deviceMapper.update(record);
-//        if (row == 0) {
-//            record.setCreator("device");
-//            record.setCreateTime(now);
-//            deviceMapper.insert(record);
-//        }
-
-//        DeviceInfo device = new DeviceInfo();
-//        device.setIssuedAt(LocalDate.now());
-//        device.setValidAt(7);
-//        device.setPlateColor((byte) request.getPlateColor());
-//        device.setPlateNo(request.getPlateNo());
-//        device.setDeviceId(deviceId);
         return t8100;
     }
 
@@ -95,48 +81,73 @@ public class DeviceServiceImpl implements DeviceService {
     public Boolean authentication(T0102 request) {
         String token = request.getToken();
         byte[] bytes;
-        try {
+//        try {
             //解密获得devnum
             bytes = Base64.getDecoder().decode(token);
             bytes = EncryptUtils.decrypt(bytes);
-            String devnum = "";
+            String devnum = "aaa";
 
-            DeviceDO deviceDO = deviceMapper.getByDevnum(devnum);
-            if(deviceDO == null){
+//            List<JsDeviceAuthRecord> list = jsDeviceAuthRecordMapper.selectRecordAndDevice(1);
+//            JsDeviceAuthRecord listOne = CollectionUtils.isNotEmpty(list)?list.get(0):null;
+//            log.info("mobilePhone:{}",listOne.getJsDevice().getMobile());
+
+            JsDevice jsDevice = jsDeviceMapper.getByDevnum(devnum);
+            log.info("js:{}",jsDevice);
+            if(jsDevice == null || jsDevice.getStatus() != 1){
                 return false;
-            }else{
-                return true;
             }
+            JsDeviceAuthRecord condition = new JsDeviceAuthRecord();
+            condition.setDevnum(devnum);
+            condition.setAuthTime(request.getTimeStamp());
+            List<JsDeviceAuthRecord> selectList = jsDeviceAuthRecordMapper.selectByCondition(condition);
+            if(CollectionUtils.isNotEmpty(selectList)) return false;
+            log.info("selectList:{}",selectList);
+            JsDeviceAuthRecord selectOne = CollectionUtils.isNotEmpty(selectList)?selectList.get(0):null;
+            log.info("selectOne:{}",selectOne);
+            log.info("dev:{}",selectOne.getDevnum());
+//            log.info("mobilePhone:{}",selectOne.getJsDevice().getMobile());
+
+
+            JsDeviceAuthRecord record = new JsDeviceAuthRecord();
+            record.setAuthTime(request.getTimeStamp());
+            record.setDevnum(devnum);
+            record.setCreateTime(new Date());
+            int num = jsDeviceAuthRecordMapper.insertSelective(record);
+            log.info("id:{}",num);
+            log.info("id:{}",record.getId());
+            return true;
+
+
 //            LocalDate expiresAt = device.getIssuedAt().plusDays(device.getValidAt());
 //            if (expiresAt.isBefore(LocalDate.now())) {
 //                log.warn("鉴权失败：过期的token，{}", token);
 //                return null;
 //            }
-//            DeviceDO record = deviceMapper.get(device.getDeviceId());
+//            JsDevice record = deviceMapper.get(device.getDeviceId());
 //            if (record != null) {
 //                device.setPlateNo(record.getPlateNo());
 //
-//                record = new DeviceDO(device.getDeviceId(), true, LocalDateTime.now());
+//                record = new JsDevice(device.getDeviceId(), true, LocalDateTime.now());
 //                record.setImei(request.getImei());
 //                record.setSoftwareVersion(request.getVersion());
 //                deviceMapper.update(record);
 //            }
 //            return device;
-        } catch (Exception e) {
-            log.warn("鉴权失败：错误的token，{}", e.getMessage());
-            return false;
-        }
+//        } catch (Exception e) {
+//            log.info("鉴权失败：，{}", e.getMessage());
+//            return false;
+//        }
     }
 
     @Override
     public Boolean logout(String mobile) {
         try {
-            DeviceDO deviceDO = deviceMapper.getByMobile(mobile);
-            if(deviceDO == null){
+            JsDevice jsDevice = jsDeviceMapper.getByMobile(mobile);
+            if(jsDevice == null){
                 return false;
             }
-            deviceDO.setStatus(2);
-            deviceMapper.update(deviceDO);
+            jsDevice.setStatus(2);
+            jsDeviceMapper.updateByPrimaryKeySelective(jsDevice);
             return true;
         } catch (Exception e) {
             return false;

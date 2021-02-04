@@ -88,8 +88,8 @@ public class TerminalController {
 //
 //    @ApiOperation(value = "位置信息查询", tags = "位置报警类协议")
 //    @GetMapping("location")
-//    public T0201_0500 location(@ApiParam("终端手机号") @RequestParam String clientId) {
-//        T0201_0500 response = messageManager.request(new RawMessage(new Header(clientId, JT808.位置信息查询)), T0201_0500.class);
+//    public T0201 location(@ApiParam("终端手机号") @RequestParam String clientId) {
+//        T0201 response = messageManager.request(new RawMessage(new Header(clientId, JT808.位置信息查询)), T0201.class);
 //        return response;
 //    }
 //
@@ -177,10 +177,10 @@ public class TerminalController {
 //
 //    @ApiOperation(value = "车辆控制", tags = "终端管理类协议")
 //    @PostMapping("control/vehicle")
-//    public T0201_0500 vehicleControl(@ApiParam("终端手机号") @RequestParam String clientId, @ApiParam("控制标志") @RequestParam int... sign) {
+//    public T0201 vehicleControl(@ApiParam("终端手机号") @RequestParam String clientId, @ApiParam("控制标志") @RequestParam int... sign) {
 //        T8500 request = new T8500(clientId);
 //        request.setSign(sign);
-//        T0201_0500 response = messageManager.request(request, T0201_0500.class);
+//        T0201 response = messageManager.request(request, T0201.class);
 //        return response;
 //    }
 //

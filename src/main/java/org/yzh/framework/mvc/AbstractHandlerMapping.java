@@ -1,5 +1,6 @@
 package org.yzh.framework.mvc;
 
+import org.apache.commons.lang3.StringUtils;
 import org.yzh.framework.mvc.annotation.AsyncBatch;
 import org.yzh.framework.mvc.annotation.Mapping;
 import org.yzh.framework.mvc.handler.AsyncBatchHandler;
@@ -50,9 +51,8 @@ public abstract class AbstractHandlerMapping implements HandlerMapping {
     }
 
     public Handler getHandler(int messageId) {
-        String value= Integer.toHexString(messageId);
-        value = String.format("%04d",Integer.parseInt(value));
-        return handlerMap.get("0x"+value);
+        String msgId = "0x"+ StringUtils.leftPad(Integer.toHexString(messageId),4,"0");
+        return handlerMap.get("0x"+msgId);
     }
 
     public Handler getHandler(String messageId) {

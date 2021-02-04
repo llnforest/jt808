@@ -19,7 +19,7 @@ import java.util.Map;
  * @home https://gitee.com/yezhihao/jt808-server
  */
 @Message({JT808.位置信息查询应答, JT808.车辆控制应答})
-public class T0201_0500 extends AbstractMessage<Header> {
+public class T0201 extends AbstractMessage<Header> {
 
     private int warningMark;
     private int status;
@@ -29,6 +29,7 @@ public class T0201_0500 extends AbstractMessage<Header> {
     private int starSpeed;
     private int direction;
     private LocalDateTime dateTime;
+    private List<BytesAttribute> bytesAttributes;
 
     @Field(index = 0, type = DataType.DWORD, desc = "报警标志")
     public int getWarningMark() {
@@ -102,4 +103,20 @@ public class T0201_0500 extends AbstractMessage<Header> {
         this.dateTime = dateTime;
     }
 
+    @Field(index = 27, type = DataType.LIST, desc = "位置附加信息")
+    public List<BytesAttribute> getBytesAttributes() {
+        return bytesAttributes;
+    }
+
+    public void setBytesAttributes(List<BytesAttribute> bytesAttributes) {
+        this.bytesAttributes = bytesAttributes;
+    }
+
+    public Map<Integer, Attribute> getAttributes() {
+        return PositionAttributeUtils.transform(bytesAttributes);
+    }
+
+    public void setAttributes(Map<Integer, Attribute> attributes) {
+        this.bytesAttributes = PositionAttributeUtils.transform(attributes);
+    }
 }

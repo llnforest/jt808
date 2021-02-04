@@ -32,7 +32,7 @@ public class ClientConfig implements InitializingBean, DisposableBean {
                 .setEncoder(new JTMessageEncoder("org.yzh.protocol"))
                 .setHandlerMapping(new org.yzh.framework.netty.client.HandlerMapping("org.yzh.client"))
                 .build();
-        System.out.println("----------808客服端服务------------");
+        System.out.println("----------808客户端服务------------");
         return new TCPClient(jtConfig);
     }
 

@@ -1,5 +1,7 @@
 package org.yzh.web.model.entity;
 
+import java.util.Date;
+
 public class JsClassrecord {
     private Integer id;
 
@@ -48,6 +50,12 @@ public class JsClassrecord {
     private String part4;
 
     private Integer status;
+
+    private Integer syncStatus;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     public Integer getId() {
         return id;
@@ -233,12 +241,36 @@ public class JsClassrecord {
         this.part4 = part4;
     }
 
+    public Integer getSyncStatus() {
+        return syncStatus;
+    }
+
+    public void setSyncStatus(Integer syncStatus) {
+        this.syncStatus = syncStatus;
+    }
+
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override

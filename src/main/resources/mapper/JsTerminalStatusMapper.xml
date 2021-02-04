@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yzh.web.mapper.JsTerminalStatusMapper">
+  <resultMap id="BaseResultMap" type="org.yzh.web.model.entity.JsTerminalStatus">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="devnum" jdbcType="CHAR" property="devnum" />
+    <result column="phone" jdbcType="CHAR" property="phone" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="msg_content" jdbcType="VARCHAR" property="msgContent" />
+    <result column="down_status" jdbcType="INTEGER" property="downStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, devnum, phone, status, msg_content, down_status, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from js_terminal_status
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from js_terminal_status
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.yzh.web.model.entity.JsTerminalStatus">
+    insert into js_terminal_status (id, devnum, phone, 
+      status, msg_content, down_status, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{devnum,jdbcType=CHAR}, #{phone,jdbcType=CHAR}, 
+      #{status,jdbcType=INTEGER}, #{msgContent,jdbcType=VARCHAR}, #{downStatus,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsTerminalStatus">
+    insert into js_terminal_status
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="devnum != null">
+        devnum,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="msgContent != null">
+        msg_content,
+      </if>
+      <if test="downStatus != null">
+        down_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="devnum != null">
+        #{devnum,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="msgContent != null">
+        #{msgContent,jdbcType=VARCHAR},
+      </if>
+      <if test="downStatus != null">
+        #{downStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.yzh.web.model.entity.JsTerminalStatus">
+    update js_terminal_status
+    <set>
+      <if test="devnum != null">
+        devnum = #{devnum,jdbcType=CHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="msgContent != null">
+        msg_content = #{msgContent,jdbcType=VARCHAR},
+      </if>
+      <if test="downStatus != null">
+        down_status = #{downStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.yzh.web.model.entity.JsTerminalStatus">
+    update js_terminal_status
+    set devnum = #{devnum,jdbcType=CHAR},
+      phone = #{phone,jdbcType=CHAR},
+      status = #{status,jdbcType=INTEGER},
+      msg_content = #{msgContent,jdbcType=VARCHAR},
+      down_status = #{downStatus,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByStatus" parameterType="org.yzh.web.model.entity.JsTerminalStatus">
+    update js_terminal_status
+    <set>
+      <if test="downStatus != null">
+        down_status = #{downStatus,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="msgContent != null">
+        msg_content = #{msgContent,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <where>
+      <if test="phone != null">
+        and phone = #{phone,jdbcType=CHAR}
+      </if>
+
+    </where>
+  </update>
+
+  <update id="updateByStatusOnly" parameterType="org.yzh.web.model.entity.JsTerminalStatus">
+    update js_terminal_status
+    <set>
+      <if test="downStatus != null">
+        down_status = #{downStatus,jdbcType=INTEGER},
+      </if>
+      <if test="msgContent != null">
+        msg_content = #{msgContent,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <where>
+      <if test="phone != null">
+        and phone = #{phone,jdbcType=CHAR}
+      </if>
+
+    </where>
+  </update>
+</mapper>

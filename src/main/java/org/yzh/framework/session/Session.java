@@ -41,6 +41,7 @@ public class Session {
         this.creationTime = System.currentTimeMillis();
         this.lastAccessedTime = creationTime;
         this.attributes = new TreeMap<>();
+
     }
 
     public void writeObject(Object message) {
@@ -96,6 +97,10 @@ public class Session {
     public long access() {
         lastAccessedTime = System.currentTimeMillis();
         return lastAccessedTime;
+    }
+
+    public Channel getChannel(){
+        return this.channel;
     }
 
     public Collection<String> getAttributeNames() {

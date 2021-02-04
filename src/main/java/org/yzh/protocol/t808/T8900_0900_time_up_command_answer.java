@@ -18,7 +18,7 @@ public class T8900_0900_time_up_command_answer extends AbstractMessage<Header> {
 
     private int type = 0x13;
     private int msgId = 0x0205;
-    private int msgAttr;
+    private int msgAttr = 0;//2需要应答(不加密) 0不需要应答(不加密) 10需要应答(SHA256加密)  8不需要应答(SHA256加密)
     private int packetNo;
     private int dataLength;
     private String terminalNo;
@@ -29,6 +29,13 @@ public class T8900_0900_time_up_command_answer extends AbstractMessage<Header> {
     public T8900_0900_time_up_command_answer() {
     }
 
+    public T8900_0900_time_up_command_answer(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_time_up_command_answer(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {

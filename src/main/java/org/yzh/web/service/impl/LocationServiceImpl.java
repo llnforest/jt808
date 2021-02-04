@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.yzh.framework.session.Session;
 import org.yzh.protocol.t808.T0200;
+import org.yzh.web.mapper.JsDeviceMapper;
 import org.yzh.web.mapper.LocationMapper;
+import org.yzh.web.model.entity.JsDevice;
 import org.yzh.web.model.entity.JstLocationDO;
 import org.yzh.web.model.vo.DeviceInfo;
 import org.yzh.web.model.vo.Location;
@@ -28,6 +30,9 @@ public class LocationServiceImpl implements LocationService {
 
     @Autowired
     private LocationMapper locationMapper;
+
+    @Autowired
+    private JsDeviceMapper jsDeviceMapper;
 
     @Qualifier("dataSource")
     @Autowired
@@ -64,11 +69,11 @@ public class LocationServiceImpl implements LocationService {
             for (int i = 0; i < size; i++) {
                 request = list.get(i);
                 int j = 1;
-
                 session = request.getSession();
                 mobileNo = request.getHeader().getMobileNo();
                 deviceId = mobileNo;
                 plateNo = "";
+
                 DeviceInfo device = (DeviceInfo) session.getSubject();
                 if (device != null) {
                     deviceId = device.getDeviceId();
@@ -88,7 +93,6 @@ public class LocationServiceImpl implements LocationService {
                 statement.setInt(j++, request.getDirection());
                 statement.setInt(j++, 0);
                 statement.setObject(j, now);
-
                 statement.addBatch();
             }
             statement.executeLargeBatch();
@@ -99,19 +103,16 @@ public class LocationServiceImpl implements LocationService {
 
     private void mybatisBatchInsert(List<T0200> list) {
         LocalDateTime now = LocalDateTime.now();
-        Session session;
         String mobileNo, deviceId, plateNo;
         int size = list.size();
         List<JstLocationDO> locations = new ArrayList<>(size);
         for (T0200 request : list) {
-
-            session = request.getSession();
             mobileNo = request.getHeader().getMobileNo();
             deviceId = mobileNo;
             plateNo = "";
-            DeviceInfo device = (DeviceInfo) session.getSubject();
+            JsDevice device =  jsDeviceMapper.getByMobile(mobileNo);
             if (device != null) {
-                deviceId = device.getDeviceId();
+                deviceId = device.getDevnum();
                 plateNo = device.getPlateNo();
             }
 
@@ -131,8 +132,8 @@ public class LocationServiceImpl implements LocationService {
             location.setDirection(request.getDirection());
             location.setMapFenceId(0);
             location.setCreateTime(now);
-        }
 
+        }
         int row = locationMapper.batchInsert(locations);
         if (row <= 0)
             log.warn("主键重复,写入数据库失败{}", locations);

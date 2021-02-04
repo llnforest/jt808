@@ -10,6 +10,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.eclipse.jetty.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yzh.framework.commons.ClientChannelUtils;
 import org.yzh.framework.commons.MsgUtils;
 import org.yzh.framework.mvc.HandlerInterceptor;
 import org.yzh.framework.mvc.HandlerMapping;
@@ -19,6 +20,7 @@ import org.yzh.framework.session.Session;
 import org.yzh.framework.session.SessionManager;
 import org.yzh.protocol.t808.T0001;
 import org.yzh.protocol.t808.T8100;
+import org.yzh.web.endpoint.WsEndpoint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +58,6 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         Session session = channel.attr(Session.KEY).get();
 //        request.setSession(session);
         long time = session.access();
-
         try {
             Handler handler;
             handler = handlerMapping.getHandler(((AbstractMessage) msg).getMarkId());
@@ -98,7 +99,6 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
 //            String key = String.valueOf(response.getHeader().getSerialNo());
 //            MsgUtils.addMsg(key,response,session);
-
             ctx.writeAndFlush(response);
         }
     }
@@ -111,7 +111,9 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         channel.attr(Session.KEY).set(session);
         // 检查消息，触发重发机制
         MsgUtils.checkMsg(ctx);
+        log.info("channel:{}",session.getChannel());
         log.info(">>>>>终端连接{}", session);
+        ClientChannelUtils.setCtx(ctx);
     }
 
     @Override

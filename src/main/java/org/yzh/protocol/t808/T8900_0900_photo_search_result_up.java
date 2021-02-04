@@ -18,7 +18,7 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
 
     private int type = 0x13;
     private int msgId = 0x0303;
-    private int msgAttr;
+    private int msgAttr = 2;//2需要应答(不加密) 0不需要应答(不加密) 10需要应答(SHA256加密)  8不需要应答(SHA256加密)
     private int packetNo;
     private int dataLength;
     private String terminalNo;
@@ -26,12 +26,21 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
     private int isUp;
     private int needNum;
     private int totalNum;
-    private String photoNum;
+    private String photoNum1;
+    private String photoNum2;
+    private String photoNum3;
 
 
     public T8900_0900_photo_search_result_up() {
     }
 
+    public T8900_0900_photo_search_result_up(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_photo_search_result_up(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
@@ -116,11 +125,29 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
     }
 
     @Field(index = 28, type = DataType.BYTES,length = 10,desc = "照片编号1")
-    public String getPhotoNum() {
-        return photoNum;
+    public String getPhotoNum1() {
+        return photoNum1;
     }
 
-    public void setPhotoNum(String photoNum) {
-        this.photoNum = photoNum;
+    public void setPhotoNum1(String photoNum1) {
+        this.photoNum1 = photoNum1;
+    }
+
+    @Field(index = 28, type = DataType.BYTES,length = 10,desc = "照片编号1")
+    public String getPhotoNum2() {
+        return photoNum2;
+    }
+
+    public void setPhotoNum2(String photoNum2) {
+        this.photoNum2 = photoNum2;
+    }
+
+    @Field(index = 28, type = DataType.BYTES,length = 10,desc = "照片编号1")
+    public String getPhotoNum3() {
+        return photoNum3;
+    }
+
+    public void setPhotoNum3(String photoNum3) {
+        this.photoNum3 = photoNum3;
     }
 }

@@ -44,6 +44,7 @@ public class TCPClient {
             bootstrap.option(NioChannelOption.SO_REUSEADDR, true)
                     .option(NioChannelOption.TCP_NODELAY, true)
                     .option(NioChannelOption.SO_KEEPALIVE, true)
+//                    .option(NioChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(65535))
                     .handler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
                         public void initChannel(NioSocketChannel ch) {

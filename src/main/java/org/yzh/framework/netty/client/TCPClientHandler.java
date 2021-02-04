@@ -38,7 +38,7 @@ public class TCPClientHandler extends ChannelInboundHandlerAdapter {
         try {
             AbstractHeader header = request.getHeader();
 
-            Handler handler = handlerMapping.getHandler(header.getMessageId());
+            Handler handler = handlerMapping.getHandler(((AbstractMessage) msg).getMarkId());
             log.info("handler:{}",handler);
             AbstractMessage messageResponse = handler.invoke(request);
 

@@ -20,7 +20,7 @@ public class T8900_0900_time_up_command extends AbstractMessage<Header> {
 
     private int type = 0x13;
     private int msgId = 0x8205;
-    private int msgAttr;
+    private int msgAttr = 2;//2需要应答(不加密) 0不需要应答(不加密) 10需要应答(SHA256加密)  8不需要应答(SHA256加密)
     private int packetNo;
     private int dataLength;
     private String terminalNo;

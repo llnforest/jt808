@@ -18,9 +18,9 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
 
     private int type = 0x13;
     private int msgId = 0x0503;
-    private int msgAttr;
+    private int msgAttr = 0;//2需要应答(不加密) 0不需要应答(不加密) 10需要应答(SHA256加密)  8不需要应答(SHA256加密)
     private int packetNo;
-    private int dataLength;
+    private int dataLength = 16;
     private String terminalNo;
 
     private int result;
@@ -40,6 +40,13 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
     public T8900_0900_terminal_param_search_answer() {
     }
 
+    public T8900_0900_terminal_param_search_answer(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_terminal_param_search_answer(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {

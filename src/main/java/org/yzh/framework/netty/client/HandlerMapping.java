@@ -1,5 +1,6 @@
 package org.yzh.framework.netty.client;
 
+import org.apache.commons.lang3.StringUtils;
 import org.yzh.framework.commons.ClassUtils;
 import org.yzh.framework.mvc.annotation.Endpoint;
 import org.yzh.framework.mvc.annotation.Mapping;
@@ -49,9 +50,11 @@ public class HandlerMapping {
     }
 
     public Handler getHandler(Integer key) {
-        String value= Integer.toHexString(key);
-        value = String.format("%04d",Integer.parseInt(value));
-        return handlerMap.get("0x"+value);
+        String msgId = "0x"+ StringUtils.leftPad(Integer.toHexString(key),4,"0");
+        return handlerMap.get(msgId);
     }
 
+    public Handler getHandler(String messageId) {
+        return handlerMap.get(messageId);
+    }
 }

@@ -6,6 +6,7 @@ import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.orm.model.DataType;
 import org.yzh.protocol.basics.Header;
 import org.yzh.protocol.commons.JT808;
+import sun.nio.cs.ext.GBK;
 
 /**
  * @author yezhihao
@@ -18,9 +19,9 @@ public class T8900_0900_terminal_status extends AbstractMessage<Header> {
 
     private int type = 0x13;
     private int msgId = 0x8502;
-    private int msgAttr;
+    private int msgAttr = 2;//2需要应答(不加密) 0不需要应答(不加密) 10需要应答(SHA256加密)  8不需要应答(SHA256加密)
     private int packetNo;
-    private int dataLength;
+    private int dataLength = 2;
     private String terminalNo;
 
     private int status;
@@ -111,5 +112,11 @@ public class T8900_0900_terminal_status extends AbstractMessage<Header> {
 
     public void setMsgContent(String msgContent) {
         this.msgContent = msgContent;
+        try{
+            this.msgLength = msgContent.getBytes("GBK").length;
+            this.dataLength += this.msgLength;
+        }catch (Exception ex){
+            this.msgLength = 0;
+        }
     }
 }

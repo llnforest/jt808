@@ -1,13 +1,18 @@
 package org.yzh.framework.netty.websocket;
 
 import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yzh.framework.commons.WsHandlerUtils;
 import org.yzh.framework.netty.TCPServerHandler;
+import org.yzh.web.model.ResponseModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,7 +43,8 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
             String uri = request.uri();
 
             Map paramMap=getUrlParams(uri);
-            System.out.println("接收到的参数是："+ JSON.toJSONString(paramMap));
+//            System.out.println("接收到的参数是："+ JSON.toJSONString(paramMap));
+            log.info("接收到的参数是：{}",JSON.toJSONString(paramMap));
             //如果url包含参数，需要处理
             if(uri.contains("?")){
                 String newUri=uri.substring(0,uri.indexOf("?"));
@@ -49,8 +55,15 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         }else if(msg instanceof TextWebSocketFrame){
             //正常的TEXT消息类型
             TextWebSocketFrame frame=(TextWebSocketFrame)msg;
-            System.out.println("发送给客户端数据：" +frame.text());
-            sendAllMessage(frame.text());
+            log.info("接收到的text是：{}",frame.text());
+            Gson gson = new Gson();
+            Map<String, Object> map = new HashMap<String, Object>();
+            map = gson.fromJson(frame.text(), map.getClass());
+            ResponseModel model = WsHandlerUtils.invokeMethod(String.valueOf(map.get("msgId")),map,ctx.channel());
+            if(model == null){
+                model = new ResponseModel("1","异常请求");
+            }
+            WsHandlerUtils.write(ctx.channel(),model);
         }
         super.channelRead(ctx, msg);
     }

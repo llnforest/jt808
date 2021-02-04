@@ -193,4 +193,14 @@ public class StringUtil {
 		return true;
 	}
 
+
+	public static boolean intArrLookupInt(int[] intArr,int num){
+		for(int i:intArr){
+			if(i == num){
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

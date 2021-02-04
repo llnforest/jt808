@@ -36,7 +36,7 @@ public class ClientTest {
     public static void main(String[] args) {
         System.out.println(tcpClient);
         while (true) {
-            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报 3.注销 4.上行 5.上报学员登录");
+            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报 3.注销 4.上行 5.上报学员登录 6.终端鉴权 7.上报教练员登录 8.教练登出 9.学员登出 10.上报学时记录 11.上报照片查询结果 12.照片上传初始化 13.上传照片数据包");
             while (scanner.hasNext()) {
                 int i = scanner.nextInt();
                 switch (i) {
@@ -50,16 +50,40 @@ public class ClientTest {
                         tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T0100()));//注册
                         break;
                     case 2:
-                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T0200Attributes()));//位置上报
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T0200()));//位置上报
                         break;
                     case 3:
-                        tcpClient.writeObject("1111");//心跳
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T0003()));//注销
                         break;
                     case 4:
                         tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900()));//上行
                         break;
                     case 5:
                         tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900_student_login()));//上报学员登录
+                        break;
+                    case 6:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T0102_2013()));//终端鉴权
+                        break;
+                    case 7:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900_coach_login()));//上报教练员登录
+                        break;
+                    case 8:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900_coach_logout()));//上报教练员登出
+                        break;
+                    case 9:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900_student_logout()));//上报学员登出
+                        break;
+                    case 10:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900_time_up()));//上报学时记录
+                        break;
+                    case 11:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900_photo_search_result_up()));//上报照片查询结果
+                        break;
+                    case 12:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900_photo_up_init()));//照片上传初始化
+                        break;
+                    case 13:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900_photo_up_data()));//上传照片数据包
                         break;
                 }
             }

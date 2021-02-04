@@ -94,18 +94,19 @@ public enum ParameterType {
     Ox0082(0x0082, DataType.WORD, "车辆所在的市域ID"),
     Ox0083(0x0083, DataType.STRING, "公安交通管理部门颁发的机动车号牌"),
     Ox0084(0x0084, DataType.BYTE, "车牌颜色，按照JT/T415-2006的5.4.12"),
+    Ox0085(0x0085, DataType.DWORD, "车辆脉冲系数，车辆行驶1km距离过程中产生的脉冲信号个数");
 
-    Ox0090(0x0090, DataType.BYTE, "定位模式"),
-    Ox0091(0x0091, DataType.BYTE, "波特率"),
-    Ox0092(0x0092, DataType.BYTE, "模块详细定位数据输出频率"),
-    Ox0093(0x0093, DataType.DWORD, "模块详细定位数据采集频率，单位为秒，默认为1"),
-    Ox0094(0x0094, DataType.BYTE, "模块详细定位数据上传方式"),
-    Ox0095(0x0095, DataType.DWORD, "模块详细定位数据上传设置"),
-    Ox0100(0x0100, DataType.DWORD, "总线通道1 采集时间间隔(ms)，0 表示不采集"),
-    Ox0101(0x0101, DataType.WORD, "总线通道1 上传时间间隔(s)，0 表示不上传"),
-    Ox0102(0x0102, DataType.DWORD, "总线通道2 采集时间间隔(ms)，0 表示不采集"),
-    Ox0103(0x0103, DataType.WORD, "总线通道2 上传时间间隔(s)，0 表示不上传"),
-    Ox0110(0x0110, DataType.BYTES, "总线ID 单独采集设置");
+//    Ox0090(0x0090, DataType.BYTE, "定位模式"),
+//    Ox0091(0x0091, DataType.BYTE, "波特率"),
+//    Ox0092(0x0092, DataType.BYTE, "模块详细定位数据输出频率"),
+//    Ox0093(0x0093, DataType.DWORD, "模块详细定位数据采集频率，单位为秒，默认为1"),
+//    Ox0094(0x0094, DataType.BYTE, "模块详细定位数据上传方式"),
+//    Ox0095(0x0095, DataType.DWORD, "模块详细定位数据上传设置"),
+//    Ox0100(0x0100, DataType.DWORD, "总线通道1 采集时间间隔(ms)，0 表示不采集"),
+//    Ox0101(0x0101, DataType.WORD, "总线通道1 上传时间间隔(s)，0 表示不上传"),
+//    Ox0102(0x0102, DataType.DWORD, "总线通道2 采集时间间隔(ms)，0 表示不采集"),
+//    Ox0103(0x0103, DataType.WORD, "总线通道2 上传时间间隔(s)，0 表示不上传"),
+//    Ox0110(0x0110, DataType.BYTES, "总线ID 单独采集设置");
 
     public int id;
     public DataType type;

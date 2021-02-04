@@ -1,6 +1,10 @@
 package org.yzh.web.commons;
 
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
 
@@ -10,7 +14,9 @@ import javax.servlet.ServletContext;
  * @version:V1.0
  * 2017年9月6日  
  */
-public class BeanHelper {
+@Component
+@Lazy(false)
+public class BeanHelper implements ApplicationContextAware {
 	
 	/**
 	 * Spring上下文
@@ -56,9 +62,9 @@ public class BeanHelper {
 		return applicationContext;
 	}
 
-	public static void setApplicationContext(ApplicationContext applicationContext) {
-		BeanHelper.applicationContext = applicationContext;
-	}
+//	public static void setApplicationContext(ApplicationContext applicationContext) {
+//		BeanHelper.applicationContext = applicationContext;
+//	}
 
 	public static ServletContext getServletContext() {
 		return servletContext;
@@ -68,5 +74,9 @@ public class BeanHelper {
 		BeanHelper.servletContext = servletContext;
 	}
 
-	
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		BeanHelper.applicationContext = applicationContext;
+	}
 }

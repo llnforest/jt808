@@ -1,5 +1,6 @@
 package org.yzh.web.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.yzh.web.model.entity.JsClassrecord;
 
@@ -17,5 +18,5 @@ public interface JsClassrecordMapper {
 
     int updateByPrimaryKey(JsClassrecord record);
 
-    JsClassrecord selectByStunum(String stunum,int status);
+    JsClassrecord selectByStunum(@Param("stunum") String stunum,@Param("status") int status);
 }

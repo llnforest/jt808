@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yzh.web.mapper.JsDeviceAuthRecordMapper">
+  <resultMap id="BaseResultMap" type="org.yzh.web.model.entity.JsDeviceAuthRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="devnum" jdbcType="CHAR" property="devnum" />
+    <result column="auth_time" jdbcType="INTEGER" property="authTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <resultMap id="RecordAndDeviceMap" type="org.yzh.web.model.entity.JsDeviceAuthRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="devnum" jdbcType="CHAR" property="devnum" />
+    <result column="auth_time" jdbcType="INTEGER" property="authTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <association property="jsDevice" javaType="org.yzh.web.model.entity.JsDevice">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="inscode" jdbcType="CHAR" property="inscode" />
+      <result column="devnum" jdbcType="CHAR" property="devnum" />
+      <result column="termtype" jdbcType="VARCHAR" property="termtype" />
+      <result column="vender" jdbcType="VARCHAR" property="vender" />
+      <result column="model" jdbcType="VARCHAR" property="model" />
+      <result column="imei" jdbcType="VARCHAR" property="imei" />
+      <result column="sn" jdbcType="VARCHAR" property="sn" />
+      <result column="cert" jdbcType="VARCHAR" property="cert" />
+      <result column="passwd" jdbcType="VARCHAR" property="passwd" />
+      <result column="bind_carnum" jdbcType="CHAR" property="bindCarnum" />
+      <result column="bind_sim" jdbcType="VARCHAR" property="bindSim" />
+      <result column="bind_status" jdbcType="INTEGER" property="bindStatus" />
+      <result column="sync_status" jdbcType="TINYINT" property="syncStatus" />
+      <result column="record_inscode" jdbcType="CHAR" property="recordInscode" />
+      <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+      <result column="city_id" jdbcType="INTEGER" property="cityId" />
+      <result column="vender_id" jdbcType="VARCHAR" property="venderId" />
+      <result column="plate_color" jdbcType="INTEGER" property="plateColor" />
+      <result column="plate_no" jdbcType="VARCHAR" property="plateNo" />
+      <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+      <result column="status" jdbcType="INTEGER" property="status" />
+      <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+      <result column="delete_time" jdbcType="VARCHAR" property="deleteTime" />
+    </association>
+
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, devnum, auth_time, create_time
+  </sql>
+
+  <select id="selectRecordAndDevice" parameterType="java.lang.Integer" resultMap="RecordAndDeviceMap">
+    select * from js_device_auth_record a left join js_device b on a.devnum = b.devnum
+    where a.id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from js_device_auth_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCondition" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from js_device_auth_record
+    <where>
+      <if test="id != null">
+        id = #{id}
+      </if>
+      <if test="devnum != null">
+        and devnum = #{devnum}
+      </if>
+      <if test="authTime != null">
+        and auth_time = #{authTime}
+      </if>
+      <if test="createTime != null">
+        and create_time = #{createTime}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from js_device_auth_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.yzh.web.model.entity.JsDeviceAuthRecord">
+    insert into js_device_auth_record (id, devnum, auth_time, 
+      create_time)
+    values (#{id,jdbcType=INTEGER}, #{devnum,jdbcType=CHAR}, #{authTime,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsDeviceAuthRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into js_device_auth_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+
+      <if test="devnum != null">
+        devnum,
+      </if>
+      <if test="authTime != null">
+        auth_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+      <if test="devnum != null">
+        #{devnum,jdbcType=CHAR},
+      </if>
+      <if test="authTime != null">
+        #{authTime,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.yzh.web.model.entity.JsDeviceAuthRecord">
+    update js_device_auth_record
+    <set>
+      <if test="devnum != null">
+        devnum = #{devnum,jdbcType=CHAR},
+      </if>
+      <if test="authTime != null">
+        auth_time = #{authTime,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.yzh.web.model.entity.JsDeviceAuthRecord">
+    update js_device_auth_record
+    set devnum = #{devnum,jdbcType=CHAR},
+      auth_time = #{authTime,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

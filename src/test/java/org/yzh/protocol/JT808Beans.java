@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.yzh.framework.commons.transform.Bin;
 import org.yzh.framework.orm.annotation.Message;
 import org.yzh.framework.orm.model.AbstractMessage;
-import org.yzh.framework.orm.model.RawMessage;
 import org.yzh.protocol.basics.BytesAttribute;
 import org.yzh.protocol.basics.BytesParameter;
 import org.yzh.protocol.basics.Header;
@@ -15,8 +14,10 @@ import org.yzh.protocol.commons.transform.Attribute;
 import org.yzh.protocol.commons.transform.ParameterType;
 import org.yzh.protocol.commons.transform.attribute.*;
 import org.yzh.protocol.t808.*;
-import org.yzh.web.endpoint.JT808Endpoint;
 
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -100,13 +101,13 @@ public class JT808Beans {
 
     //终端心跳
     public static T0002 T0002() {
-        T0002 bean = new T0002();
-        return bean;
-    }
+        T8900_0900_photo_command result = new T8900_0900_photo_command();
+        result.setPhotoSize(0x04);
 
-    //终端心跳
-    public static T0003 T0003() {
-        T0003 bean = new T0003();
+        log.info("ps:{}",result.getPhotoSize());
+//        log.info("ps2:{}",Integer.valueOf("0x04"));
+        log.info("ps3:{}",Integer.valueOf("0x04".replaceAll("^0[x|X]", ""),16));
+        T0002 bean = new T0002();
         return bean;
     }
 
@@ -115,116 +116,103 @@ public class JT808Beans {
         T0100 bean = new T0100();
         bean.setProvinceId(31);
         bean.setCityId(115);
-        bean.setVenderId("4");
+        bean.setVenderId("2");
         bean.setModel("BSJ-GF-06");
-        bean.setSn("test123");
-        bean.setImei("123131212312321");
+        bean.setSn("R2864WE");
+        bean.setImei("55843262");
         bean.setPlateColor(1);
-        bean.setPlateNo("测A888888");
+        bean.setPlateNo("学X2142");
+        return bean;
+    }
+
+    //终端注销
+    public static T0003 T0003() {
+        T0003 bean = new T0003();
         return bean;
     }
 
     //上报学员登录
     public static T8900_0900_student_login T8900_0900_student_login(){
         T8900_0900_student_login bean = new T8900_0900_student_login();
-        bean.setStudentNo("xueyuan001");
-        bean.setCoachNo("jiaolian001");
+        bean.setTerminalNo("ERu9zzICPFdiyOlV");
+        bean.setStudentNo("E0OzzeesmQnf1lkM");
+        bean.setCoachNo("cbUVQoEts6eJXd8p");
         bean.setClassName("21000");
-        bean.setClassId(55);
+        bean.setClassName("1012010000");
+        bean.setClassId(56);
         return bean;
 
     }
 
+    //上报学员登出
+    public static T8900_0900_student_logout T8900_0900_student_logout(){
+        T8900_0900_student_logout bean = new T8900_0900_student_logout();
+        bean.setTerminalNo("ERu9zzICPFdiyOlV");
+        bean.setStudentNo("E0OzzeesmQnf1lkM");
+        bean.setDateTime(TIME);
+        bean.setTotalKm(4);
+        bean.setTotalTime(20);
+        bean.setClassId(55);
+        return bean;
+    }
+
+    //上报学时记录
+    public static T8900_0900_time_up T8900_0900_time_up(){
+        T8900_0900_time_up bean = new T8900_0900_time_up();
+        bean.setTerminalNo("ERu9zzICPFdiyOlV");
+        bean.setTimeNo("0000000000000000202101270001");
+        bean.setUpType(0x01);
+        bean.setStudentNo("E0OzzeesmQnf1lkM");
+        bean.setCoachNo("cbUVQoEts6eJXd8p");
+        bean.setClassId(1);
+        bean.setAddTime("121101");
+        bean.setClassNum("1212110000");
+        bean.setStatus(0);
+        bean.setSpeed(42);
+        bean.setKm(2);
+        return bean;
+    }
+
+    //上报教练员登录
+    public static T8900_0900_coach_login T8900_0900_coach_login(){
+        T8900_0900_coach_login bean = new T8900_0900_coach_login();
+        bean.setTerminalNo("0");
+        bean.setCoachIdentity("340881199510272853");
+        bean.setCoachNo("457");
+        bean.setCoachType("A1");
+        return bean;
+
+    }
+
+    //上报教练员登出
+    public static T8900_0900_coach_logout T8900_0900_coach_logout(){
+        T8900_0900_coach_logout bean = new T8900_0900_coach_logout();
+        bean.setTerminalNo("0");
+        bean.setCoachNo("457");
+        return bean;
+
+    }
 
     //终端鉴权
     public static T0102 T0102_2013() {
         T0102 bean = new T0102();
+        bean.setTimeStamp(1563271221);
         bean.setToken("pmYGzGukO8K4Z5lpIOTg8dqb3eprYaHBbXSPLtdbyG8=");
-        return bean;
-    }
-
-
-
-    public static T0102 T0102_2019() {
-        T0102 bean = new T0102();
-        bean.setToken("pmYGzGukO8K4Z5lpIOTg8dqb3eprYaHBbXSPLtdbyG8=");
-        bean.setTimeStamp(12345678);
-        return bean;
-    }
-
-    //查询终端参数应答
-    public static T0104 T0104() {
-        T0104 bean = new T0104();
-        bean.setSerialNo(104);
-        ParameterType[] values = ParameterType.values();
-        for (int i = 0; i < 38; i++) {
-            ParameterType p = values[i];
-            switch (p.type) {
-                case BYTE:
-                case WORD:
-                case DWORD:
-                    bean.addParameter(new BytesParameter(p.id, R.nextInt()));
-                default:
-                    bean.addParameter(new BytesParameter(p.id, STR16));
-            }
-        }
-        return bean;
-    }
-
-    //查询终端属性应答
-    public static T0107 T0107() {
-        T0107 bean = new T0107();
-        bean.setDeviceType(127);
-        bean.setMakerId("2D_AN");
-        bean.setDeviceModel("BSJ-GF-06");
-        bean.setDeviceId("5kw3noL");
-        bean.setSimNo("12345678901234567890");
-        bean.setFirmwareVersion("1.1.25");
-        bean.setHardwareVersion("3.0.0");
-        bean.setGnssAttribute(127);
-        bean.setNetworkAttribute(127);
-        return bean;
-    }
-
-    //终端升级结果通知
-    public static T0108 T0108() {
-        T0108 bean = new T0108();
-        bean.setType(T0108.Beidou);
-        bean.setResult(2);
         return bean;
     }
 
     //位置信息汇报
     public static T0200 T0200() {
         T0200 bean = new T0200();
-        bean.setWarningMark(1024);
-        bean.setStatus(2048);
+        log.info("int:{}",Integer.parseInt("1001100110100001010100011100",2));
+        bean.setWarningMark(Integer.parseInt("00001001100110100001010100011100",2));
+        bean.setStatus(Integer.parseInt("100011100",2));
         bean.setLatitude(116307629);
         bean.setLongitude(40058359);
         bean.setDriveSpeed(5);
         bean.setStarSpeed(3);
         bean.setDirection(99);
         bean.setDateTime(TIME);
-        return bean;
-    }
-
-    //位置信息汇报
-    public static T0200 T0200_() {
-        T0200 bean = new T0200();
-        bean.setWarningMark(1024 * 2);
-        bean.setStatus(2048 * 2);
-        bean.setLatitude(116307629 * 2);
-        bean.setLongitude(40058359 * 2);
-        bean.setDriveSpeed(5 * 2);
-        bean.setStarSpeed(3 * 2);
-        bean.setDirection(99 * 2);
-        bean.setDateTime(TIME.plusYears(1));
-        return bean;
-    }
-
-    //位置信息汇报
-    public static T0200 T0200Attributes() {
-        T0200 bean = T0200();
         Map<Integer, Attribute> attributes = new TreeMap();
         attributes.put(Mileage.attributeId, new Mileage(11));
         attributes.put(Oil.attributeId, new Oil(22));
@@ -244,133 +232,59 @@ public class JT808Beans {
         return bean;
     }
 
-    //位置信息查询应答|车辆控制应答
-    public static T0201_0500 T0201_0500() {
-        T0201_0500 bean = new T0201_0500();
-        bean.setWarningMark(10842);
-        bean.setStatus(29736);
-        bean.setLatitude(41957);
-        bean.setLongitude(56143);
-        bean.setDirection(300);
-        bean.setDateTime(TIME);
-        List<BytesAttribute> attributes = new ArrayList<>();
-        attributes.add(new BytesAttribute(1, "123".getBytes()));
+    //上报照片查询结果
+    public static T8900_0900_photo_search_result_up T8900_0900_photo_search_result_up(){
+        T8900_0900_photo_search_result_up bean = new T8900_0900_photo_search_result_up();
+        bean.setTerminalNo("0");
+        bean.setIsUp(1);
+        bean.setNeedNum(5);
+        bean.setNeedNum(3);
+        bean.setPhotoNum1("ph001");
+        bean.setPhotoNum2("ph002");
+        bean.setPhotoNum3("ph003");
         return bean;
     }
 
-    //事件报告
-    public static T0301 T0301() {
-        T0301 bean = new T0301();
-        bean.setEventId(255);
+    //照片上传初始化
+    public static T8900_0900_photo_up_init T8900_0900_photo_up_init(){
+        T8900_0900_photo_up_init bean = new T8900_0900_photo_up_init();
+        bean.setTerminalNo("0");
+        bean.setChannelNo(1);
+        bean.setUpMode(1);
+        bean.setPhotoNum("ph001");
+        bean.setPhotoSize(5);
+        bean.setEventType(1);
+        bean.setTotalPacket(1);
+        bean.setPhotoDataSize(1080);
+        bean.setClassId(1001);
         return bean;
     }
 
-    //提问应答
-    public static T0302 T0302() {
-        T0302 bean = new T0302();
-        bean.setSerialNo(61252);
-        bean.setAnswerId(127);
+    //上传照片数据包
+    public static T8900_0900_photo_up_data T8900_0900_photo_up_data(){
+        T8900_0900_photo_up_data bean = new T8900_0900_photo_up_data();
+        bean.setPhotoNum("ph001");
+        bean.setTerminalNo("0");
+//        File file = new File("F:\\timg.jpg");
+        File file = new File("F:\\demo.txt");
+        byte buf[] = new byte[(int)file.length()];
+        try{
+            FileInputStream fileInputStream = new FileInputStream(file);
+            fileInputStream.read(buf);
+//            FileOutputStream fs=new FileOutputStream("F:\\timg.jpg");
+//            fs.write(buf,0,0);
+//            fs.close();
+            bean.setPhotoData(buf);
+        }catch (IOException ex){
+            log.info("IOException:{}",ex);
+        }
+
         return bean;
     }
 
-    //信息点播_取消
-    public static T0303 T0303() {
-        T0303 bean = new T0303();
-        bean.setType(255);
-        bean.setAction(0);
-        return bean;
-    }
+    //--------------------------------------------------------------
 
-    //驾驶员身份信息采集上报
-    public static T0702 T0702() {
-        T0702 bean = new T0702();
-        bean.setStatus(2);
-        bean.setDateTime("200721183000");
-        bean.setCardStatus(0);
-        bean.setName("张三");
-        bean.setLicenseNo("1234567890123");
-        bean.setInstitution("中华人民共和国道路运输从业人员从业资格证");
-        bean.setLicenseValidPeriod("20190630");
-        return bean;
-    }
 
-    //定位数据批量上传
-    public static T0704 T0704() {
-        T0704 bean = new T0704();
-        bean.setType(1);
-        List<T0704.Item> item = new ArrayList<>();
-        item.add(new T0704.Item(T0200()));
-        item.add(new T0704.Item(T0200_()));
-        item.add(new T0704.Item(T0200()));
-        item.add(new T0704.Item(T0200_()));
-        bean.setItems(item);
-        return bean;
-    }
-
-    //CAN总线数据上传
-    public static T0705 T0705() {
-        T0705 bean = new T0705();
-        bean.setDateTime("235959");
-        List<T0705.Item> items = new ArrayList<>();
-        items.add(new T0705.Item(new byte[]{1, 2, 3, 4}, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}));
-        items.add(new T0705.Item(new byte[]{1, 2, 3, 4}, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}));
-        items.add(new T0705.Item(new byte[]{1, 2, 3, 4}, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}));
-        bean.setItems(items);
-        return bean;
-    }
-
-    //多媒体事件信息上传
-    public static T0800 T0800() {
-        T0800 bean = new T0800();
-        bean.setId(123);
-        bean.setType(0);
-        bean.setFormat(0);
-        bean.setEvent(7);
-        bean.setChannelId(1);
-        return bean;
-    }
-
-    //多媒体数据上传
-    public static T0801 T0801() {
-        T0801 bean = new T0801();
-        bean.setId(123);
-        bean.setType(1);
-        bean.setFormat(2);
-        bean.setEvent(1);
-        bean.setChannelId(2);
-        bean.setPosition(T0200());
-        bean.setPacket(new byte[]{13, 123, 13, 123, 123});
-        return bean;
-    }
-
-    //存储多媒体数据检索应答
-    public static T0802 T0802() {
-        T0802 bean = new T0802();
-        bean.setSerialNo(123);
-        List<T0802.Item> items = new ArrayList<>();
-        items.add(new T0802.Item(1, 1, 1, 1, T0200()));
-        items.add(new T0802.Item(2, 1, 1, 1, T0200_()));
-        items.add(new T0802.Item(3, 1, 1, 1, T0200()));
-        items.add(new T0802.Item(4, 1, 1, 1, T0200_()));
-        bean.setItems(items);
-        return bean;
-    }
-
-    //摄像头立即拍摄命令应答
-    public static T0805 T0805() {
-        T0805 bean = new T0805();
-        bean.setSerialNo(62656);
-        bean.setResult(0);
-        bean.setItems(new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9});
-        return bean;
-    }
-
-    //数据压缩上报
-    public static T0901 T0901() {
-        T0901 bean = new T0901();
-        bean.setBody(new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9});
-        return bean;
-    }
 
     //补传分包请求
     public static T8003 T8003() {
@@ -380,15 +294,6 @@ public class JT808Beans {
         return bean;
     }
 
-    //终端注册应答
-    public static T8100 T8100() {
-//        T8100 bean = new T8100();
-//        bean.setSerialNo(38668);
-//        bean.setResultCode(T8100.Success);
-//        bean.setToken("chwD0SE1fchwD0SE1fchwD0SE1f");
-//        return bean;
-        return null;
-    }
 
     //数据上行透传|数据下行透传
     public static T8900_0900 T8900_0900() {
@@ -423,318 +328,6 @@ public class JT808Beans {
         return bean;
     }
 
-    public static T8900_0900_coach_login t8900_0900_coach_login(){
-        T8900_0900_coach_login bean = new T8900_0900_coach_login();
-        bean.setType(0x13);
-        bean.setMsgId(0x0101);
-        bean.setTerminalNo("100121313Ab000");
-        bean.setCoachNo("000");
-        bean.setCoachIdentity("34242519911221811x");
-        bean.setCoachType("C1");
-        return bean;
-    }
 
 
-    //设置终端参数
-    public static T8103 T8103() {
-        T8103 bean = new T8103();
-        bean.setPacketNum(5);
-        ParameterType[] values = ParameterType.values();
-        for (int i = 0; i < 38; i++) {
-            ParameterType p = values[i];
-            switch (p.type) {
-                case BYTE:
-                case WORD:
-                case DWORD:
-                    bean.addParameter(new BytesParameter(p.id, R.nextInt()));
-                default:
-                    bean.addParameter(new BytesParameter(p.id, STR16));
-            }
-        }
-        return bean;
-    }
-
-    //终端控制
-    public static T8105 T8105() {
-        T8105 bean = new T8105();
-        bean.setCommand(123);
-        bean.setParameter("as;123;zxc;123;");
-        return bean;
-    }
-
-    //查询指定终端参数
-    public static T8106 T8106() {
-        T8106 bean = new T8106();
-        bean.setId(new byte[]{1, 3, 5, 7, 9, 127});
-        return bean;
-    }
-
-    //临时位置跟踪控制
-    public static T8202 T8202() {
-        T8202 bean = new T8202();
-        bean.setInterval(5);
-        bean.setValidityPeriod(600);
-        return bean;
-    }
-
-
-    //下发终端升级包
-    public static T8108 T8108() {
-        T8108 bean = new T8108();
-        bean.setType(T8108.Beidou);
-        bean.setMakerId("asd");
-        bean.setVersion("1.1.12");
-        bean.setPacket(new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9});
-        return bean;
-    }
-
-
-    //人工确认报警消息
-    public static T8203 T8203() {
-        T8203 bean = new T8203();
-        bean.setSerialNo(123);
-        bean.setType(40286);
-        return bean;
-    }
-
-    //提问下发
-    public static T8302 T8302() {
-        T8302 bean = new T8302();
-        List<T8302.Option> options = new ArrayList();
-        bean.buildSign(new int[]{1});
-        bean.setContent("123");
-        bean.setOptions(options);
-        options.add(new T8302.Option(1, "asd1"));
-        options.add(new T8302.Option(2, "zxc2"));
-        return bean;
-    }
-
-    //信息点播菜单设置
-    public static T8303 T8303() {
-        T8303 bean = new T8303();
-        bean.setType(Action.Append);
-        int i = 0;
-        bean.addItem(i++, "军事");
-        bean.addItem(i++, "国内");
-        bean.addItem(i++, "国际");
-        bean.addItem(i++, "股票");
-        bean.addItem(i++, "基金");
-        bean.addItem(i++, "外汇");
-        bean.addItem(i++, "体育");
-        bean.addItem(i++, "娱乐");
-        bean.addItem(i++, "汽车");
-        return bean;
-    }
-
-    //信息服务
-    public static T8304 T8304() {
-        T8304 bean = new T8304();
-        bean.setType(123);
-        bean.setContent("美上将:中国导弹可将关岛\"从地图上移除\"");
-        return bean;
-    }
-
-    //电话回拨
-    public static T8400 T8400() {
-        T8400 bean = new T8400();
-        bean.setType(T8400.Normal);
-        bean.setMobileNo("1234567890123");
-        return bean;
-    }
-
-    //设置电话本
-    public static T8401 T8401() {
-        T8401 bean = new T8401();
-        bean.setType(Action.Append);
-        bean.add(new T8401.Item(2, "18217341802", "张三"));
-        bean.add(new T8401.Item(1, "123123", "李四"));
-        bean.add(new T8401.Item(3, "123123", "王五"));
-        return bean;
-    }
-
-    //车辆控制
-    public static T8500 T8500() {
-        T8500 bean = new T8500();
-        bean.setSign(123);
-        return bean;
-    }
-
-    //设置圆形区域
-    public static T8600 T8600_2013() {
-        T8600 bean = new T8600();
-        bean.setAction(ShapeAction.Modify);
-        List<T8600.Item> items = new ArrayList<>();
-        items.add(new T8600.Item(1, 2, 123123, 112312, 123, "200726000000", "200726232359", 200, 30));
-        items.add(new T8600.Item(2, 2, 123123, 112312, 123, "200726000000", "200726232359", 200, 30));
-        items.add(new T8600.Item(3, 2, 123123, 112312, 123, "200726000000", "200726232359", 200, 30));
-        items.add(new T8600.Item(4, 2, 123123, 112312, 123, "200726000000", "200726232359", 200, 30));
-        items.add(new T8600.Item(5, 2, 123123, 112312, 123, "200726000000", "200726232359", 200, 30));
-        bean.setItems(items);
-        return bean;
-    }
-
-    public static T8600 T8600_2019() {
-        T8600 bean = new T8600();
-        bean.setAction(ShapeAction.Modify);
-        List<T8600.Item> items = new ArrayList<>();
-        items.add(new T8600.Item(1, 2, 123123, 112312, 123, "200726000000", "200726232359", 200, 30, 40, "测试围栏1"));
-        items.add(new T8600.Item(2, 2, 123123, 112312, 123, "200726000000", "200726232359", 200, 30, 40, "测试围栏2"));
-        items.add(new T8600.Item(3, 2, 123123, 112312, 123, "200726000000", "200726232359", 200, 30, 40, "测试围栏3"));
-        items.add(new T8600.Item(4, 2, 123123, 112312, 123, "200726000000", "200726232359", 200, 30, 40, "测试围栏4"));
-        items.add(new T8600.Item(5, 2, 123123, 112312, 123, "200726000000", "200726232359", 200, 30, 40, "测试围栏5"));
-        bean.setItems(items);
-        return bean;
-    }
-
-    //删除圆形区域|删除矩形区域|删除多边形区域
-    public static T8601 T8601() {
-        T8601 bean = new T8601();
-        bean.addItem(1);
-        bean.addItem(2);
-        bean.addItem(3);
-        bean.addItem(65535);
-        return bean;
-    }
-
-    //设置矩形区域
-    public static T8602 T8602() {
-        T8602 bean = new T8602();
-        bean.setAction(ShapeAction.Update);
-        List<T8602.Item> items = new ArrayList<>();
-        items.add(new T8602.Item(1, 2, 123123, 112312, 123123, 112312, "200726000000", "200726232359", 200, 30));
-        items.add(new T8602.Item(2, 2, 123123, 112312, 123123, 112312, "200726000000", "200726232359", 200, 30));
-        items.add(new T8602.Item(3, 2, 123123, 112312, 123123, 112312, "200726000000", "200726232359", 200, 30));
-        items.add(new T8602.Item(4, 2, 123123, 112312, 123123, 112312, "200726000000", "200726232359", 200, 30));
-        items.add(new T8602.Item(5, 2, 123123, 112312, 123123, 112312, "200726000000", "200726232359", 200, 30));
-        bean.setItems(items);
-        return bean;
-    }
-
-    //设置多边形区域
-    public static T8604 T8604() {
-        T8604 bean = new T8604();
-        bean.setId(3);
-        bean.setAttribute(2);
-        bean.setStartTime("200707192359");
-        bean.setEndTime("200707192359");
-        bean.setMaxSpeed(123);
-        bean.setDuration(60);
-        List<T8604.Coordinate> items = new ArrayList<>();
-        items.add(new T8604.Coordinate(123, 345));
-        items.add(new T8604.Coordinate(123, 345));
-        items.add(new T8604.Coordinate(123, 345));
-        items.add(new T8604.Coordinate(123, 345));
-        items.add(new T8604.Coordinate(123, 345));
-        bean.setItems(items);
-        return bean;
-    }
-
-    //设置路线
-    public static T8606 T8606() {
-        T8606 bean = new T8606();
-        bean.setId(59397);
-        bean.setAttribute(65195);
-        bean.setStartTime("201231235959");
-        bean.setEndTime("201231235959");
-        List<T8606.Point> item = new ArrayList<>();
-        item.add(new T8606.Point(1, 1, 123, 123, 1, 2, 3, 4, 5, 6));
-        item.add(new T8606.Point(2, 1, 123, 123, 1, 2, 3, 4, 5, 6));
-        item.add(new T8606.Point(3, 1, 123, 123, 1, 2, 3, 4, 5, 6));
-        item.add(new T8606.Point(4, 1, 123, 123, 1, 2, 3, 4, 5, 6));
-        bean.setItem(item);
-        return bean;
-    }
-
-    //多媒体数据上传应答
-    public static T8800 T8800() {
-        T8800 bean = new T8800();
-        bean.setMediaId(49503);
-        bean.setItems(new byte[]{1, 2, 3, 4, 5, 6, 7, 8, 9});
-        return bean;
-    }
-
-    //摄像头立即拍摄命令
-    public static T8801 T8801() {
-        T8801 bean = new T8801();
-        bean.setChannelId(1);
-        bean.setCommand(2);
-        bean.setTime(3);
-        bean.setSave(1);
-        bean.setResolution(4);
-        bean.setQuality(5);
-        bean.setBrightness(255);
-        bean.setContrast(127);
-        bean.setSaturation(127);
-        bean.setChroma(255);
-        return bean;
-    }
-
-    //存储多媒体数据检索
-    public static T8802 T8802() {
-        T8802 bean = new T8802();
-        bean.setType(0);
-        bean.setChannelId(1);
-        bean.setEvent(3);
-        bean.setEndTime(TIME);
-        bean.setStartTime(TIME);
-        return bean;
-    }
-
-    //存储多媒体数据上传命令
-    public static T8803 T8803() {
-        T8803 bean = new T8803();
-        bean.setType(0);
-        bean.setChannelId(1);
-        bean.setEvent(3);
-        bean.setEndTime(TIME);
-        bean.setStartTime(TIME);
-        bean.setDelete(0);
-        return bean;
-    }
-
-    //录音开始命令
-    public static T8804 T8804() {
-        T8804 bean = new T8804();
-        bean.setCommand(0x01);
-        bean.setTime(6328);
-        bean.setSave(1);
-        bean.setAudioSampleRate(0);
-        return bean;
-    }
-
-    //单条存储多媒体数据检索上传命令
-    public static T8805 T8805() {
-        T8805 bean = new T8805();
-        bean.setId(28410);
-        bean.setDelete(1);
-        return bean;
-    }
-
-
-
-    //事件设置
-    public static T8301 T8301() {
-        T8301 bean = new T8301();
-        bean.setType(Action.Append);
-        bean.addEvent(1, "test");
-        bean.addEvent(2, "测试2");
-        bean.addEvent(3, "t试2");
-        return bean;
-    }
-
-    //文本信息下发
-    public static T8300 T8300_2013() {
-        T8300 bean = new T8300();
-        bean.setSign(Bin.writeInt(1, 1, 1, 1, 1, 1));
-        bean.setContent("测试123@456#abc!...结束");
-        return bean;
-    }
-
-    public static T8300 T8300_2019() {
-        T8300 bean = new T8300();
-        bean.setSign(Bin.writeInt(1, 1, 1, 1, 1, 1));
-        bean.setType(1);
-        bean.setContent("测试123@456#abc!...结束");
-        return bean;
-    }
 }

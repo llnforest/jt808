@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yzh.web.mapper.JsDeviceMapper">
+    <resultMap id="BaseResultMap" type="org.yzh.web.model.entity.JsDevice">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="inscode" jdbcType="CHAR" property="inscode" />
+        <result column="devnum" jdbcType="CHAR" property="devnum" />
+        <result column="termtype" jdbcType="VARCHAR" property="termtype" />
+        <result column="vender" jdbcType="VARCHAR" property="vender" />
+        <result column="model" jdbcType="VARCHAR" property="model" />
+        <result column="imei" jdbcType="VARCHAR" property="imei" />
+        <result column="sn" jdbcType="VARCHAR" property="sn" />
+        <result column="cert" jdbcType="VARCHAR" property="cert" />
+        <result column="passwd" jdbcType="VARCHAR" property="passwd" />
+        <result column="bind_carnum" jdbcType="CHAR" property="bindCarnum" />
+        <result column="bind_sim" jdbcType="VARCHAR" property="bindSim" />
+        <result column="bind_status" jdbcType="INTEGER" property="bindStatus" />
+        <result column="sync_status" jdbcType="TINYINT" property="syncStatus" />
+        <result column="record_inscode" jdbcType="CHAR" property="recordInscode" />
+        <result column="province_id" jdbcType="INTEGER" property="provinceId" />
+        <result column="city_id" jdbcType="INTEGER" property="cityId" />
+        <result column="vender_id" jdbcType="VARCHAR" property="venderId" />
+        <result column="plate_color" jdbcType="INTEGER" property="plateColor" />
+        <result column="plate_no" jdbcType="VARCHAR" property="plateNo" />
+        <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="delete_time" jdbcType="VARCHAR" property="deleteTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, inscode, devnum, termtype, vender, model, imei, sn, cert, passwd, bind_carnum,
+    bind_sim, bind_status, sync_status, record_inscode, province_id, city_id, vender_id,
+    plate_color, plate_no, register_time, status, mobile, create_time, update_time, delete_time
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from js_device
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="isCanRegister" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from js_device
+        where sn = #{sn,jdbcType=VARCHAR} and plate_no = #{plateNo,jdbcType=VARCHAR} and status in (0,2) limit 1
+    </select>
+    <select id="isExistsDev" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from js_device
+        where sn = #{sn,jdbcType=VARCHAR} limit 1
+    </select>
+    <select id="isRegisterDev" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from js_device
+        where sn = #{sn,jdbcType=VARCHAR} and status = 1 limit 1
+    </select>
+    <select id="isExistsCar"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from js_device
+        where plate_color = #{plateColor,jdbcType=INTEGER} and plate_no = #{plateNo,jdbcType=VARCHAR} limit 1
+    </select>
+    <select id="isRegisterCar" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from js_device
+        where plate_color = #{plateColor,jdbcType=INTEGER} and plate_no = #{plateNo,jdbcType=VARCHAR} and status = 1 limit 1
+    </select>
+    <select id="getByMobile" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from js_device
+        where mobile = #{mobile,jdbcType=VARCHAR} and status = 1 limit 1
+    </select>
+    <select id="getByDevnum" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from js_device
+        where devnum = #{devnum,jdbcType=VARCHAR} and status = 1 limit 1
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from js_device
+    where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="org.yzh.web.model.entity.JsDevice">
+    insert into js_device (id, inscode, devnum,
+      termtype, vender, model,
+      imei, sn, cert, passwd,
+      bind_carnum, bind_sim, bind_status,
+      sync_status, record_inscode, province_id,
+      city_id, vender_id, plate_color,
+      plate_no, register_time, status,
+      mobile, create_time, update_time,
+      delete_time)
+    values (#{id,jdbcType=INTEGER}, #{inscode,jdbcType=CHAR}, #{devnum,jdbcType=CHAR},
+      #{termtype,jdbcType=VARCHAR}, #{vender,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR},
+      #{imei,jdbcType=VARCHAR}, #{sn,jdbcType=VARCHAR}, #{cert,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR},
+      #{bindCarnum,jdbcType=CHAR}, #{bindSim,jdbcType=VARCHAR}, #{bindStatus,jdbcType=INTEGER},
+      #{syncStatus,jdbcType=TINYINT}, #{recordInscode,jdbcType=CHAR}, #{provinceId,jdbcType=INTEGER},
+      #{cityId,jdbcType=INTEGER}, #{venderId,jdbcType=VARCHAR}, #{plateColor,jdbcType=INTEGER},
+      #{plateNo,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
+      #{mobile,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{deleteTime,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsDevice">
+        insert into js_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="inscode != null">
+                inscode,
+            </if>
+            <if test="devnum != null">
+                devnum,
+            </if>
+            <if test="termtype != null">
+                termtype,
+            </if>
+            <if test="vender != null">
+                vender,
+            </if>
+            <if test="model != null">
+                model,
+            </if>
+            <if test="imei != null">
+                imei,
+            </if>
+            <if test="sn != null">
+                sn,
+            </if>
+            <if test="cert != null">
+                cert,
+            </if>
+            <if test="passwd != null">
+                passwd,
+            </if>
+            <if test="bindCarnum != null">
+                bind_carnum,
+            </if>
+            <if test="bindSim != null">
+                bind_sim,
+            </if>
+            <if test="bindStatus != null">
+                bind_status,
+            </if>
+            <if test="syncStatus != null">
+                sync_status,
+            </if>
+            <if test="recordInscode != null">
+                record_inscode,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="venderId != null">
+                vender_id,
+            </if>
+            <if test="plateColor != null">
+                plate_color,
+            </if>
+            <if test="plateNo != null">
+                plate_no,
+            </if>
+            <if test="registerTime != null">
+                register_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deleteTime != null">
+                delete_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="inscode != null">
+                #{inscode,jdbcType=CHAR},
+            </if>
+            <if test="devnum != null">
+                #{devnum,jdbcType=CHAR},
+            </if>
+            <if test="termtype != null">
+                #{termtype,jdbcType=VARCHAR},
+            </if>
+            <if test="vender != null">
+                #{vender,jdbcType=VARCHAR},
+            </if>
+            <if test="model != null">
+                #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="imei != null">
+                #{imei,jdbcType=VARCHAR},
+            </if>
+            <if test="sn != null">
+                #{sn,jdbcType=VARCHAR},
+            </if>
+            <if test="cert != null">
+                #{cert,jdbcType=VARCHAR},
+            </if>
+            <if test="passwd != null">
+                #{passwd,jdbcType=VARCHAR},
+            </if>
+            <if test="bindCarnum != null">
+                #{bindCarnum,jdbcType=CHAR},
+            </if>
+            <if test="bindSim != null">
+                #{bindSim,jdbcType=VARCHAR},
+            </if>
+            <if test="bindStatus != null">
+                #{bindStatus,jdbcType=INTEGER},
+            </if>
+            <if test="syncStatus != null">
+                #{syncStatus,jdbcType=TINYINT},
+            </if>
+            <if test="recordInscode != null">
+                #{recordInscode,jdbcType=CHAR},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="venderId != null">
+                #{venderId,jdbcType=VARCHAR},
+            </if>
+            <if test="plateColor != null">
+                #{plateColor,jdbcType=INTEGER},
+            </if>
+            <if test="plateNo != null">
+                #{plateNo,jdbcType=VARCHAR},
+            </if>
+            <if test="registerTime != null">
+                #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                #{deleteTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.yzh.web.model.entity.JsDevice">
+        update js_device
+        <set>
+            <if test="inscode != null">
+                inscode = #{inscode,jdbcType=CHAR},
+            </if>
+            <if test="devnum != null">
+                devnum = #{devnum,jdbcType=CHAR},
+            </if>
+            <if test="termtype != null">
+                termtype = #{termtype,jdbcType=VARCHAR},
+            </if>
+            <if test="vender != null">
+                vender = #{vender,jdbcType=VARCHAR},
+            </if>
+            <if test="model != null">
+                model = #{model,jdbcType=VARCHAR},
+            </if>
+            <if test="imei != null">
+                imei = #{imei,jdbcType=VARCHAR},
+            </if>
+            <if test="sn != null">
+                sn = #{sn,jdbcType=VARCHAR},
+            </if>
+            <if test="cert != null">
+                cert = #{cert,jdbcType=VARCHAR},
+            </if>
+            <if test="passwd != null">
+                passwd = #{passwd,jdbcType=VARCHAR},
+            </if>
+            <if test="bindCarnum != null">
+                bind_carnum = #{bindCarnum,jdbcType=CHAR},
+            </if>
+            <if test="bindSim != null">
+                bind_sim = #{bindSim,jdbcType=VARCHAR},
+            </if>
+            <if test="bindStatus != null">
+                bind_status = #{bindStatus,jdbcType=INTEGER},
+            </if>
+            <if test="syncStatus != null">
+                sync_status = #{syncStatus,jdbcType=TINYINT},
+            </if>
+            <if test="recordInscode != null">
+                record_inscode = #{recordInscode,jdbcType=CHAR},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=INTEGER},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="venderId != null">
+                vender_id = #{venderId,jdbcType=VARCHAR},
+            </if>
+            <if test="plateColor != null">
+                plate_color = #{plateColor,jdbcType=INTEGER},
+            </if>
+            <if test="plateNo != null">
+                plate_no = #{plateNo,jdbcType=VARCHAR},
+            </if>
+            <if test="registerTime != null">
+                register_time = #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deleteTime != null">
+                delete_time = #{deleteTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.yzh.web.model.entity.JsDevice">
+    update js_device
+    set inscode = #{inscode,jdbcType=CHAR},
+      devnum = #{devnum,jdbcType=CHAR},
+      termtype = #{termtype,jdbcType=VARCHAR},
+      vender = #{vender,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      imei = #{imei,jdbcType=VARCHAR},
+      sn = #{sn,jdbcType=VARCHAR},
+      cert = #{cert,jdbcType=VARCHAR},
+      passwd = #{passwd,jdbcType=VARCHAR},
+      bind_carnum = #{bindCarnum,jdbcType=CHAR},
+      bind_sim = #{bindSim,jdbcType=VARCHAR},
+      bind_status = #{bindStatus,jdbcType=INTEGER},
+      sync_status = #{syncStatus,jdbcType=TINYINT},
+      record_inscode = #{recordInscode,jdbcType=CHAR},
+      province_id = #{provinceId,jdbcType=INTEGER},
+      city_id = #{cityId,jdbcType=INTEGER},
+      vender_id = #{venderId,jdbcType=VARCHAR},
+      plate_color = #{plateColor,jdbcType=INTEGER},
+      plate_no = #{plateNo,jdbcType=VARCHAR},
+      register_time = #{registerTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

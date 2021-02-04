@@ -18,18 +18,25 @@ public class T8900_0900_photo_up_data extends AbstractMessage<Header> {
 
     private int type = 0x13;
     private int msgId = 0x0306;
-    private int msgAttr;
+    private int msgAttr = 2;//2需要应答(不加密) 0不需要应答(不加密) 10需要应答(SHA256加密)  8不需要应答(SHA256加密)
     private int packetNo;
     private int dataLength;
     private String terminalNo;
 
     private String photoNum;
-    private Byte[] photoData;
+    private byte[] photoData;
 
 
     public T8900_0900_photo_up_data() {
     }
 
+    public T8900_0900_photo_up_data(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_photo_up_data(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
@@ -95,11 +102,11 @@ public class T8900_0900_photo_up_data extends AbstractMessage<Header> {
     }
 
     @Field(index = 35, type = DataType.BYTES,desc = "照片数据")
-    public Byte[] getPhotoData() {
+    public byte[] getPhotoData() {
         return photoData;
     }
 
-    public void setPhotoData(Byte[] photoData) {
+    public void setPhotoData(byte[] photoData) {
         this.photoData = photoData;
     }
 
