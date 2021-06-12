@@ -20,10 +20,19 @@ public class T8106 extends AbstractMessage<Header> {
     public T8106() {
     }
 
+    public T8106(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.查询指定终端参数.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8106(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.查询指定终端参数.substring(2),16), serialNo, mobileNo));
+    }
+
+
     public T8106(String mobileNo, byte... id) {
         super(new Header(mobileNo, Integer.parseInt(JT808.查询指定终端参数.substring(2),16)));
         this.id = id;
-        this.total = id.length;
+        this.total = id.length/4;
     }
 
     @Field(index = 0, type = DataType.BYTE, desc = "参数总数")
@@ -42,6 +51,6 @@ public class T8106 extends AbstractMessage<Header> {
 
     public void setId(byte[] id) {
         this.id = id;
-        this.total = id.length;
+        this.total = id.length/4;
     }
 }

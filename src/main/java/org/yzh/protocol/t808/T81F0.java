@@ -12,7 +12,7 @@ import org.yzh.protocol.commons.JT808;
  * @home https://gitee.com/yezhihao/jt808-server
  */
 @Message({JT808.平台登录应答})
-public class T8090 extends AbstractMessage<Header> {
+public class T81F0 extends AbstractMessage<Header> {
     private int result_success = 0;//成功
     private int result_error_ip = 1;//IP地址不正确
     private int result_error_platcode = 2;//接入码不正确
@@ -23,9 +23,16 @@ public class T8090 extends AbstractMessage<Header> {
 
     private int result;
 
-    public T8090() {
+    public T81F0() {
     }
 
+    public T81F0(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.查询终端参数应答.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T81F0(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.查询终端参数应答.substring(2),16), serialNo, mobileNo));
+    }
 
     /** 应答结果 */
     @Field(index = 0, type = DataType.BYTE, desc = "应答结果")

@@ -92,7 +92,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -101,7 +101,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTES,length = 10,desc = "照片编号")
+    @Field(index = 27, type = DataType.BYTES,length = 10,desc = "照片编号")
     public String getPhotoNum() {
         return photoNum;
     }
@@ -110,7 +110,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.photoNum = photoNum;
     }
 
-    @Field(index = 35, type = DataType.BYTES,length = 16,desc = "学员或教练员编号")
+    @Field(index = 37, type = DataType.BYTES,length = 16,desc = "学员或教练员编号")
     public String getStudentOrCoachNum() {
         return studentOrCoachNum;
     }
@@ -119,7 +119,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.studentOrCoachNum = studentOrCoachNum;
     }
 
-    @Field(index = 41, type = DataType.BYTE,desc = "上传模式")
+    @Field(index = 43, type = DataType.BYTE,desc = "上传模式")
     public int getUpMode() {
         return upMode;
     }
@@ -128,7 +128,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.upMode = upMode;
     }
 
-    @Field(index = 42, type = DataType.BYTE,desc = "摄像头通道号")
+    @Field(index = 44, type = DataType.BYTE,desc = "摄像头通道号")
     public int getChannelNo() {
         return channelNo;
     }
@@ -137,7 +137,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.channelNo = channelNo;
     }
 
-    @Field(index = 43, type = DataType.BYTE,desc = "图片尺寸")
+    @Field(index = 45, type = DataType.BYTE,desc = "图片尺寸")
     public int getPhotoSize() {
         return photoSize;
     }
@@ -146,7 +146,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.photoSize = photoSize;
     }
 
-    @Field(index = 44, type = DataType.BYTE,desc = "发起图片的事件类型")
+    @Field(index = 46, type = DataType.BYTE,desc = "发起图片的事件类型")
     public int getEventType() {
         return eventType;
     }
@@ -155,7 +155,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.eventType = eventType;
     }
 
-    @Field(index = 45, type = DataType.WORD,desc = "总包数")
+    @Field(index = 47, type = DataType.WORD,desc = "总包数")
     public int getTotalPacket() {
         return totalPacket;
     }
@@ -164,7 +164,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.totalPacket = totalPacket;
     }
 
-    @Field(index = 47, type = DataType.DWORD,desc = "照片数据大小")
+    @Field(index = 49, type = DataType.DWORD,desc = "照片数据大小")
     public int getPhotoDataSize() {
         return photoDataSize;
     }
@@ -173,7 +173,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.photoDataSize = photoDataSize;
     }
 
-    @Field(index = 51, type = DataType.DWORD,desc = "课堂ID")
+    @Field(index = 53, type = DataType.DWORD,desc = "课堂ID")
     public int getClassId() {
         return classId;
     }
@@ -182,7 +182,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.classId = classId;
     }
 
-    @Field(index = 55, type = DataType.OBJ,length = 38,desc = "GNSS数据包")
+    @Field(index = 57, type = DataType.OBJ,length = 38,desc = "GNSS数据包")
     public T0200 getT0200() {
         return t0200;
     }
@@ -191,7 +191,7 @@ public class T8900_0900_photo_up_init extends AbstractMessage<Header> {
         this.t0200 = t0200;
     }
 
-    @Field(index = 93, type = DataType.BYTE,desc = "人脸识别置信度")
+    @Field(index = 95, type = DataType.BYTE,desc = "人脸识别置信度")
     public int getFaceNum() {
         return faceNum;
     }

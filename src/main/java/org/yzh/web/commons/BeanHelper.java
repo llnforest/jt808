@@ -51,7 +51,7 @@ public class BeanHelper implements ApplicationContextAware {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getBean(Class<T> clazz) {
-		return (T) getApplicationContext().getBeansOfType(clazz);
+		return (T) getApplicationContext().getBean(clazz);
 	}
 	
 	

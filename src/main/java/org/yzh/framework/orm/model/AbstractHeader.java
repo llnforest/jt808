@@ -34,18 +34,23 @@ public abstract class AbstractHeader {
     public abstract int getHeadLength();
     /** 消息体长度 */
     public abstract int getBodyLength();
+    /** 获取手机号 */
+    public abstract String getMobileNo();
 
     public abstract void setBodyLength(int bodyLength);
     /** 加密方式 */
     public abstract int getEncryption();
     /** 是否分包 */
     public abstract boolean isSubpackage();
+    public abstract void setSubpackage(boolean subpackage);
     /** 是否有版本 */
     public abstract boolean isVersion();
     /** 包总数 */
     public abstract Integer getPackageTotal();
+    public abstract void setPackageTotal(Integer packageTotal);
     /** 包序号 */
     public abstract Integer getPackageNo();
+    public abstract void setPackageNo(Integer packageNo);
 
     @Override
     public String toString() {

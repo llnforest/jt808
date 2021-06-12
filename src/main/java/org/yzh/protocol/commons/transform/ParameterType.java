@@ -26,19 +26,19 @@ public enum ParameterType {
     Ox0019(0x0019, DataType.DWORD, "服务器UDP端口(2013版)"),
 
 
-    Ox001A(0x001A, DataType.STRING, "道路运输证IC卡认证主服务器IP地址或域名"),
-    Ox001B(0x001B, DataType.DWORD, "道路运输证IC卡认证主服务器TCP端口"),
-    Ox001C(0x001C, DataType.DWORD, "道路运输证IC卡认证主服务器UDP端口"),
-    Ox001D(0x001D, DataType.STRING, "道路运输证IC卡认证主服务器IP地址或域名，端口同主服务器"),
+//    Ox001A(0x001A, DataType.STRING, "道路运输证IC卡认证主服务器IP地址或域名"),
+//    Ox001B(0x001B, DataType.DWORD, "道路运输证IC卡认证主服务器TCP端口"),
+//    Ox001C(0x001C, DataType.DWORD, "道路运输证IC卡认证主服务器UDP端口"),
+//    Ox001D(0x001D, DataType.STRING, "道路运输证IC卡认证主服务器IP地址或域名，端口同主服务器"),
 
     Ox0020(0x0020, DataType.DWORD, "位置汇报策略，0：定时汇报；1：定距汇报；2：定时和定距汇报"),
     Ox0021(0x0021, DataType.DWORD, "位置汇报方案，0：根据ACC状态；1：根据登录状态和ACC状态，先判断登录状态，若登录再根据ACC状态"),
     Ox0022(0x0022, DataType.DWORD, "驾驶员未登录汇报时间间隔，单位为秒(s),>0"),
 
-    Ox0023(0x0023, DataType.STRING, "从服务器APN。该值为空时，终端应使用主服务器相同配置"),
-    Ox0024(0x0024, DataType.STRING, "从服务器无线通信拨号用户名。该值为空时，终端应使用主服务器相同配置"),
-    Ox0025(0x0025, DataType.STRING, "从服务器无线通信拨号密码。该值为空时，终端应使用主服务器相同配置"),
-    Ox0026(0x0026, DataType.STRING, "从服务器备份地址、IP或域名。主服务器IP地址或域名，端口同主服务器"),
+//    Ox0023(0x0023, DataType.STRING, "从服务器APN。该值为空时，终端应使用主服务器相同配置"),
+//    Ox0024(0x0024, DataType.STRING, "从服务器无线通信拨号用户名。该值为空时，终端应使用主服务器相同配置"),
+//    Ox0025(0x0025, DataType.STRING, "从服务器无线通信拨号密码。该值为空时，终端应使用主服务器相同配置"),
+//    Ox0026(0x0026, DataType.STRING, "从服务器备份地址、IP或域名。主服务器IP地址或域名，端口同主服务器"),
 
     Ox0027(0x0027, DataType.DWORD, "休眠时汇报时间间隔，单位为秒(s),>0"),
     Ox0028(0x0028, DataType.DWORD, "紧急报警时汇报时间间隔，单位为秒(s),>0"),
@@ -49,8 +49,8 @@ public enum ParameterType {
     Ox002E(0x002E, DataType.DWORD, "休眠时汇报距离间隔，单位为米(m),>0"),
     Ox002F(0x002F, DataType.DWORD, "紧急报警时汇报距离间隔，单位为米(m),>0"),
     Ox0030(0x0030, DataType.DWORD, "拐点补传角度，<180°"),
-    Ox0031(0x0031, DataType.WORD, "电子围栏半径，单位为米"),
-    Ox0032(0x0032, DataType.BYTES, "违规行驶时段范围，精确到分"),
+//    Ox0031(0x0031, DataType.WORD, "电子围栏半径，单位为米"),
+//    Ox0032(0x0032, DataType.BYTES, "违规行驶时段范围，精确到分"),
 
     Ox0040(0x0040, DataType.STRING, "监控平台电话号码"),
     Ox0041(0x0041, DataType.STRING, "复位电话号码，可采用此电话号码拨打终端电话让终端复位"),
@@ -75,13 +75,13 @@ public enum ParameterType {
     Ox0059(0x0059, DataType.DWORD, "最小休息时间，单位为秒(s)"),
     Ox005A(0x005A, DataType.DWORD, "最长停车时间，单位为秒(s)"),
 
-    Ox005B(0x005B, DataType.DWORD, "超速预警差值"),
-    Ox005C(0x005C, DataType.DWORD, "疲劳驾驶预警插值"),
-    Ox005D(0x005D, DataType.DWORD, "碰撞报警参数"),
-    Ox005E(0x005E, DataType.DWORD, "侧翻报警参数"),
-
-    Ox0064(0x0064, DataType.DWORD, "定时拍照参数"),
-    Ox0065(0x0065, DataType.DWORD, "定时拍照参数"),
+//    Ox005B(0x005B, DataType.DWORD, "超速预警差值"),
+//    Ox005C(0x005C, DataType.DWORD, "疲劳驾驶预警插值"),
+//    Ox005D(0x005D, DataType.DWORD, "碰撞报警参数"),
+//    Ox005E(0x005E, DataType.DWORD, "侧翻报警参数"),
+//
+//    Ox0064(0x0064, DataType.DWORD, "定时拍照参数"),
+//    Ox0065(0x0065, DataType.DWORD, "定时拍照参数"),
 
     Ox0070(0x0070, DataType.DWORD, "图像/视频质量，1-10,1最好"),
     Ox0071(0x0071, DataType.DWORD, "亮度，0-255"),

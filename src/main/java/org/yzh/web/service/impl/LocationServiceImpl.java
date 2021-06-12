@@ -113,7 +113,8 @@ public class LocationServiceImpl implements LocationService {
             JsDevice device =  jsDeviceMapper.getByMobile(mobileNo);
             if (device != null) {
                 deviceId = device.getDevnum();
-                plateNo = device.getPlateNo();
+//                plateNo = device.getPlateNo();
+                plateNo = "";
             }
 
             JstLocationDO location = new JstLocationDO();

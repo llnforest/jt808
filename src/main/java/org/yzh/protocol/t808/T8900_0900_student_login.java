@@ -35,6 +35,14 @@ public class T8900_0900_student_login extends AbstractMessage<Header> {
     public T8900_0900_student_login() {
     }
 
+    public T8900_0900_student_login(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_student_login(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
+
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
@@ -81,7 +89,7 @@ public class T8900_0900_student_login extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -91,7 +99,7 @@ public class T8900_0900_student_login extends AbstractMessage<Header> {
     }
 
 
-    @Field(index = 25, type = DataType.BYTES,length = 16, desc = "学员编号")
+    @Field(index = 27, type = DataType.BYTES,length = 16, desc = "学员编号")
     public String getStudentNo() {
         return studentNo;
     }
@@ -99,7 +107,7 @@ public class T8900_0900_student_login extends AbstractMessage<Header> {
     public void setStudentNo(String studentNo) {
         this.studentNo = studentNo;
     }
-    @Field(index = 41, type = DataType.BYTES,length = 16,desc = "教练员编号")
+    @Field(index = 43, type = DataType.BYTES,length = 16,desc = "教练员编号")
     public String getCoachNo() {
         return coachNo;
     }
@@ -108,7 +116,7 @@ public class T8900_0900_student_login extends AbstractMessage<Header> {
         this.coachNo = coachNo;
     }
 
-    @Field(index = 57, type = DataType.BCD8421,length = 5, desc = "培训课程")
+    @Field(index = 59, type = DataType.BCD8421,length = 5, desc = "培训课程")
     public String getClassName() {
         return className;
     }
@@ -117,7 +125,7 @@ public class T8900_0900_student_login extends AbstractMessage<Header> {
         this.className = className;
     }
 
-    @Field(index = 62, type = DataType.DWORD,desc = "课堂ID")
+    @Field(index = 64, type = DataType.DWORD,desc = "课堂ID")
     public int getClassId() {
         return classId;
     }
@@ -127,7 +135,7 @@ public class T8900_0900_student_login extends AbstractMessage<Header> {
     }
 
 
-    @Field(index = 66, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
+    @Field(index = 68, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
     public T0200 getT0200() {
         return t0200;
     }

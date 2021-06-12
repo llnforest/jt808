@@ -14,6 +14,7 @@ import org.yzh.protocol.commons.transform.Attribute;
 import org.yzh.protocol.commons.transform.ParameterType;
 import org.yzh.protocol.commons.transform.attribute.*;
 import org.yzh.protocol.t808.*;
+import org.yzh.web.sign.Sign;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -117,11 +118,11 @@ public class JT808Beans {
         bean.setProvinceId(31);
         bean.setCityId(115);
         bean.setVenderId("2");
-        bean.setModel("BSJ-GF-06");
-        bean.setSn("R2864WE");
-        bean.setImei("55843262");
+        bean.setModel("普通桑塔纳");
+        bean.setSn("DE158QW");
+        bean.setImei("ED323434");
         bean.setPlateColor(1);
-        bean.setPlateNo("学X2142");
+        bean.setPlateNo("苏E7G16学");
         return bean;
     }
 
@@ -196,8 +197,11 @@ public class JT808Beans {
     //终端鉴权
     public static T0102 T0102_2013() {
         T0102 bean = new T0102();
-        bean.setTimeStamp(1563271221);
-        bean.setToken("pmYGzGukO8K4Z5lpIOTg8dqb3eprYaHBbXSPLtdbyG8=");
+        long timeStamp = 1619573078000L;
+        bean.setTimeStamp(timeStamp);
+        Sign sign = new Sign();
+//        sign.signTest("absckedda",timeStamp,,"e2");
+        bean.setToken("FF6823FF041853F9FF2014F7F4FF64574029F2F242FFFFF4FFFFFFFFFF52FF65FFF2FF77F508FF97564487F3FFFFFFFF56F6FFFF26FF0342FFFF42FFFF7840156109F0FFFFF7FFF1F8FFF9FFFF70F8FFFFFFFFF19411FFFF01588237FF07F5FFF0FF50FF15FFF1FFFF05F3FFFFFFF3FFF411FF89FF199517FF56FF308248FF65FFF2FFF6FFFF99FF96FF53FFFFFFFFFFFF15FF72F7FFFFFFFFF678F3F554FF30F468FFFFFFFF23F7FFF3F1F91076F09693F399FFFF46F594F6FFFFF5FFF711F1FF13FF49F3F120F014FFFF85FFFFFFFFFFF063F92137209620FFF69330FFFFFF92F1FFF337FFFFF6FFF50827FF56FFFF329305F892FFFF15F681FF99470419F5".getBytes());
         return bean;
     }
 

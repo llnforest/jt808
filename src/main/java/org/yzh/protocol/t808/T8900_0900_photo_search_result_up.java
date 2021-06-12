@@ -87,7 +87,7 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -97,7 +97,7 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
     }
 
 
-    @Field(index = 25, type = DataType.BYTE,desc = "是否上报结束")
+    @Field(index = 27, type = DataType.BYTE,desc = "是否上报结束")
     public int getIsUp() {
         return isUp;
     }
@@ -106,7 +106,7 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
         this.isUp = isUp;
     }
 
-    @Field(index = 26, type = DataType.BYTE,desc = "符合条件的照片总数")
+    @Field(index = 28, type = DataType.BYTE,desc = "符合条件的照片总数")
     public int getNeedNum() {
         return needNum;
     }
@@ -115,7 +115,7 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
         this.needNum = needNum;
     }
 
-    @Field(index = 27, type = DataType.BYTE,desc = "此次发送的照片数目")
+    @Field(index = 29, type = DataType.BYTE,desc = "此次发送的照片数目")
     public int getTotalNum() {
         return totalNum;
     }
@@ -124,7 +124,7 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
         this.totalNum = totalNum;
     }
 
-    @Field(index = 28, type = DataType.BYTES,length = 10,desc = "照片编号1")
+    @Field(index = 30, type = DataType.BYTES,length = 10,desc = "照片编号1")
     public String getPhotoNum1() {
         return photoNum1;
     }
@@ -133,7 +133,7 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
         this.photoNum1 = photoNum1;
     }
 
-    @Field(index = 28, type = DataType.BYTES,length = 10,desc = "照片编号1")
+    @Field(index = 40, type = DataType.BYTES,length = 10,desc = "照片编号1")
     public String getPhotoNum2() {
         return photoNum2;
     }
@@ -142,7 +142,7 @@ public class T8900_0900_photo_search_result_up extends AbstractMessage<Header> {
         this.photoNum2 = photoNum2;
     }
 
-    @Field(index = 28, type = DataType.BYTES,length = 10,desc = "照片编号1")
+    @Field(index = 50, type = DataType.BYTES,length = 10,desc = "照片编号1")
     public String getPhotoNum3() {
         return photoNum3;
     }

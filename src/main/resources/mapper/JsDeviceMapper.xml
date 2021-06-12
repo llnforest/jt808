@@ -17,22 +17,15 @@
         <result column="bind_status" jdbcType="INTEGER" property="bindStatus" />
         <result column="sync_status" jdbcType="TINYINT" property="syncStatus" />
         <result column="record_inscode" jdbcType="CHAR" property="recordInscode" />
-        <result column="province_id" jdbcType="INTEGER" property="provinceId" />
-        <result column="city_id" jdbcType="INTEGER" property="cityId" />
-        <result column="vender_id" jdbcType="VARCHAR" property="venderId" />
-        <result column="plate_color" jdbcType="INTEGER" property="plateColor" />
-        <result column="plate_no" jdbcType="VARCHAR" property="plateNo" />
         <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
         <result column="status" jdbcType="INTEGER" property="status" />
-        <result column="mobile" jdbcType="VARCHAR" property="mobile" />
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
         <result column="delete_time" jdbcType="VARCHAR" property="deleteTime" />
     </resultMap>
     <sql id="Base_Column_List">
     id, inscode, devnum, termtype, vender, model, imei, sn, cert, passwd, bind_carnum,
-    bind_sim, bind_status, sync_status, record_inscode, province_id, city_id, vender_id,
-    plate_color, plate_no, register_time, status, mobile, create_time, update_time, delete_time
+    bind_sim, bind_status, sync_status, record_inscode, register_time, status, create_time, update_time, delete_time
   </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -45,37 +38,37 @@
         select
         <include refid="Base_Column_List" />
         from js_device
-        where sn = #{sn,jdbcType=VARCHAR} and plate_no = #{plateNo,jdbcType=VARCHAR} and status in (0,2) limit 1
+        where sn = #{sn,jdbcType=VARCHAR} and bind_sim = #{bindSim,jdbcType=VARCHAR} and delete_time = "0" limit 1
     </select>
-    <select id="isExistsDev" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from js_device
-        where sn = #{sn,jdbcType=VARCHAR} limit 1
-    </select>
-    <select id="isRegisterDev" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from js_device
-        where sn = #{sn,jdbcType=VARCHAR} and status = 1 limit 1
-    </select>
-    <select id="isExistsCar"  resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from js_device
-        where plate_color = #{plateColor,jdbcType=INTEGER} and plate_no = #{plateNo,jdbcType=VARCHAR} limit 1
-    </select>
+    <!--<select id="isExistsDev" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+        <!--select-->
+        <!--<include refid="Base_Column_List" />-->
+        <!--from js_device-->
+        <!--where sn = #{sn,jdbcType=VARCHAR} limit 1-->
+    <!--</select>-->
+    <!--<select id="isRegisterDev" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+        <!--select-->
+        <!--<include refid="Base_Column_List" />-->
+        <!--from js_device-->
+        <!--where sn = #{sn,jdbcType=VARCHAR} and status = 1 limit 1-->
+    <!--</select>-->
+    <!--<select id="isExistsCar"  resultMap="BaseResultMap">-->
+        <!--select-->
+        <!--<include refid="Base_Column_List" />-->
+        <!--from js_device-->
+        <!--where plate_color = #{plateColor,jdbcType=INTEGER} and bind_carnum = #{bindCarnum,jdbcType=VARCHAR} limit 1-->
+    <!--</select>-->
     <select id="isRegisterCar" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from js_device
-        where plate_color = #{plateColor,jdbcType=INTEGER} and plate_no = #{plateNo,jdbcType=VARCHAR} and status = 1 limit 1
+        where bind_carnum = #{bindCarnum,jdbcType=VARCHAR} and status = 1 limit 1
     </select>
     <select id="getByMobile" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from js_device
-        where mobile = #{mobile,jdbcType=VARCHAR} and status = 1 limit 1
+        where bind_sim = #{bindSim,jdbcType=VARCHAR} and status = 1 limit 1
     </select>
     <select id="getByDevnum" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -92,10 +85,8 @@
       termtype, vender, model,
       imei, sn, cert, passwd,
       bind_carnum, bind_sim, bind_status,
-      sync_status, record_inscode, province_id,
-      city_id, vender_id, plate_color,
-      plate_no, register_time, status,
-      mobile, create_time, update_time,
+      sync_status, record_inscode, register_time, status,
+      create_time, update_time,
       delete_time)
     values (#{id,jdbcType=INTEGER}, #{inscode,jdbcType=CHAR}, #{devnum,jdbcType=CHAR},
       #{termtype,jdbcType=VARCHAR}, #{vender,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR},
@@ -104,7 +95,7 @@
       #{syncStatus,jdbcType=TINYINT}, #{recordInscode,jdbcType=CHAR}, #{provinceId,jdbcType=INTEGER},
       #{cityId,jdbcType=INTEGER}, #{venderId,jdbcType=VARCHAR}, #{plateColor,jdbcType=INTEGER},
       #{plateNo,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
-      #{mobile,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
       #{deleteTime,jdbcType=VARCHAR})
   </insert>
     <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsDevice">
@@ -155,29 +146,11 @@
             <if test="recordInscode != null">
                 record_inscode,
             </if>
-            <if test="provinceId != null">
-                province_id,
-            </if>
-            <if test="cityId != null">
-                city_id,
-            </if>
-            <if test="venderId != null">
-                vender_id,
-            </if>
-            <if test="plateColor != null">
-                plate_color,
-            </if>
-            <if test="plateNo != null">
-                plate_no,
-            </if>
             <if test="registerTime != null">
                 register_time,
             </if>
             <if test="status != null">
                 status,
-            </if>
-            <if test="mobile != null">
-                mobile,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -235,29 +208,11 @@
             <if test="recordInscode != null">
                 #{recordInscode,jdbcType=CHAR},
             </if>
-            <if test="provinceId != null">
-                #{provinceId,jdbcType=INTEGER},
-            </if>
-            <if test="cityId != null">
-                #{cityId,jdbcType=INTEGER},
-            </if>
-            <if test="venderId != null">
-                #{venderId,jdbcType=VARCHAR},
-            </if>
-            <if test="plateColor != null">
-                #{plateColor,jdbcType=INTEGER},
-            </if>
-            <if test="plateNo != null">
-                #{plateNo,jdbcType=VARCHAR},
-            </if>
             <if test="registerTime != null">
                 #{registerTime,jdbcType=TIMESTAMP},
             </if>
             <if test="status != null">
                 #{status,jdbcType=INTEGER},
-            </if>
-            <if test="mobile != null">
-                #{mobile,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
@@ -315,29 +270,11 @@
             <if test="recordInscode != null">
                 record_inscode = #{recordInscode,jdbcType=CHAR},
             </if>
-            <if test="provinceId != null">
-                province_id = #{provinceId,jdbcType=INTEGER},
-            </if>
-            <if test="cityId != null">
-                city_id = #{cityId,jdbcType=INTEGER},
-            </if>
-            <if test="venderId != null">
-                vender_id = #{venderId,jdbcType=VARCHAR},
-            </if>
-            <if test="plateColor != null">
-                plate_color = #{plateColor,jdbcType=INTEGER},
-            </if>
-            <if test="plateNo != null">
-                plate_no = #{plateNo,jdbcType=VARCHAR},
-            </if>
             <if test="registerTime != null">
                 register_time = #{registerTime,jdbcType=TIMESTAMP},
             </if>
             <if test="status != null">
                 status = #{status,jdbcType=INTEGER},
-            </if>
-            <if test="mobile != null">
-                mobile = #{mobile,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -367,14 +304,8 @@
       bind_status = #{bindStatus,jdbcType=INTEGER},
       sync_status = #{syncStatus,jdbcType=TINYINT},
       record_inscode = #{recordInscode,jdbcType=CHAR},
-      province_id = #{provinceId,jdbcType=INTEGER},
-      city_id = #{cityId,jdbcType=INTEGER},
-      vender_id = #{venderId,jdbcType=VARCHAR},
-      plate_color = #{plateColor,jdbcType=INTEGER},
-      plate_no = #{plateNo,jdbcType=VARCHAR},
       register_time = #{registerTime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=INTEGER},
-      mobile = #{mobile,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       delete_time = #{deleteTime,jdbcType=VARCHAR}

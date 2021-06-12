@@ -82,7 +82,7 @@ public class T8900_0900_terminal_set_answer extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -92,7 +92,7 @@ public class T8900_0900_terminal_set_answer extends AbstractMessage<Header> {
     }
 
 
-    @Field(index = 25, type = DataType.BYTE,desc = "执行结果")
+    @Field(index = 27, type = DataType.BYTE,desc = "执行结果")
     public int getResult() {
         return result;
     }

@@ -1,5 +1,6 @@
 package org.yzh.web.service.impl;
 
+import com.mysql.cj.util.Base64Decoder;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,15 +9,27 @@ import org.springframework.stereotype.Service;
 import org.yzh.protocol.t808.T0100;
 import org.yzh.protocol.t808.T0102;
 import org.yzh.protocol.t808.T8100;
+import org.yzh.web.commons.BeanHelper;
 import org.yzh.web.commons.EncryptUtils;
 import org.yzh.web.mapper.JsDeviceAuthRecordMapper;
 import org.yzh.web.mapper.JsDeviceMapper;
+import org.yzh.web.mapper.JsPlatInfoMapper;
+import org.yzh.web.mapper.JsTrainingcarMapper;
 import org.yzh.web.model.entity.JsDevice;
 import org.yzh.web.model.entity.JsDeviceAuthRecord;
+import org.yzh.web.model.entity.JsPlatInfo;
+import org.yzh.web.model.entity.JsTrainingcar;
 import org.yzh.web.service.DeviceService;
+import org.yzh.web.sign.IVerify;
+import org.yzh.web.sign.Sign;
+import org.yzh.web.sign.Verify;
 
+import java.io.ByteArrayInputStream;
+import java.security.KeyStore;
+import java.security.cert.X509Certificate;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 @Service
@@ -28,47 +41,60 @@ public class DeviceServiceImpl implements DeviceService {
     private JsDeviceMapper jsDeviceMapper;
 
     @Autowired
+    private JsTrainingcarMapper jsTrainingcarMapper;
+
+    @Autowired
     private JsDeviceAuthRecordMapper jsDeviceAuthRecordMapper;
+
+    @Autowired
+    private JsPlatInfoMapper jsPlatInfoMapper;
 
     @Override
     public T8100 register(T0100 request,T8100 t8100) {
+
         String sn = request.getSn();
-        String plateNo = request.getPlateNo();
-        t8100.setResultCode(T8100.Success);
+        String licnum = request.getPlateNo();
+        String plateColor = String.valueOf(request.getPlateColor());
+
         //判断终端是否存在
-        JsDevice jsDevice = jsDeviceMapper.isExistsDev(sn);
-        if(jsDevice == null && t8100.getResultCode() == t8100.Success){
-            //终端不存在
-            t8100.setResultCode(t8100.NotFoundTerminal);
+        JsDevice jsDevice = jsDeviceMapper.isCanRegister(sn,request.getHeader().getMobileNo());
+        if(jsDevice == null){
+            t8100.setResultCode(t8100.NotFoundTerminal);//终端不存在
+            return t8100;
         }
+
         //判断终端是否注册
-        jsDevice = jsDeviceMapper.isRegisterDev(sn);
-        if(jsDevice != null && t8100.getResultCode() == t8100.Success){
-            //终端已注册
-            t8100.setResultCode(t8100.AlreadyRegisteredTerminal);
+        if(jsDevice.getStatus() == 1){
+            t8100.setResultCode(t8100.AlreadyRegisteredTerminal);//终端已注册
+            return t8100;
         }
-        jsDevice = jsDeviceMapper.isExistsCar(request.getPlateColor(),plateNo);
-        if(jsDevice == null && t8100.getResultCode() == t8100.Success){
-            //车辆不存在
-            t8100.setResultCode(t8100.NotFoundVehicle);
+
+        //判断车辆是否存在
+        JsTrainingcar carRecord = new JsTrainingcar();
+        carRecord.setPlatecolor(plateColor);
+        carRecord.setLicnum(licnum);
+        JsTrainingcar jsTrainingcar = jsTrainingcarMapper.find(carRecord);
+        if(jsTrainingcar == null || !jsTrainingcar.getCarnum().equals(jsDevice.getBindCarnum())){
+            t8100.setResultCode(t8100.NotFoundVehicle);//车辆不存在
+            return t8100;
         }
-        jsDevice = jsDeviceMapper.isRegisterCar(request.getPlateColor(),plateNo);
-        if(jsDevice != null && t8100.getResultCode() == t8100.Success){
-            //车辆已注册
-            t8100.setResultCode(t8100.AlreadyRegisteredVehicle);
+
+        //判断车辆是否注册
+        JsDevice isCarRegister = jsDeviceMapper.isRegisterCar(jsTrainingcar.getCarnum());
+        if(isCarRegister != null && t8100.getResultCode() == t8100.Success){
+            t8100.setResultCode(t8100.AlreadyRegisteredVehicle);//车辆已注册
+            return t8100;
         }
-        jsDevice = jsDeviceMapper.isCanRegister(sn,plateNo);
-        if(jsDevice == null && t8100.getResultCode() == t8100.Success){
-            //终端不存在
-            t8100.setResultCode(t8100.NotFoundTerminal);
-        }
-        if(t8100.getResultCode() != t8100.Success) return t8100;
 
         jsDevice.setStatus(1);
         jsDevice.setRegisterTime(new Date());
-        log.info("ok");
         jsDeviceMapper.updateByPrimaryKeySelective(jsDevice);
-        t8100.setPlatNum("aaa");
+        t8100.setResultCode(T8100.Success);
+
+        JsPlatInfo jsPlatInfo = jsPlatInfoMapper.selectByPrimaryKey(1);
+        t8100.setPlatNum(jsPlatInfo.getPlatNum());
+
+
         t8100.setInscode(jsDevice.getInscode());
         t8100.setDevnum(jsDevice.getDevnum());
         t8100.setCertSign(jsDevice.getPasswd());
@@ -79,42 +105,61 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public Boolean authentication(T0102 request) {
-        String token = request.getToken();
-        byte[] bytes;
+//        String token = request.getToken();
+        byte[] bytes = request.getToken();
+//        String token = new String(bytes);
+//            log.info(token);
+
+//        log.info("16进制字符串:",byte2HexStrNoSpace(bytes));
 //        try {
             //解密获得devnum
-            bytes = Base64.getDecoder().decode(token);
-            bytes = EncryptUtils.decrypt(bytes);
-            String devnum = "aaa";
+
+//            bytes = Base64.getDecoder().decode(token);
+//            bytes = EncryptUtils.decrypt(bytes);
+            String mobile = request.getHeader().getMobileNo();
+            JsDevice jsDevice = jsDeviceMapper.getByMobile(mobile);
 
 //            List<JsDeviceAuthRecord> list = jsDeviceAuthRecordMapper.selectRecordAndDevice(1);
 //            JsDeviceAuthRecord listOne = CollectionUtils.isNotEmpty(list)?list.get(0):null;
 //            log.info("mobilePhone:{}",listOne.getJsDevice().getMobile());
 
-            JsDevice jsDevice = jsDeviceMapper.getByDevnum(devnum);
             log.info("js:{}",jsDevice);
-            if(jsDevice == null || jsDevice.getStatus() != 1){
+            if(jsDevice == null){
                 return false;
             }
+            String devnum = jsDevice.getDevnum();
             JsDeviceAuthRecord condition = new JsDeviceAuthRecord();
             condition.setDevnum(devnum);
-            condition.setAuthTime(request.getTimeStamp());
+            condition.setAuthTime(String.valueOf(request.getTimeStamp()));
             List<JsDeviceAuthRecord> selectList = jsDeviceAuthRecordMapper.selectByCondition(condition);
             if(CollectionUtils.isNotEmpty(selectList)) return false;
-            log.info("selectList:{}",selectList);
-            JsDeviceAuthRecord selectOne = CollectionUtils.isNotEmpty(selectList)?selectList.get(0):null;
-            log.info("selectOne:{}",selectOne);
-            log.info("dev:{}",selectOne.getDevnum());
-//            log.info("mobilePhone:{}",selectOne.getJsDevice().getMobile());
+            try{
+                String cadata = jsDevice.getCert();
+                char[] password = jsDevice.getPasswd().toCharArray();
+                byte [] cabuf = Base64Decoder.decode(cadata.getBytes(), 0, cadata.length());
+                KeyStore keyStore = KeyStore.getInstance("PKCS12");
+                keyStore.load(new ByteArrayInputStream(cabuf), password);
+                Enumeration<String> aliases = keyStore.aliases();
+                if (!aliases.hasMoreElements()) {
+                    throw new RuntimeException("no alias found");
+                }
+                String alias = aliases.nextElement();
+                X509Certificate cert = (X509Certificate) keyStore.getCertificate(alias);
+                IVerify verify = new Verify();
+                boolean ok = verify.verify(devnum, request.getTimeStamp(), bytes, cert,"e2");
+                log.info("ok:{}",ok);
+                if(!ok) return ok;
+            }catch(Exception e){
+                log.info("异常：{},{}",e.getMessage(),e.getStackTrace());
+                return false;
+            }
 
 
             JsDeviceAuthRecord record = new JsDeviceAuthRecord();
-            record.setAuthTime(request.getTimeStamp());
+            record.setAuthTime(String.valueOf(request.getTimeStamp()));
             record.setDevnum(devnum);
             record.setCreateTime(new Date());
             int num = jsDeviceAuthRecordMapper.insertSelective(record);
-            log.info("id:{}",num);
-            log.info("id:{}",record.getId());
             return true;
 
 
@@ -152,5 +197,21 @@ public class DeviceServiceImpl implements DeviceService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public JsDevice getDeviceByMobile(String mobile) {
+        JsDevice jsDevice = jsDeviceMapper.getByMobile(mobile);
+        return jsDevice;
+    }
+
+    public static String byte2HexStrNoSpace(byte[] b) {
+        String stmp;
+        StringBuilder sb = new StringBuilder();
+        for (int n = 0; n < b.length; n++) {
+            stmp = Integer.toHexString(b[n] & 0xFF);
+            sb.append((stmp.length() == 1) ? "0" + stmp : stmp);
+        }
+        return sb.toString().toUpperCase().trim();
     }
 }

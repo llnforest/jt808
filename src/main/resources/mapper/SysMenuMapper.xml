@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yzh.web.mapper.SysMenuMapper">
+  <resultMap id="BaseResultMap" type="org.yzh.web.model.entity.SysMenu">
+    <id column="id" jdbcType="SMALLINT" property="id" />
+    <result column="parent_id" jdbcType="SMALLINT" property="parentId" />
+    <result column="menu_url" jdbcType="VARCHAR" property="menuUrl" />
+    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="menu_icon" jdbcType="VARCHAR" property="menuIcon" />
+    <result column="menu_type" jdbcType="VARCHAR" property="menuType" />
+    <result column="btn_css" jdbcType="VARCHAR" property="btnCss" />
+    <result column="btn_func" jdbcType="VARCHAR" property="btnFunc" />
+    <result column="btn_type" jdbcType="TINYINT" property="btnType" />
+    <result column="log_level" jdbcType="TINYINT" property="logLevel" />
+    <result column="log_rule" jdbcType="VARCHAR" property="logRule" />
+    <result column="sort" jdbcType="SMALLINT" property="sort" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parent_id, menu_url, menu_name, menu_icon, menu_type, btn_css, btn_func, btn_type, 
+    log_level, log_rule, sort, remark, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Short" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_menu
+    where id = #{id,jdbcType=SMALLINT}
+  </select>
+  <select id="selectByParentId" parameterType="java.lang.Short" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_menu
+    where parent_id = #{parent_id,jdbcType=SMALLINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
+    delete from sys_menu
+    where id = #{id,jdbcType=SMALLINT}
+  </delete>
+  <insert id="insert" parameterType="org.yzh.web.model.entity.SysMenu">
+    insert into sys_menu (id, parent_id, menu_url, 
+      menu_name, menu_icon, menu_type, 
+      btn_css, btn_func, btn_type, 
+      log_level, log_rule, sort, 
+      remark, status)
+    values (#{id,jdbcType=SMALLINT}, #{parentId,jdbcType=SMALLINT}, #{menuUrl,jdbcType=VARCHAR}, 
+      #{menuName,jdbcType=VARCHAR}, #{menuIcon,jdbcType=VARCHAR}, #{menuType,jdbcType=VARCHAR}, 
+      #{btnCss,jdbcType=VARCHAR}, #{btnFunc,jdbcType=VARCHAR}, #{btnType,jdbcType=TINYINT}, 
+      #{logLevel,jdbcType=TINYINT}, #{logRule,jdbcType=VARCHAR}, #{sort,jdbcType=SMALLINT}, 
+      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="org.yzh.web.model.entity.SysMenu">
+    insert into sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="menuUrl != null">
+        menu_url,
+      </if>
+      <if test="menuName != null">
+        menu_name,
+      </if>
+      <if test="menuIcon != null">
+        menu_icon,
+      </if>
+      <if test="menuType != null">
+        menu_type,
+      </if>
+      <if test="btnCss != null">
+        btn_css,
+      </if>
+      <if test="btnFunc != null">
+        btn_func,
+      </if>
+      <if test="btnType != null">
+        btn_type,
+      </if>
+      <if test="logLevel != null">
+        log_level,
+      </if>
+      <if test="logRule != null">
+        log_rule,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=SMALLINT},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=SMALLINT},
+      </if>
+      <if test="menuUrl != null">
+        #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIcon != null">
+        #{menuIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null">
+        #{menuType,jdbcType=VARCHAR},
+      </if>
+      <if test="btnCss != null">
+        #{btnCss,jdbcType=VARCHAR},
+      </if>
+      <if test="btnFunc != null">
+        #{btnFunc,jdbcType=VARCHAR},
+      </if>
+      <if test="btnType != null">
+        #{btnType,jdbcType=TINYINT},
+      </if>
+      <if test="logLevel != null">
+        #{logLevel,jdbcType=TINYINT},
+      </if>
+      <if test="logRule != null">
+        #{logRule,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=SMALLINT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.yzh.web.model.entity.SysMenu">
+    update sys_menu
+    <set>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=SMALLINT},
+      </if>
+      <if test="menuUrl != null">
+        menu_url = #{menuUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuIcon != null">
+        menu_icon = #{menuIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null">
+        menu_type = #{menuType,jdbcType=VARCHAR},
+      </if>
+      <if test="btnCss != null">
+        btn_css = #{btnCss,jdbcType=VARCHAR},
+      </if>
+      <if test="btnFunc != null">
+        btn_func = #{btnFunc,jdbcType=VARCHAR},
+      </if>
+      <if test="btnType != null">
+        btn_type = #{btnType,jdbcType=TINYINT},
+      </if>
+      <if test="logLevel != null">
+        log_level = #{logLevel,jdbcType=TINYINT},
+      </if>
+      <if test="logRule != null">
+        log_rule = #{logRule,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=SMALLINT},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=SMALLINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.yzh.web.model.entity.SysMenu">
+    update sys_menu
+    set parent_id = #{parentId,jdbcType=SMALLINT},
+      menu_url = #{menuUrl,jdbcType=VARCHAR},
+      menu_name = #{menuName,jdbcType=VARCHAR},
+      menu_icon = #{menuIcon,jdbcType=VARCHAR},
+      menu_type = #{menuType,jdbcType=VARCHAR},
+      btn_css = #{btnCss,jdbcType=VARCHAR},
+      btn_func = #{btnFunc,jdbcType=VARCHAR},
+      btn_type = #{btnType,jdbcType=TINYINT},
+      log_level = #{logLevel,jdbcType=TINYINT},
+      log_rule = #{logRule,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=SMALLINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=SMALLINT}
+  </update>
+</mapper>

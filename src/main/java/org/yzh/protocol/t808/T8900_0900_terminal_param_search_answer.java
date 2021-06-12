@@ -93,7 +93,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -103,7 +103,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
     }
 
 
-    @Field(index = 25, type = DataType.BYTE,desc = "执行结果")
+    @Field(index = 27, type = DataType.BYTE,desc = "执行结果")
     public int getResult() {
         return result;
     }
@@ -112,7 +112,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.result = result;
     }
 
-    @Field(index = 26, type = DataType.BYTE,desc = "定时拍照时间间隔")
+    @Field(index = 28, type = DataType.BYTE,desc = "定时拍照时间间隔")
     public int getPhotoTime() {
         return photoTime;
     }
@@ -121,7 +121,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.photoTime = photoTime;
     }
 
-    @Field(index = 27, type = DataType.BYTE,desc = "照片上传设置")
+    @Field(index = 29, type = DataType.BYTE,desc = "照片上传设置")
     public int getUpSet() {
         return upSet;
     }
@@ -130,7 +130,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.upSet = upSet;
     }
 
-    @Field(index = 28, type = DataType.BYTE,desc = "是否报读附加消息")
+    @Field(index = 30, type = DataType.BYTE,desc = "是否报读附加消息")
     public int getIsReadAdd() {
         return isReadAdd;
     }
@@ -139,7 +139,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.isReadAdd = isReadAdd;
     }
 
-    @Field(index = 29, type = DataType.BYTE,desc = "熄火后停止学时计时的延时时间")
+    @Field(index = 31, type = DataType.BYTE,desc = "熄火后停止学时计时的延时时间")
     public int getClassDelayTime() {
         return classDelayTime;
     }
@@ -148,7 +148,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.classDelayTime = classDelayTime;
     }
 
-    @Field(index = 30, type = DataType.WORD,desc = "熄火后GNSS数据包上传间隔")
+    @Field(index = 32, type = DataType.WORD,desc = "熄火后GNSS数据包上传间隔")
     public int getUpTime() {
         return upTime;
     }
@@ -157,7 +157,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.upTime = upTime;
     }
 
-    @Field(index = 32, type = DataType.WORD,desc = "熄火后教练自动登出的延时时间")
+    @Field(index = 34, type = DataType.WORD,desc = "熄火后教练自动登出的延时时间")
     public int getCoachDelayTime() {
         return coachDelayTime;
     }
@@ -166,7 +166,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.coachDelayTime = coachDelayTime;
     }
 
-    @Field(index = 34, type = DataType.WORD,desc = "重新验证身份时间")
+    @Field(index = 36, type = DataType.WORD,desc = "重新验证身份时间")
     public int getVerifyTime() {
         return verifyTime;
     }
@@ -175,7 +175,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.verifyTime = verifyTime;
     }
 
-    @Field(index = 36, type = DataType.BYTE,desc = "教练跨校教学")
+    @Field(index = 38, type = DataType.BYTE,desc = "教练跨校教学")
     public int getIsCoachAcross() {
         return isCoachAcross;
     }
@@ -184,7 +184,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.isCoachAcross = isCoachAcross;
     }
 
-    @Field(index = 37, type = DataType.BYTE,desc = "学员跨校学习")
+    @Field(index = 39, type = DataType.BYTE,desc = "学员跨校学习")
     public int getIsStudentAcross() {
         return isStudentAcross;
     }
@@ -193,7 +193,7 @@ public class T8900_0900_terminal_param_search_answer extends AbstractMessage<Hea
         this.isStudentAcross = isStudentAcross;
     }
 
-    @Field(index = 38, type = DataType.BYTE,desc = "响应平台同类消息时间间隔")
+    @Field(index = 40, type = DataType.BYTE,desc = "响应平台同类消息时间间隔")
     public int getResponseTime() {
         return responseTime;
     }

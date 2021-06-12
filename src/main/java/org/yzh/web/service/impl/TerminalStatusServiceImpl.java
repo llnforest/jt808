@@ -28,7 +28,6 @@ public class TerminalStatusServiceImpl implements TerminalStatusService {
         int num = 0;
         if(message != null){
             record.setStatus(message.getStatus());
-            record.setMsgContent(message.getMsgContent());
             num = jsTerminalStatusMapper.updateByStatus(record);
         }else{
             num = jsTerminalStatusMapper.updateByStatusOnly(record);

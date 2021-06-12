@@ -27,7 +27,7 @@ public class QuickStart {
                 .setSessionManager(new SessionManager())
                 .build();
 
-        TCPServer tcpServer = new TCPServer("808服务端开启", jtConfig);
+        TCPServer tcpServer = new TCPServer("808测试服务端开启", jtConfig);
         tcpServer.start();
     }
 }

@@ -85,7 +85,7 @@ public class T8900_0900_photo_command_answer extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -95,7 +95,7 @@ public class T8900_0900_photo_command_answer extends AbstractMessage<Header> {
     }
 
 
-    @Field(index = 25, type = DataType.BYTE,desc = "上传模式")
+    @Field(index = 27, type = DataType.BYTE,desc = "上传模式")
     public int getResult() {
         return result;
     }
@@ -104,7 +104,7 @@ public class T8900_0900_photo_command_answer extends AbstractMessage<Header> {
         this.result = result;
     }
 
-    @Field(index = 26, type = DataType.BYTE,desc = "上传模式")
+    @Field(index = 28, type = DataType.BYTE,desc = "上传模式")
     public int getUpMode() {
         return upMode;
     }
@@ -113,7 +113,7 @@ public class T8900_0900_photo_command_answer extends AbstractMessage<Header> {
         this.upMode = upMode;
     }
 
-    @Field(index = 27, type = DataType.BYTE,desc = "摄像头通道号")
+    @Field(index = 29, type = DataType.BYTE,desc = "摄像头通道号")
     public int getChannelNo() {
         return channelNo;
     }
@@ -122,7 +122,7 @@ public class T8900_0900_photo_command_answer extends AbstractMessage<Header> {
         this.channelNo = channelNo;
     }
 
-    @Field(index = 28, type = DataType.BYTE,desc = "图片尺寸")
+    @Field(index = 30, type = DataType.BYTE,desc = "图片尺寸")
     public int getPhotoSize() {
         return photoSize;
     }

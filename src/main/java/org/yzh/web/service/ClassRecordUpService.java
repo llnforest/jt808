@@ -7,6 +7,8 @@ public interface ClassRecordUpService {
 
     JsClassrecordUp addRecord(T8900_0900_time_up data);
 
+    void getMenuList(short parentId,int times);
+
 
 
 

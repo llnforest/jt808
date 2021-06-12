@@ -38,19 +38,14 @@ server:
 
 websocket:
   server:
-    port: 7755
     enable: true
+    port: 7755
 
-tpc-server:
-  jt808:
-    client: false
+tcp:
+  server:
     enable: true
     port: 7611
-    alarm-file:
-      host: 127.0.0.1
-      port: 7612
-
-  alarm-file:
+  client:
     enable: true
-    port: 7612
-    path: D:/alarm_file/
+    ip: 127.0.0.1
+    port: 7615

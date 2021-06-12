@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.yzh.framework.codec.MessageEncoder;
 import org.yzh.framework.codec.MessageEncoderWrapper;
+import org.yzh.framework.commons.transform.Bcd;
 import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.session.MessageManager;
 import org.yzh.framework.session.Session;
@@ -59,20 +60,94 @@ public class DemoController {
 
     @ApiOperation(value = "获得通用应答")
     @GetMapping("demo/test")
-    public String test(){
-        if(0X8001 == 32769){
+    public String test() {
+        if (0X8001 == 32769) {
             log.info("ok1");
         }
         String hex = "0X8001";
-        Integer x = Integer.parseInt(hex.substring(2),16);
-        System.out.println(x);
+        Integer x = Integer.parseInt(hex.substring(2), 16);
         Integer a = 32769;
         String h = a.toHexString(a);
-        System.out.println(h);
         log.info("ok");
+
+        byte[] bytes = str2Bcd("19156017290");
+        
+        log.info("bcd码转10进制:{}",ByteBufUtil.hexDump(bytes));
+        String phone = bcd2Str(bytes);
+        log.info("bcd码字节转字符串：{}",phone);
         return "111";
+    }
 
 
+
+    public void writeValue(ByteBuf buf, String value, int strLen) {
+        char[] chars = new char[strLen];
+        int i = strLen - value.length();
+        if (i >= 0) {
+            value.getChars(0, strLen - i, chars, i);
+            while (i > 0)
+                chars[--i] = '0';
+        } else {
+            value.getChars(-i, strLen - i, chars, 0);
+        }
+        byte[] src = Bcd.from(chars);
+        buf.writeBytes(src);
+    }
+
+    /**
+     * @功能: BCD码转为10进制串(阿拉伯数据)
+     * @参数: BCD码
+     * @结果: 10进制串
+     */
+    public static String bcd2Str(byte[] bytes) {
+        StringBuffer temp = new StringBuffer(bytes.length * 2);
+        for (int i = 0; i < 2; i++) {
+            temp.append((byte) ((bytes[i] & 0xf0) >>> 4));
+            temp.append((byte) (bytes[i] & 0x0f));
+        }
+        return temp.toString().substring(0, 1).equalsIgnoreCase("0") ? temp
+                .toString().substring(1) : temp.toString();
+    }
+
+    /**
+     * @功能: 10进制串转为BCD码
+     * @参数: 10进制串
+     * @结果: BCD码
+     */
+    public static byte[] str2Bcd(String asc) {
+        int len = asc.length();
+        int mod = len % 2;
+        if (mod != 0) {
+            asc = "0" + asc;
+            len = asc.length();
+        }
+        byte abt[] = new byte[len];
+        if (len >= 2) {
+            len = len / 2;
+        }
+        byte bbt[] = new byte[len];
+        abt = asc.getBytes();
+        int j, k;
+        for (int p = 0; p < asc.length() / 2; p++) {
+            if ((abt[2 * p] >= '0') && (abt[2 * p] <= '9')) {
+                j = abt[2 * p] - '0';
+            } else if ((abt[2 * p] >= 'a') && (abt[2 * p] <= 'z')) {
+                j = abt[2 * p] - 'a' + 0x0a;
+            } else {
+                j = abt[2 * p] - 'A' + 0x0a;
+            }
+            if ((abt[2 * p + 1] >= '0') && (abt[2 * p + 1] <= '9')) {
+                k = abt[2 * p + 1] - '0';
+            } else if ((abt[2 * p + 1] >= 'a') && (abt[2 * p + 1] <= 'z')) {
+                k = abt[2 * p + 1] - 'a' + 0x0a;
+            } else {
+                k = abt[2 * p + 1] - 'A' + 0x0a;
+            }
+            int a = (j << 4) + k;
+            byte b = (byte) a;
+            bbt[p] = b;
+        }
+        return bbt;
     }
 
 //    @ApiOperation(value = "获得通用应答")

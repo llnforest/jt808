@@ -1,26 +1,23 @@
 package org.yzh.web.protocol;
 
-import io.swagger.models.auth.In;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yzh.framework.commons.transform.Bin;
 import org.yzh.framework.commons.transform.Bytes;
 import org.yzh.framework.orm.annotation.Message;
 import org.yzh.framework.orm.model.AbstractMessage;
-import org.yzh.protocol.basics.BytesAttribute;
+import org.yzh.framework.session.Session;
 import org.yzh.protocol.basics.BytesParameter;
 import org.yzh.protocol.basics.Header;
-import org.yzh.protocol.commons.Action;
-import org.yzh.protocol.commons.ShapeAction;
-import org.yzh.protocol.commons.transform.Attribute;
 import org.yzh.protocol.commons.transform.ParameterType;
-import org.yzh.protocol.commons.transform.attribute.*;
 import org.yzh.protocol.t808.*;
 import org.yzh.web.commons.BeanHelper;
-import org.yzh.web.endpoint.WsEndpoint;
+import org.yzh.web.model.entity.JsPlatInfo;
 import org.yzh.web.service.ClassRecordUpService;
+import org.yzh.web.service.PlatInfoService;
+import org.yzh.web.service.impl.PlatInfoServiceImpl;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -59,7 +56,7 @@ public class JT808Beans {
 //    }
 
     /** 2019版消息头 */
-    public static AbstractMessage H2019(AbstractMessage message,String phone) {
+    public static AbstractMessage H2019(AbstractMessage message,String phone,int serialNo) {
         Header header = new Header();
         Message type = message.getClass().getAnnotation(Message.class);
         if (type != null){
@@ -73,12 +70,35 @@ public class JT808Beans {
         }
         header.setVersionNo(1);
         header.setMobileNo(phone);
-        header.setSerialNo(65535);
+        header.setSerialNo(serialNo);
         header.setEncryption(0);
         header.setVersion(true);
         header.setReserved(0);
         message.setHeader(header);
         return message;
+    }
+    //-----------------------平台部分---------------------------
+    //平台登录
+    public static T01F0 T01F0() {
+        T01F0 bean = new T01F0(1,"17299841738");
+        PlatInfoService platInfoService = BeanHelper.getBean("platInfoServiceImpl");
+        JsPlatInfo jsPlatInfo = platInfoService.findById(1);
+        bean.setPlatNum(jsPlatInfo.getPlatNum());
+        bean.setPlatSecret(jsPlatInfo.getPassword());
+        bean.setPlatCode(jsPlatInfo.getJoinCode());
+        log.info("platNum:{}",jsPlatInfo.getPlatNum());
+        return bean;
+    }
+
+    //平台登出
+    public static T01F1 T01F1() {
+        T01F1 bean = new T01F1(1,"17299841738");
+        PlatInfoService platInfoService = BeanHelper.getBean(PlatInfoServiceImpl.class);
+        JsPlatInfo jsPlatInfo = platInfoService.findById(1);
+        bean.setPlatNum(jsPlatInfo.getPlatNum());
+        bean.setPlatSecret(jsPlatInfo.getPassword());
+        log.info("platNum:{}",jsPlatInfo.getPlatNum());
+        return bean;
     }
 
     //-----------------------公共部分---------------------------
@@ -88,25 +108,6 @@ public class JT808Beans {
         T0A00_8A00 bean = new T0A00_8A00();
         bean.setE(999);
         bean.setN(new byte[128]);
-        return bean;
-    }
-
-    //平台登录
-    public static T0090 T0090() {
-        T0090 bean = new T0090();
-        bean.setPlatNum("abc123");
-        bean.setPlatSecret("abcdefg");
-        bean.setPlatCode(3121);
-        ClassRecordUpService serviceCoach = (ClassRecordUpService) BeanHelper.getBean("classRecordUpServiceImpl");
-
-        return bean;
-    }
-
-    //平台登出
-    public static T0091 T0091() {
-        T0091 bean = new T0091();
-        bean.setPlatNum("abc123");
-        bean.setPlatSecret("abcdefg");
         return bean;
     }
 
@@ -130,7 +131,10 @@ public class JT808Beans {
             log.info("pid：{}",p.id);
             msgId = "0x"+StringUtils.leftPad(Integer.toHexString(p.id),4,"0");
             log.info(msgId);
-            if(!paramMap.containsKey(msgId)) continue;
+            if(!paramMap.containsKey(msgId)){
+                log.info("少了：{}",msgId);
+                continue;
+            }
             String[] valueArr =  paramMap.get(msgId).split(",");
             //兼容同一参数多值传递的
             for(int j = 0; j < valueArr.length; j++){
@@ -148,6 +152,7 @@ public class JT808Beans {
                 paramNum ++;
             }
         }
+        bean.setTotal(paramNum);
         bean.setPacketNum(paramNum);
 
         return bean;
@@ -157,12 +162,14 @@ public class JT808Beans {
     public static T8106 T8106(Map<String,Object> map) {
         T8106 bean = new T8106();
         List<String> hexArr = (List<String>) map.get("data");
-        log.info("hexArr:{}",hexArr);
+//        bean.setTotal(hexArr.size());
+        log.info("hexArr:{}",hexArr.size());
 //        String[] hexArr = new String[]{"0x0001","0x0085"};
         byte[] byteArr = Bytes.hexListToByte(hexArr);
 //        int[] idArr = Bytes.byteToIntArr(byteArr);
-        bean.setTotal(hexArr.size());
+
         bean.setId(byteArr);
+        log.info("hexArr:{}",bean.getTotal());
         return bean;
     }
 
@@ -180,9 +187,12 @@ public class JT808Beans {
     }
 
     //命令上报学时记录
-    public static T8900_0900_time_up_command t8900_0900_time_up_command(Map<String,Object> map) {
+    public static T8900_0900_time_up_command t8900_0900_time_up_command(Map<String,Object> map,Session session) {
         T8900_0900_time_up_command bean = new T8900_0900_time_up_command();
+
+        bean.setPacketNo(session.nextPacketNo());
         bean.setTerminalNo((String)map.get("devNum"));
+        bean.setDataLength(15);
 
         Map<String,String> dataMap = (Map<String, String>) map.get("data");
         bean.setSearchType(Integer.parseInt(dataMap.get("searchType")));//1按时间上传 2按条数上传
@@ -196,10 +206,12 @@ public class JT808Beans {
     }
 
     //设置禁训状态
-    public static T8900_0900_terminal_status t8900_0900_terminal_status(Map<String,Object> map) {
+    public static T8900_0900_terminal_status t8900_0900_terminal_status(Map<String,Object> map,Session session) {
         T8900_0900_terminal_status bean = new T8900_0900_terminal_status();
-        Map<String,String> dataMap = (Map<String, String>) map.get("data");
+        bean.setPacketNo(session.nextPacketNo());
         bean.setTerminalNo((String)map.get("devNum"));
+        Map<String,String> dataMap = (Map<String, String>) map.get("data");
+
         bean.setStatus(Integer.parseInt(dataMap.get("status")));//1：可用，默认值；2：禁用
         bean.setMsgContent(dataMap.get("msgContent"));
         return bean;
@@ -207,10 +219,12 @@ public class JT808Beans {
 
 
     //设置计时终端应用参数
-    public static T8900_0900_terminal_set t8900_0900_terminal_set(Map<String,Object> map) {
+    public static T8900_0900_terminal_set t8900_0900_terminal_set(Map<String,Object> map,Session session) {
         T8900_0900_terminal_set bean = new T8900_0900_terminal_set();
-        Map<String,String> dataMap = (Map<String, String>) map.get("data");
+        bean.setPacketNo(session.nextPacketNo());
         bean.setTerminalNo((String)map.get("devNum"));
+        bean.setDataLength(15);
+        Map<String,String> dataMap = (Map<String, String>) map.get("data");
 
         bean.setParamNo(Integer.valueOf(dataMap.get("paramNo")));
         bean.setPhotoTime(Integer.valueOf(dataMap.get("photoTime")));
@@ -227,9 +241,11 @@ public class JT808Beans {
     }
 
     //查询计时终端应用参数
-    public static T8900_0900_terminal_param_search t8900_0900_terminal_param_search(Map<String,Object> map) {
+    public static T8900_0900_terminal_param_search t8900_0900_terminal_param_search(Map<String,Object> map,Session session) {
         T8900_0900_terminal_param_search bean = new T8900_0900_terminal_param_search();
+        bean.setPacketNo(session.nextPacketNo());
         bean.setTerminalNo((String)map.get("devNum"));
+        bean.setDataLength(0);
         return bean;
     }
 
@@ -258,10 +274,13 @@ public class JT808Beans {
     }
 
     //立即拍照
-    public static T8900_0900_photo_command t8900_0900_photo_command(Map<String,Object> map) {
+    public static T8900_0900_photo_command t8900_0900_photo_command(Map<String,Object> map,Session session) {
         T8900_0900_photo_command bean = new T8900_0900_photo_command();
-        Map<String,String> dataMap = (Map<String, String>) map.get("data");
+        bean.setPacketNo(session.nextPacketNo());
         bean.setTerminalNo((String)map.get("devNum"));
+
+        bean.setDataLength(3);
+        Map<String,String> dataMap = (Map<String, String>) map.get("data");
 
         bean.setUpMode(Integer.valueOf(dataMap.get("uploadMode")));//上传模式
         bean.setChannelNo(Integer.valueOf(dataMap.get("cameraNumber")));//通道
@@ -270,10 +289,13 @@ public class JT808Beans {
     }
 
     //查询照片
-    public static T8900_0900_photo_search_command t8900_0900_photo_search_command(Map<String,Object> map) {
+    public static T8900_0900_photo_search_command t8900_0900_photo_search_command(Map<String,Object> map,Session session) {
         T8900_0900_photo_search_command bean = new T8900_0900_photo_search_command();
-        Map<String,String> dataMap = (Map<String, String>) map.get("data");
+        bean.setPacketNo(session.nextPacketNo());
         bean.setTerminalNo((String)map.get("devNum"));
+
+        bean.setDataLength(13);
+        Map<String,String> dataMap = (Map<String, String>) map.get("data");
 
         bean.setSearchType(Integer.valueOf(dataMap.get("searchMode")));//1：按时间查询
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -285,11 +307,14 @@ public class JT808Beans {
     }
 
     //上传指定照片
-    public static T8900_0900_photo_up_only t8900_0900_photo_up_only(Map<String,Object> map) {
+    public static T8900_0900_photo_up_only t8900_0900_photo_up_only(Map<String,Object> map,Session session) {
         T8900_0900_photo_up_only bean = new T8900_0900_photo_up_only();
+        bean.setPacketNo(session.nextPacketNo());
+        bean.setTerminalNo((String)map.get("devNum"));
+
+        bean.setDataLength(1);
         Map<String,String> dataMap = (Map<String, String>) map.get("data");
 
-        bean.setTerminalNo((String)map.get("devNum"));
 
         bean.setPhotoNum(dataMap.get("photoNum"));//照片编号
         return bean;

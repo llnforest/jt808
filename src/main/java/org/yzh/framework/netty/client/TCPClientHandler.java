@@ -6,7 +6,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yzh.framework.commons.ClientChannelUtils;
 import org.yzh.framework.orm.model.AbstractHeader;
 import org.yzh.framework.orm.model.AbstractMessage;
 
@@ -37,7 +36,7 @@ public class TCPClientHandler extends ChannelInboundHandlerAdapter {
 
         try {
             AbstractHeader header = request.getHeader();
-
+            log.info("haddleMapping:{}",handlerMapping);
             Handler handler = handlerMapping.getHandler(((AbstractMessage) msg).getMarkId());
             log.info("handler:{}",handler);
             AbstractMessage messageResponse = handler.invoke(request);
@@ -58,7 +57,7 @@ public class TCPClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         log.info(">>>>>连接到服务端成功{}", ctx.channel().remoteAddress());
-//        ClientChannelUtils.setCtx(ctx);
+//        TcpServerUtils.setCtx(ctx);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.yzh.framework.commons;
 
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -14,6 +15,16 @@ public class TcpClientUtils {
     private static final Logger log = LoggerFactory.getLogger(TcpClientUtils.class);
 
     public static Map<String, Channel> clientMap = new HashMap<>();
+
+    private static ChannelHandlerContext ctx;
+
+    public static void setCtx(ChannelHandlerContext ctx1){
+        ctx = ctx1;
+    }
+
+    public static ChannelHandlerContext getCtx(){
+        return ctx;
+    }
 
     public  static void setClientChannel(String phone, Channel cx){
         clientMap.put(phone,cx);

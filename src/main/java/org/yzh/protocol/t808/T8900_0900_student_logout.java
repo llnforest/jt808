@@ -35,6 +35,13 @@ public class T8900_0900_student_logout extends AbstractMessage<Header> {
     public T8900_0900_student_logout() {
     }
 
+    public T8900_0900_student_logout(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_student_logout(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
@@ -81,7 +88,7 @@ public class T8900_0900_student_logout extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -90,7 +97,7 @@ public class T8900_0900_student_logout extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTES,length = 16,desc = "学员编号")
+    @Field(index = 27, type = DataType.BYTES,length = 16,desc = "学员编号")
     public String getStudentNo() {
         return studentNo;
     }
@@ -99,7 +106,7 @@ public class T8900_0900_student_logout extends AbstractMessage<Header> {
         this.studentNo = studentNo;
     }
 
-    @Field(index = 41, type = DataType.BCD8421,length = 6,desc = "登出时间")
+    @Field(index = 43, type = DataType.BCD8421,length = 6,desc = "登出时间")
     public LocalDateTime getDateTime() {
         return dateTime;
     }
@@ -108,7 +115,7 @@ public class T8900_0900_student_logout extends AbstractMessage<Header> {
         this.dateTime = dateTime;
     }
 
-    @Field(index = 47, type = DataType.WORD,desc = "学员该次登录总时间")
+    @Field(index = 49, type = DataType.WORD,desc = "学员该次登录总时间")
     public int getTotalTime() {
         return totalTime;
     }
@@ -117,7 +124,7 @@ public class T8900_0900_student_logout extends AbstractMessage<Header> {
         this.totalTime = totalTime;
     }
 
-    @Field(index = 49, type = DataType.WORD,desc = "学员该次登录总里程")
+    @Field(index = 51, type = DataType.WORD,desc = "学员该次登录总里程")
     public int getTotalKm() {
         return totalKm;
     }
@@ -126,7 +133,7 @@ public class T8900_0900_student_logout extends AbstractMessage<Header> {
         this.totalKm = totalKm;
     }
 
-    @Field(index = 51, type = DataType.DWORD,desc = "课堂ID")
+    @Field(index = 53, type = DataType.DWORD,desc = "课堂ID")
     public int getClassId() {
         return classId;
     }
@@ -135,7 +142,7 @@ public class T8900_0900_student_logout extends AbstractMessage<Header> {
         this.classId = classId;
     }
 
-    @Field(index = 55, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
+    @Field(index = 57, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
     public T0200 getT0200() {
         return t0200;
     }

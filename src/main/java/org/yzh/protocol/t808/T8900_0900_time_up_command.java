@@ -33,6 +33,13 @@ public class T8900_0900_time_up_command extends AbstractMessage<Header> {
     public T8900_0900_time_up_command() {
     }
 
+    public T8900_0900_time_up_command(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据下行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_time_up_command(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据下行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
@@ -79,7 +86,7 @@ public class T8900_0900_time_up_command extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -88,7 +95,7 @@ public class T8900_0900_time_up_command extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTE, desc = "查询方式")
+    @Field(index = 27, type = DataType.BYTE, desc = "查询方式")
     public int getSearchType() {
         return searchType;
     }
@@ -97,7 +104,7 @@ public class T8900_0900_time_up_command extends AbstractMessage<Header> {
         this.searchType = searchType;
     }
 
-    @Field(index = 26, type = DataType.BCD8421, length = 6, desc = "查询起始时间")
+    @Field(index = 28, type = DataType.BCD8421, length = 6, desc = "查询起始时间")
     public LocalDateTime getStartTime() {
         return startTime;
     }
@@ -106,7 +113,7 @@ public class T8900_0900_time_up_command extends AbstractMessage<Header> {
         this.startTime = startTime;
     }
 
-    @Field(index = 32, type = DataType.BCD8421, length = 6, desc = "查询终止时间")
+    @Field(index = 34, type = DataType.BCD8421, length = 6, desc = "查询终止时间")
     public LocalDateTime getEndTime() {
         return endTime;
     }
@@ -115,7 +122,7 @@ public class T8900_0900_time_up_command extends AbstractMessage<Header> {
         this.endTime = endTime;
     }
 
-    @Field(index = 38, type = DataType.WORD, desc = "查询条数")
+    @Field(index = 40, type = DataType.WORD, desc = "查询条数")
     public int getSearchNum() {
         return searchNum;
     }

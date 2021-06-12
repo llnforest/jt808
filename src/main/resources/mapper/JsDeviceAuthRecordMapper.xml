@@ -11,7 +11,7 @@
   <resultMap id="RecordAndDeviceMap" type="org.yzh.web.model.entity.JsDeviceAuthRecord">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="devnum" jdbcType="CHAR" property="devnum" />
-    <result column="auth_time" jdbcType="INTEGER" property="authTime" />
+    <result column="auth_time" jdbcType="VARCHAR" property="authTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <association property="jsDevice" javaType="org.yzh.web.model.entity.JsDevice">
       <id column="id" jdbcType="INTEGER" property="id" />
@@ -85,7 +85,7 @@
   <insert id="insert" parameterType="org.yzh.web.model.entity.JsDeviceAuthRecord">
     insert into js_device_auth_record (id, devnum, auth_time, 
       create_time)
-    values (#{id,jdbcType=INTEGER}, #{devnum,jdbcType=CHAR}, #{authTime,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{devnum,jdbcType=CHAR}, #{authTime,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsDeviceAuthRecord" useGeneratedKeys="true" keyProperty="id">
@@ -108,7 +108,7 @@
         #{devnum,jdbcType=CHAR},
       </if>
       <if test="authTime != null">
-        #{authTime,jdbcType=INTEGER},
+        #{authTime,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
@@ -122,7 +122,7 @@
         devnum = #{devnum,jdbcType=CHAR},
       </if>
       <if test="authTime != null">
-        auth_time = #{authTime,jdbcType=INTEGER},
+        auth_time = #{authTime,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -133,7 +133,7 @@
   <update id="updateByPrimaryKey" parameterType="org.yzh.web.model.entity.JsDeviceAuthRecord">
     update js_device_auth_record
     set devnum = #{devnum,jdbcType=CHAR},
-      auth_time = #{authTime,jdbcType=INTEGER},
+      auth_time = #{authTime,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

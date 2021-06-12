@@ -24,11 +24,13 @@ public class MessageDecoderWrapper extends ByteToMessageDecoder {
     private MessageDecoder decoder;
 
     public MessageDecoderWrapper(MessageDecoder decoder) {
+        log.info("进入：2");
         this.decoder = decoder;
     }
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) {
+        log.info("进入3");
         Channel channel = ctx.channel();
         if (log.isInfoEnabled()) {
             String hex;

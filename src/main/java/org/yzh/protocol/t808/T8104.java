@@ -17,4 +17,11 @@ public class T8104 extends AbstractMessage<Header> {
     public T8104() {
     }
 
+    public T8104(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.查询终端参数.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8104(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.查询终端参数.substring(2),16), serialNo, mobileNo));
+    }
 }

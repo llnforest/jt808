@@ -38,6 +38,8 @@ public class BeanMetadata<T> {
         BasicField field = null;
         try {
             target = typeClass.newInstance();
+
+
             for (int i = 0; i < fields.length; i++) {
 
                 field = fields[i];

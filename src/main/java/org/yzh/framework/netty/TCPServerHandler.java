@@ -1,30 +1,25 @@
 package org.yzh.framework.netty;
 
-import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.timeout.IdleState;
-import io.netty.handler.timeout.IdleStateEvent;
-import org.eclipse.jetty.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yzh.framework.commons.ClientChannelUtils;
+import org.yzh.framework.commons.TcpClientUtils;
+import org.yzh.framework.commons.TcpServerUtils;
 import org.yzh.framework.commons.MsgUtils;
 import org.yzh.framework.mvc.HandlerInterceptor;
 import org.yzh.framework.mvc.HandlerMapping;
 import org.yzh.framework.mvc.handler.Handler;
+import org.yzh.framework.orm.BeanMetadata;
+import org.yzh.framework.orm.MessageHelper;
 import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.session.Session;
 import org.yzh.framework.session.SessionManager;
-import org.yzh.protocol.t808.T0001;
-import org.yzh.protocol.t808.T8100;
-import org.yzh.web.endpoint.WsEndpoint;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author yezhihao
@@ -41,6 +36,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
     private SessionManager sessionManager;
 
+
     public TCPServerHandler(HandlerMapping handlerMapping, HandlerInterceptor interceptor, SessionManager sessionManager) {
         this.handlerMapping = handlerMapping;
         this.interceptor = interceptor;
@@ -49,6 +45,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        log.info("原始消息：{}",msg);
         if (!(msg instanceof AbstractMessage))
             return;
         AbstractMessage request = (AbstractMessage) msg;
@@ -61,7 +58,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         try {
             Handler handler;
             handler = handlerMapping.getHandler(((AbstractMessage) msg).getMarkId());
-//            log.info("handler:{}",handler);
+            log.info("handler:{}",handler);
 //            log.info("request:{}",request);
             if (handler != null) {
                 if (!interceptor.beforeHandle(request, session))
@@ -96,10 +93,51 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
         if (response != null){
 //            发送消息入map
-
 //            String key = String.valueOf(response.getHeader().getSerialNo());
 //            MsgUtils.addMsg(key,response,session);
-            ctx.writeAndFlush(response);
+
+            //判断是否需要分包发送
+            log.info("response:{}",response);
+//            MessageEncoder encoder;
+//            ByteBuf buf = encoder.encode(response);
+
+            int version = response.getHeader().getVersionNo();
+            BeanMetadata bodyMetadata = MessageHelper.getBeanMetadata(response.getClass(), version);
+            ByteBuf bodyBuf;
+            if (bodyMetadata != null) {
+                bodyBuf = PooledByteBufAllocator.DEFAULT.heapBuffer(bodyMetadata.getLength(), 5*1024*1024);
+                bodyMetadata.encode(bodyBuf, response);
+            } else {
+                bodyBuf = Unpooled.EMPTY_BUFFER;
+                log.info("未找到对应的BeanMetadata[{}]", response.getClass());
+            }
+
+            int totalLength = bodyBuf.readableBytes();
+
+            int length = 1000;
+//            int totalLength = buf.readableBytes();
+            log.info("总长度：{}",totalLength);
+            if(totalLength > length + 20){
+                //需要分包
+                int packageTotal = (int)Math.ceil((double) totalLength/length);
+                response.getHeader().setSubpackage(true);
+                response.getHeader().setPackageTotal(packageTotal);
+                for(int packageNo = 1;packageNo <= packageTotal;packageNo ++){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    response.getHeader().setPackageNo(packageNo);
+                    int bodyLength = (totalLength - length*(packageNo-1))>length?length:(totalLength - length*(packageNo-1));
+                    response.getHeader().setBodyLength(bodyLength);
+                    log.info("第{}包",packageNo);
+                    ctx.writeAndFlush(response);
+                }
+            }else{
+                //不需要分包
+                ctx.writeAndFlush(response);
+            }
         }
     }
 
@@ -113,7 +151,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         MsgUtils.checkMsg(ctx);
         log.info("channel:{}",session.getChannel());
         log.info(">>>>>终端连接{}", session);
-        ClientChannelUtils.setCtx(ctx);
+        TcpClientUtils.setCtx(ctx);
     }
 
     @Override
@@ -126,6 +164,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable e) {
         Session session = ctx.channel().attr(Session.KEY).get();
+        session.invalidate();
         log.info("<<<<<发生异常" + session, e);
     }
 

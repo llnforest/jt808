@@ -39,11 +39,10 @@ public class Bytes {
         int index = 0;
         for(String idString:hexArr){
             int id = Integer.parseInt(idString.replaceAll("^0[x|X]", ""),16);
-            System.out.println(id);
-            bytes[index] = (byte)((id>>0*8)&0xff);
-            bytes[index+1] = (byte)((id>>1*8)&0xff);
-            bytes[index+2] = (byte)((id>>2*8)&0xff);
-            bytes[index+3] = (byte)((id>>3*8)&0xff);
+            bytes[index] = (byte)((id>>3*8)&0xff);
+            bytes[index+1] = (byte)((id>>2*8)&0xff);
+            bytes[index+2] = (byte)((id>>1*8)&0xff);
+            bytes[index+3] = (byte)((id>>0*8)&0xff);
             index += 4;
         }
         return bytes;

@@ -7,6 +7,8 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.yzh.framework.commons.TcpClientUtils;
 import org.yzh.framework.commons.WsHandlerUtils;
+import org.yzh.framework.session.Session;
+import org.yzh.protocol.t808.T8106;
 import org.yzh.web.commons.BeanHelper;
 import org.yzh.web.model.ResponseModel;
 import org.yzh.web.protocol.JT808Beans;
@@ -70,7 +72,8 @@ public class WsEndpoint {
             TerminalConfigService service = BeanHelper.getBean("terminalConfigServiceImpl");
             service.updateTerminalConfigStatus(phone,1);//下发中
             Msg0x8103.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8103(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8103(map),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -89,7 +92,8 @@ public class WsEndpoint {
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
             Msg0x8104.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8104(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8104(map),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -108,7 +112,8 @@ public class WsEndpoint {
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
             Msg0x8104.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8106(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8106(map),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -128,7 +133,8 @@ public class WsEndpoint {
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
             Msg0x8105.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8105(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8105(map),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -148,7 +154,8 @@ public class WsEndpoint {
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
             Msg0x8201.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8201(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8201(map),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -168,7 +175,8 @@ public class WsEndpoint {
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
             Msg0x8202.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8202(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.T8202(map),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -186,7 +194,8 @@ public class WsEndpoint {
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
             Msg0x8205.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_time_up_command(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_time_up_command(map,session),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -206,7 +215,8 @@ public class WsEndpoint {
             TerminalAppConfigService service = BeanHelper.getBean("terminalAppConfigServiceImpl");
             service.updateTerminalAppConfigStatus(phone,1);//下发中
             Msg0x8501.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_terminal_set(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_terminal_set(map,session),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -224,7 +234,8 @@ public class WsEndpoint {
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
             Msg0x8503.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_terminal_param_search(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_terminal_param_search(map,session),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -246,7 +257,8 @@ public class WsEndpoint {
             TerminalStatusService service = BeanHelper.getBean("terminalStatusServiceImpl");
             service.updateTerminalStatusStatus(phone,1,null);//下发中
             Msg0x8502.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_terminal_status(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_terminal_status(map,session),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -266,7 +278,8 @@ public class WsEndpoint {
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
             Msg0x8301.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_photo_command(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_photo_command(map,session),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -286,7 +299,8 @@ public class WsEndpoint {
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
             Msg0x8302.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_photo_search_command(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_photo_search_command(map,session),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{
@@ -306,7 +320,8 @@ public class WsEndpoint {
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
             Msg0x8304.setMsg(phone,channel);
-            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_photo_up_only(map),phone));
+            Session session = tcpChannel.attr(Session.KEY).get();
+            TcpClientUtils.write(tcpChannel,JT808Beans.H2019(JT808Beans.t8900_0900_photo_up_only(map,session),phone,session.nextSerialNo()));
             return new ResponseModel("0","正在下发中");
 
         }else{

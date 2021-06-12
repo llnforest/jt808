@@ -61,8 +61,8 @@ public class JT808BeansTmp {
 //    }
 //
 //    //平台登录
-//    public static T0090 T0090() {
-//        T0090 bean = new T0090();
+//    public static T01F0 T01F0() {
+//        T01F0 bean = new T01F0();
 //        bean.setPlatNum("abc123");
 //        bean.setPlatSecret("abcdefg");
 //        bean.setPlatCode(3121);
@@ -70,8 +70,8 @@ public class JT808BeansTmp {
 //    }
 //
 //    //平台登出
-//    public static T0091 T0091() {
-//        T0091 bean = new T0091();
+//    public static T01F1 T01F1() {
+//        T01F1 bean = new T01F1();
 //        bean.setPlatNum("abc123");
 //        bean.setPlatSecret("abcdefg");
 //        return bean;

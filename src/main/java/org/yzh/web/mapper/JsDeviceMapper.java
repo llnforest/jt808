@@ -7,12 +7,13 @@ import org.yzh.web.model.entity.JsDevice;
 @Repository
 public interface JsDeviceMapper {
 
-    JsDevice isCanRegister(@Param("sn") String sn, @Param("plateNo") String  plateNo);
+    JsDevice isCanRegister(@Param("sn") String sn, @Param("bindSim") String  sim);
 
-    JsDevice isExistsDev(String sn);
-    JsDevice isRegisterDev(String sn);
-    JsDevice isExistsCar(@Param("plateColor") int plateColor, @Param("plateNo") String  plateNo);
-    JsDevice isRegisterCar(@Param("plateColor") int plateColor, @Param("plateNo") String  plateNo);
+//    JsDevice isExistsDev(@Param("sn") String sn, @Param("bindSim") String  sim);
+//    JsDevice isRegisterDev(String sn);
+//    JsDevice isExistsCar(@Param("plateColor") int plateColor, @Param("plateNo") String  plateNo);
+//    JsDevice isRegisterCar(@Param("plateColor") int plateColor, @Param("plateNo") String  plateNo);
+    JsDevice isRegisterCar(String carnum);
 
     JsDevice getByDevnum(String devnum);
 

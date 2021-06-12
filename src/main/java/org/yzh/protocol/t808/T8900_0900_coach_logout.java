@@ -30,6 +30,13 @@ public class T8900_0900_coach_logout extends AbstractMessage<Header> {
     public T8900_0900_coach_logout() {
     }
 
+    public T8900_0900_coach_logout(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_coach_logout(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
@@ -76,7 +83,7 @@ public class T8900_0900_coach_logout extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -85,7 +92,7 @@ public class T8900_0900_coach_logout extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTES,length = 16,desc = "教练员编号")
+    @Field(index = 27, type = DataType.BYTES,length = 16,desc = "教练员编号")
     public String getCoachNo() {
         return coachNo;
     }
@@ -94,7 +101,7 @@ public class T8900_0900_coach_logout extends AbstractMessage<Header> {
         this.coachNo = coachNo;
     }
 
-    @Field(index = 41, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
+    @Field(index = 43, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
     public T0200 getT0200() {
         return t0200;
     }

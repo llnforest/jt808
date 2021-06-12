@@ -83,7 +83,7 @@ public class T8900_0900_photo_up_data extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -92,7 +92,7 @@ public class T8900_0900_photo_up_data extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTES,length = 10,desc = "照片编号")
+    @Field(index = 27, type = DataType.BYTES,length = 10,desc = "照片编号")
     public String getPhotoNum() {
         return photoNum;
     }
@@ -101,7 +101,7 @@ public class T8900_0900_photo_up_data extends AbstractMessage<Header> {
         this.photoNum = photoNum;
     }
 
-    @Field(index = 35, type = DataType.BYTES,desc = "照片数据")
+    @Field(index = 37, type = DataType.BYTES,desc = "照片数据")
     public byte[] getPhotoData() {
         return photoData;
     }

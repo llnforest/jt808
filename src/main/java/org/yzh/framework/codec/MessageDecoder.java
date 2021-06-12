@@ -49,7 +49,7 @@ public abstract class MessageDecoder {
 
     public AbstractMessage decode(ByteBuf buf, int version) {
         buf = unescape(buf);
-        log.error("收到：{}" + ByteBufUtil.hexDump(buf));
+        log.info("收到：{}" + ByteBufUtil.hexDump(buf));
         boolean verified = verify(buf);
         if (!verified)
             log.error("校验码错误" + ByteBufUtil.hexDump(buf));
@@ -58,7 +58,6 @@ public abstract class MessageDecoder {
         Class<? extends AbstractHeader> headerClass = (Class<? extends AbstractHeader>) MessageHelper.getHeaderClass();
         BeanMetadata<? extends AbstractHeader> headMetadata = MessageHelper.getBeanMetadata(headerClass, version);
         int readerIndex = buf.readerIndex();
-
         AbstractHeader header = headMetadata.decode(buf);
         log.info("header:{}",header);
         //如果头部有版本
@@ -82,10 +81,11 @@ public abstract class MessageDecoder {
         int headLen = header.getHeadLength();
         int bodyLen = header.getBodyLength();
         buf.readerIndex(headLen);
+        ByteBuf buf1 = buf.slice(0,10);
 
 //        log.info("分包：{}",header.isSubpackage());
         if (header.isSubpackage()) {//有分包
-
+            log.info("有分包");
             byte[] bytes = new byte[bodyLen];
             buf.readBytes(bytes);
 
@@ -95,26 +95,34 @@ public abstract class MessageDecoder {
 
             ByteBuf bodyBuf = Unpooled.wrappedBuffer(packages);
             String messageId = CommonUtils.getMarkId(header.getMessageId(),bodyBuf);
+            if(!CommonUtils.verifySign(messageId,bodyBuf,header.getMobileNo())){
+                return null;
+            }
             BeanMetadata<? extends AbstractMessage> bodyMetadata = MessageHelper.getBeanMetadata(messageId, version);
             if(bodyMetadata != null){
-                message = bodyMetadata.decode(bodyBuf);
+                message = bodyMetadata.decode(CommonUtils.getBodyBuf(messageId,bodyBuf,0));
             }else{
                 message = new RawMessage<>();
                 log.info("未找到对应的BeanMetadata[{}]", header);
             }
-
+            message.setMarkId(messageId);
         } else {//无分包
+            log.info("无分包");
             String messageId = CommonUtils.getMarkId(header.getMessageId(),buf);
+            if(!CommonUtils.verifySign(messageId,buf,header.getMobileNo())){
+                return null;
+            }
             BeanMetadata<? extends AbstractMessage> bodyMetadata = MessageHelper.getBeanMetadata(messageId, version);
+            log.info("bodyMetaData:{}",bodyMetadata);
             if(bodyMetadata != null) {
-                message = bodyMetadata.decode(buf);
+                message = bodyMetadata.decode(CommonUtils.getBodyBuf(messageId,buf,headLen));
             }else{
                 message = new RawMessage<>();
                 log.info("未找到对应的BeanMetadata[{}]", header);
             }
             message.setMarkId(messageId);
         }
-
+        log.info("message:{}",message);
         message.setHeader(header);
         return message;
     }

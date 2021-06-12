@@ -52,7 +52,7 @@ public class TCPServer {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.channel(NioServerSocketChannel.class);
             bootstrap.group(bossGroup, workerGroup);
-            bootstrap.option(NioChannelOption.SO_BACKLOG, 1024)
+            bootstrap.option(NioChannelOption.SO_BACKLOG, 2048)
                     .option(NioChannelOption.SO_REUSEADDR, true)
 //                    .option(NioChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(65535))
                     .childOption(NioChannelOption.TCP_NODELAY, true)
@@ -79,6 +79,7 @@ public class TCPServer {
     }
 
     public ByteToMessageDecoder frameDecoder() {
+        log.info("进入1");
         if (config.lengthField == null)
             return new DelimiterBasedFrameDecoder(config.maxFrameLength, config.delimiter);
         return new LengthFieldAndDelimiterFrameDecoder(config.maxFrameLength, config.lengthField, config.delimiter);

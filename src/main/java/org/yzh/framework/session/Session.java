@@ -23,6 +23,8 @@ public class Session {
     protected final Channel channel;
 
     private volatile int serialNo = 0;
+    private volatile int packetNo = 1;
+
     private boolean registered = false;
     private String clientId;
 
@@ -61,6 +63,12 @@ public class Session {
         if (serialNo >= 0xffff)
             serialNo = 0;
         return serialNo++;
+    }
+
+    public int nextPacketNo(){
+        if (packetNo >= 0xffff)
+            packetNo = 1;
+        return packetNo ++;
     }
 
     public boolean isRegistered() {

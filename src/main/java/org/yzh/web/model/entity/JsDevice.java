@@ -33,21 +33,9 @@ public class JsDevice {
 
     private String recordInscode;
 
-    private Integer provinceId;
-
-    private Integer cityId;
-
-    private String venderId;
-
-    private Integer plateColor;
-
-    private String plateNo;
-
     private Date registerTime;
 
     private Integer status;
-
-    private String mobile;
 
     private Date createTime;
 
@@ -175,46 +163,6 @@ public class JsDevice {
         this.recordInscode = recordInscode;
     }
 
-    public Integer getProvinceId() {
-        return provinceId;
-    }
-
-    public void setProvinceId(Integer provinceId) {
-        this.provinceId = provinceId;
-    }
-
-    public Integer getCityId() {
-        return cityId;
-    }
-
-    public void setCityId(Integer cityId) {
-        this.cityId = cityId;
-    }
-
-    public String getVenderId() {
-        return venderId;
-    }
-
-    public void setVenderId(String venderId) {
-        this.venderId = venderId;
-    }
-
-    public Integer getPlateColor() {
-        return plateColor;
-    }
-
-    public void setPlateColor(Integer plateColor) {
-        this.plateColor = plateColor;
-    }
-
-    public String getPlateNo() {
-        return plateNo;
-    }
-
-    public void setPlateNo(String plateNo) {
-        this.plateNo = plateNo;
-    }
-
     public Date getRegisterTime() {
         return registerTime;
     }
@@ -229,14 +177,6 @@ public class JsDevice {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 
     public Date getCreateTime() {
@@ -290,14 +230,8 @@ public class JsDevice {
                 && (this.getBindStatus() == null ? other.getBindStatus() == null : this.getBindStatus().equals(other.getBindStatus()))
                 && (this.getSyncStatus() == null ? other.getSyncStatus() == null : this.getSyncStatus().equals(other.getSyncStatus()))
                 && (this.getRecordInscode() == null ? other.getRecordInscode() == null : this.getRecordInscode().equals(other.getRecordInscode()))
-                && (this.getProvinceId() == null ? other.getProvinceId() == null : this.getProvinceId().equals(other.getProvinceId()))
-                && (this.getCityId() == null ? other.getCityId() == null : this.getCityId().equals(other.getCityId()))
-                && (this.getVenderId() == null ? other.getVenderId() == null : this.getVenderId().equals(other.getVenderId()))
-                && (this.getPlateColor() == null ? other.getPlateColor() == null : this.getPlateColor().equals(other.getPlateColor()))
-                && (this.getPlateNo() == null ? other.getPlateNo() == null : this.getPlateNo().equals(other.getPlateNo()))
                 && (this.getRegisterTime() == null ? other.getRegisterTime() == null : this.getRegisterTime().equals(other.getRegisterTime()))
                 && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
-                && (this.getMobile() == null ? other.getMobile() == null : this.getMobile().equals(other.getMobile()))
                 && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
                 && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
                 && (this.getDeleteTime() == null ? other.getDeleteTime() == null : this.getDeleteTime().equals(other.getDeleteTime()));
@@ -322,14 +256,8 @@ public class JsDevice {
         result = prime * result + ((getBindStatus() == null) ? 0 : getBindStatus().hashCode());
         result = prime * result + ((getSyncStatus() == null) ? 0 : getSyncStatus().hashCode());
         result = prime * result + ((getRecordInscode() == null) ? 0 : getRecordInscode().hashCode());
-        result = prime * result + ((getProvinceId() == null) ? 0 : getProvinceId().hashCode());
-        result = prime * result + ((getCityId() == null) ? 0 : getCityId().hashCode());
-        result = prime * result + ((getVenderId() == null) ? 0 : getVenderId().hashCode());
-        result = prime * result + ((getPlateColor() == null) ? 0 : getPlateColor().hashCode());
-        result = prime * result + ((getPlateNo() == null) ? 0 : getPlateNo().hashCode());
         result = prime * result + ((getRegisterTime() == null) ? 0 : getRegisterTime().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
-        result = prime * result + ((getMobile() == null) ? 0 : getMobile().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getDeleteTime() == null) ? 0 : getDeleteTime().hashCode());

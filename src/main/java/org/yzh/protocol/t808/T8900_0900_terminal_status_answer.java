@@ -85,7 +85,7 @@ public class T8900_0900_terminal_status_answer extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -95,7 +95,7 @@ public class T8900_0900_terminal_status_answer extends AbstractMessage<Header> {
     }
 
 
-    @Field(index = 25, type = DataType.BYTE,desc = "执行结果")
+    @Field(index = 27, type = DataType.BYTE,desc = "执行结果")
     public int getResult() {
         return result;
     }
@@ -104,7 +104,7 @@ public class T8900_0900_terminal_status_answer extends AbstractMessage<Header> {
         this.result = result;
     }
 
-    @Field(index = 26, type = DataType.BYTE,desc = "禁训状态")
+    @Field(index = 28, type = DataType.BYTE,desc = "禁训状态")
     public int getStatus() {
         return status;
     }
@@ -113,7 +113,7 @@ public class T8900_0900_terminal_status_answer extends AbstractMessage<Header> {
         this.status = status;
     }
 
-    @Field(index = 27, type = DataType.BYTE,desc = "提示消息长度")
+    @Field(index = 29, type = DataType.BYTE,desc = "提示消息长度")
     public int getMsgLength() {
         return msgLength;
     }
@@ -122,7 +122,7 @@ public class T8900_0900_terminal_status_answer extends AbstractMessage<Header> {
         this.msgLength = msgLength;
     }
 
-    @Field(index = 28, type = DataType.STRING,desc = "提示消息内容")
+    @Field(index = 30, type = DataType.STRING,desc = "提示消息内容")
     public String getMsgContent() {
         return msgContent;
     }

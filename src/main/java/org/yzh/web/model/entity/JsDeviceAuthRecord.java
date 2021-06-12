@@ -7,7 +7,7 @@ public class JsDeviceAuthRecord {
 
     private String devnum;
 
-    private Integer authTime;
+    private String authTime;
 
     private Date createTime;
 
@@ -29,11 +29,11 @@ public class JsDeviceAuthRecord {
         this.devnum = devnum;
     }
 
-    public Integer getAuthTime() {
+    public String getAuthTime() {
         return authTime;
     }
 
-    public void setAuthTime(Integer authTime) {
+    public void setAuthTime(String authTime) {
         this.authTime = authTime;
     }
 

@@ -16,25 +16,25 @@ import org.yzh.protocol.commons.JT808;
 public class T0102 extends AbstractMessage<Header> {
 
     /** 终端重连后上报鉴权码 */
-    private int timeStamp;
-    private String token;
+    private long timeStamp;
+    private byte[] token;
 
     @Field(index = 0, type = DataType.DWORD, desc = "时间戳")
-    public int getTimeStamp() {
+    public long getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(int timeStamp) {
+    public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
 
 
-    @Field(index = 4, type = DataType.STRING, length = 256, desc = "鉴权密文")
-    public String getToken() {
+    @Field(index = 4, type = DataType.BYTES, length = 256, desc = "鉴权密文")
+    public byte[] getToken() {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(byte[] token) {
         this.token = token;
     }
 

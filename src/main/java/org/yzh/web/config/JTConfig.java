@@ -26,10 +26,10 @@ import org.yzh.web.endpoint.JTSessionListener;
 import java.util.Date;
 
 @Configuration
-@ConditionalOnProperty(value = "tpc-server.jt808.enable", havingValue = "true")
+@ConditionalOnProperty(value = "tcp.server.enable", havingValue = "true")
 public class JTConfig implements InitializingBean, DisposableBean {
 
-    @Value("${tpc-server.jt808.port}")
+    @Value("${tcp.server.port}")
     private int port;
 
     @Autowired

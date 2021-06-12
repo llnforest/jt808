@@ -40,6 +40,13 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
     public T8900_0900_time_up() {
     }
 
+    public T8900_0900_time_up(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_time_up(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据上行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
@@ -86,7 +93,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -95,7 +102,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTES,length = 26,desc = "学时记录编号")
+    @Field(index = 27, type = DataType.BYTES,length = 26,desc = "学时记录编号")
     public String getTimeNo() {
         return timeNo;
     }
@@ -104,7 +111,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.timeNo = timeNo;
     }
 
-    @Field(index = 51, type = DataType.BYTE,desc = "上报类型")
+    @Field(index = 53, type = DataType.BYTE,desc = "上报类型")
     public int getUpType() {
         return upType;
     }
@@ -113,7 +120,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.upType = upType;
     }
 
-    @Field(index = 52, type = DataType.BYTES,length = 16,desc = "学员编号")
+    @Field(index = 54, type = DataType.BYTES,length = 16,desc = "学员编号")
     public String getStudentNo() {
         return studentNo;
     }
@@ -123,7 +130,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
     }
 
 
-    @Field(index = 68, type = DataType.BYTES,length = 16,desc = "教练编号")
+    @Field(index = 70, type = DataType.BYTES,length = 16,desc = "教练编号")
     public String getCoachNo() {
         return coachNo;
     }
@@ -132,7 +139,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.coachNo = coachNo;
     }
 
-    @Field(index = 84, type = DataType.DWORD,desc = "课堂ID")
+    @Field(index = 86, type = DataType.DWORD,desc = "课堂ID")
     public int getClassId() {
         return classId;
     }
@@ -141,7 +148,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.classId = classId;
     }
 
-    @Field(index = 88, type = DataType.BCD8421,length = 3,desc = "记录产生时间")
+    @Field(index = 90, type = DataType.BCD8421,length = 3,desc = "记录产生时间")
     public String getAddTime() {
         return addTime;
     }
@@ -150,7 +157,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.addTime = addTime;
     }
 
-    @Field(index = 91, type = DataType.BCD8421,length = 5,desc = "培训课程")
+    @Field(index = 93, type = DataType.BCD8421,length = 5,desc = "培训课程")
     public String getClassNum() {
         return classNum;
     }
@@ -159,7 +166,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.classNum = classNum;
     }
 
-    @Field(index = 96, type = DataType.BYTE,desc = "记录状态")
+    @Field(index = 98, type = DataType.BYTE,desc = "记录状态")
     public int getStatus() {
         return status;
     }
@@ -168,7 +175,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.status = status;
     }
 
-    @Field(index = 97, type = DataType.WORD,desc = "最大速度")
+    @Field(index = 99, type = DataType.WORD,desc = "最大速度")
     public int getSpeed() {
         return speed;
     }
@@ -177,7 +184,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.speed = speed;
     }
 
-    @Field(index = 99, type = DataType.WORD,desc = "里程")
+    @Field(index = 101, type = DataType.WORD,desc = "里程")
     public int getKm() {
         return km;
     }
@@ -186,7 +193,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.km = km;
     }
 
-    @Field(index = 101, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
+    @Field(index = 103, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
     public T0200 getT0200() {
         return t0200;
     }

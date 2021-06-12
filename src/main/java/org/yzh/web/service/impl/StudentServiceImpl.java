@@ -34,8 +34,8 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
-    public T8900_0900_student_login_answer studentLogin(T8900_0900_student_login data) {
-        T8900_0900_student_login_answer answer = new T8900_0900_student_login_answer();
+    public T8900_0900_student_login_answer studentLogin(T8900_0900_student_login data,int serialNo) {
+        T8900_0900_student_login_answer answer = new T8900_0900_student_login_answer(serialNo, data.getHeader().getMobileNo());
         try{
             JsStudent jsStudent = jsStudentMapper.selectByStunum(data.getStudentNo());
             if(jsStudent == null){
@@ -80,7 +80,7 @@ public class StudentServiceImpl implements StudentService {
                 record.setLoginTime(new Date());
                 jsStudentLoginRecordMapper.insertSelective(record);
                 //拼应答模块
-                answer.setLoginResult(0);
+                answer.setLoginResult(1);
                 answer.setStudentNo(data.getStudentNo());
                 answer.setTotalClassNum(jsStudent.getTotalStudyTime());
                 answer.setCompletedClassNum(jsStudent.getNowStudyTime());
@@ -101,9 +101,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public T8900_0900_student_logout_answer studentLogout(T8900_0900_student_logout data) {
-        T8900_0900_student_logout_answer answer = new T8900_0900_student_logout_answer();
-
+    public T8900_0900_student_logout_answer studentLogout(T8900_0900_student_logout data,int serialNo) {
+        T8900_0900_student_logout_answer answer = new T8900_0900_student_logout_answer(serialNo, data.getHeader().getMobileNo());
+        answer.setStudentNo(data.getStudentNo());
         try{
             JsStudent jsStudent = jsStudentMapper.selectByStunum(data.getStudentNo());
             log.info(data.getStudentNo());

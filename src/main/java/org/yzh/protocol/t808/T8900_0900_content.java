@@ -60,7 +60,7 @@ public class T8900_0900_content{
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 22, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 22, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -69,7 +69,7 @@ public class T8900_0900_content{
         this.dataLength = dataLength;
     }
 
-    @Field(index = 24, type = DataType.OBJ,length = 50, desc = "数据内容")
+    @Field(index = 26, type = DataType.OBJ,length = 50, desc = "数据内容")
     public T8900_0900_coach_up getT8900_0900_coach_up() {
         return t8900_0900_coach_up;
     }

@@ -31,6 +31,14 @@ public class T8900_0900_student_logout_answer extends AbstractMessage<Header> {
     }
 
 
+    public T8900_0900_student_logout_answer(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据下行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_student_logout_answer(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据下行透传.substring(2),16), serialNo, mobileNo));
+    }
+
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
         return type;
@@ -76,7 +84,7 @@ public class T8900_0900_student_logout_answer extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -85,7 +93,7 @@ public class T8900_0900_student_logout_answer extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTE,desc = "登出结果")
+    @Field(index = 27, type = DataType.BYTE,desc = "登出结果")
     public int getLoginResult() {
         return loginResult;
     }
@@ -94,7 +102,7 @@ public class T8900_0900_student_logout_answer extends AbstractMessage<Header> {
         this.loginResult = loginResult;
     }
 
-    @Field(index = 26, type = DataType.BYTES,length = 16,desc = "学员编号")
+    @Field(index = 28, type = DataType.BYTES,length = 16,desc = "学员编号")
     public String getStudentNo() {
         return studentNo;
     }

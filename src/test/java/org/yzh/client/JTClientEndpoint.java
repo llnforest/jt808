@@ -37,7 +37,7 @@ public class JTClientEndpoint {
     private String mobileNo = "17299841738";
 
     @Mapping(types = 平台登录应答, desc = "平台登录应答")
-    public T8090 平台登录应答(T8090 message) {
+    public T81F0 平台登录应答(T81F0 message) {
         message.getResult();
         return null;
     }

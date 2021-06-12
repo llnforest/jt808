@@ -5,10 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.yzh.framework.commons.ClientChannelUtils;
-import org.yzh.framework.commons.WsHandlerUtils;
+import org.yzh.framework.commons.TcpClientUtils;
+import org.yzh.framework.commons.TcpServerUtils;
 import org.yzh.framework.netty.websocket.WebSocketChannelHandlerPool;
-import org.yzh.framework.netty.websocket.WebSocketServerHandler;
 import org.yzh.web.protocol.JT808Beans;
 
 import java.util.Scanner;
@@ -29,47 +28,47 @@ public class Application {
                 String phone = "17299841738";
                 switch (i) {
                     case 0:
-                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T0090(),phone));
+                        JT808Beans.T01F0();
                         break;
                     case 1:
-                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T0091(),phone));
+                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T01F1(),phone,1));
                         break;
                     case 2:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_time_up_command(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_time_up_command(),phone));
                         break;
                     case 3:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_photo_command(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_photo_command(),phone));
                         break;
                     case 4:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_photo_search_command(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_photo_search_command(),phone));
                         break;
                     case 5:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_photo_up_only(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_photo_up_only(),phone));
                         break;
                     case 6:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_terminal_set(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_terminal_set(),phone));
                         break;
                     case 7:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_terminal_status(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_terminal_status(),phone));
                         break;
                     case 8:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_terminal_param_search(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.t8900_0900_terminal_param_search(),phone));
                         break;
                     case 9:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T8103(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T8103(),phone));
                         break;
                     case 10:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T8104(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T8104(),phone));
 
                         break;
                     case 11:
-                        ClientChannelUtils.getCtx().writeAndFlush(JT808Beans.H2019(JT808Beans.T8000(),phone));
+                        TcpClientUtils.getCtx().writeAndFlush(JT808Beans.H2019(JT808Beans.T8000(),phone,1));
                         break;
                     case 12:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T8105(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T8105(),phone));
                         break;
                     case 13:
-//                        ClientChannelUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T8202(),phone));
+//                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T8202(),phone));
                         break;
                     case 14:
                         log.info("发送数据");

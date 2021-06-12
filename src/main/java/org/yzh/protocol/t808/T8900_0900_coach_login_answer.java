@@ -33,6 +33,13 @@ public class T8900_0900_coach_login_answer extends AbstractMessage<Header> {
     public T8900_0900_coach_login_answer() {
     }
 
+    public T8900_0900_coach_login_answer(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据下行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_coach_login_answer(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据下行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
@@ -79,7 +86,7 @@ public class T8900_0900_coach_login_answer extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -88,7 +95,7 @@ public class T8900_0900_coach_login_answer extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTE,desc = "登录结果")
+    @Field(index = 27, type = DataType.BYTE,desc = "登录结果")
     public int getLoginResult() {
         return loginResult;
     }
@@ -97,7 +104,7 @@ public class T8900_0900_coach_login_answer extends AbstractMessage<Header> {
         this.loginResult = loginResult;
     }
 
-    @Field(index = 26, type = DataType.BYTES,length = 16,desc = "教练员编号")
+    @Field(index = 28, type = DataType.BYTES,length = 16,desc = "教练员编号")
     public String getCoachNo() {
         return coachNo;
     }
@@ -106,7 +113,7 @@ public class T8900_0900_coach_login_answer extends AbstractMessage<Header> {
         this.coachNo = coachNo;
     }
 
-    @Field(index = 42, type = DataType.BYTE,desc = "是否报读附加消息")
+    @Field(index = 44, type = DataType.BYTE,desc = "是否报读附加消息")
     public int getIsRead() {
         return isRead;
     }
@@ -115,7 +122,7 @@ public class T8900_0900_coach_login_answer extends AbstractMessage<Header> {
         this.isRead = isRead;
     }
 
-    @Field(index = 43, type = DataType.BYTE,desc = "附加消息长度")
+    @Field(index = 45, type = DataType.BYTE,desc = "附加消息长度")
     public int getAddLength() {
         return addLength;
     }
@@ -124,7 +131,7 @@ public class T8900_0900_coach_login_answer extends AbstractMessage<Header> {
         this.addLength = addLength;
     }
 
-    @Field(index = 44, type = DataType.STRING,desc = "附加消息")
+    @Field(index = 46, type = DataType.STRING,desc = "附加消息")
     public String getAddMsg() {
         return addMsg;
     }

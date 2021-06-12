@@ -29,6 +29,13 @@ public class T8900_0900_photo_up_only extends AbstractMessage<Header> {
     public T8900_0900_photo_up_only() {
     }
 
+    public T8900_0900_photo_up_only(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.数据下行透传.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8900_0900_photo_up_only(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.数据下行透传.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.BYTE, desc = "透传消息类型")
     public int getType() {
@@ -75,7 +82,7 @@ public class T8900_0900_photo_up_only extends AbstractMessage<Header> {
         this.terminalNo = terminalNo;
     }
 
-    @Field(index = 23, type = DataType.WORD, desc = "数据内容长度")
+    @Field(index = 23, type = DataType.DWORD, desc = "数据内容长度")
     public int getDataLength() {
         return dataLength;
     }
@@ -84,7 +91,7 @@ public class T8900_0900_photo_up_only extends AbstractMessage<Header> {
         this.dataLength = dataLength;
     }
 
-    @Field(index = 25, type = DataType.BYTES,length = 10,desc = "照片编号")
+    @Field(index = 27, type = DataType.BYTES,length = 10,desc = "照片编号")
     public String getPhotoNum() {
         return photoNum;
     }

@@ -27,6 +27,14 @@ public class T8103 extends AbstractMessage<Header> {
     public T8103() {
     }
 
+    public T8103(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.设置终端参数.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T8103(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.设置终端参数.substring(2),16), serialNo, mobileNo));
+    }
+
     public T8103(String mobileNo) {
         super(new Header(mobileNo, Integer.parseInt(JT808.设置终端参数.substring(2),16)));
     }

@@ -1,10 +1,13 @@
 package org.yzh.framework.codec;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.TooLongFrameException;
 import io.netty.util.internal.ObjectUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -18,6 +21,7 @@ public class DelimiterBasedFrameDecoder extends ByteToMessageDecoder {
     private final boolean failFast;
     private boolean discardingTooLongFrame;
     private int tooLongFrameLength;
+    private static final Logger log = LoggerFactory.getLogger(DelimiterBasedFrameDecoder.class.getSimpleName());
 
     public DelimiterBasedFrameDecoder(int maxFrameLength, Delimiter... delimiters) {
         this(maxFrameLength, true, delimiters);
@@ -41,6 +45,7 @@ public class DelimiterBasedFrameDecoder extends ByteToMessageDecoder {
     }
 
     protected Object decode(ChannelHandlerContext ctx, ByteBuf buffer) throws Exception {
+        log.info("收到解码前：{}", ByteBufUtil.hexDump(buffer));
         // Try all delimiters and choose the delimiter which yields the shortest frame.
         int minFrameLength = Integer.MAX_VALUE;
         Delimiter minDelim = null;

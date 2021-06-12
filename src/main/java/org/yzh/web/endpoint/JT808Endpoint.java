@@ -1,12 +1,12 @@
 package org.yzh.web.endpoint;
 
-import com.sun.xml.internal.bind.v2.TODO;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.yzh.framework.commons.TcpServerUtils;
 import org.yzh.framework.commons.TcpClientUtils;
 import org.yzh.framework.commons.WsHandlerUtils;
 import org.yzh.framework.mvc.annotation.AsyncBatch;
@@ -26,6 +26,7 @@ import org.yzh.web.service.*;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 
 import static org.yzh.protocol.commons.JT808.*;
@@ -48,11 +49,22 @@ public class JT808Endpoint {
     //-----------------------公共部分---------------------------
 
     @Mapping(types = 终端心跳, desc = "终端心跳")
-    public Object heartBeat(Header header, Session session) {
+    public void heartBeat(Header header, Session session) {
         log.info("心跳{}",header);
-        log.info("收到心跳");
-        return null;
+        TcpClientUtils.setClientChannel(header.getMobileNo(),session.getChannel());
     }
+
+    @Mapping(types = 平台登录应答, desc = "平台登录应答")
+    public void 平台登录应答(T81F0 message, Session session) {
+        //TODO
+        if(message.getResult() == 0){//成功
+
+        }else{//失败
+
+        }
+
+    }
+
     //-----------------------已完成---------------------------
 
     @Mapping(types = 终端通用应答, desc = "终端通用应答")
@@ -207,17 +219,23 @@ public class JT808Endpoint {
 
     @Mapping(types = 上报教练员登录, desc = "上报教练员登录")
     public T8900_0900_coach_login_answer 上报教练员登录(T8900_0900_coach_login request, Session session) {
-        log.info("ok");
         Header header = request.getHeader();
         CoachService service = (CoachService) BeanHelper.getBean("coachServiceImpl");
 
         int loginResult = service.coachLogin(request);
 
-        T8900_0900_coach_login_answer result = new T8900_0900_coach_login_answer();
+        T8900_0900_coach_login_answer result = new T8900_0900_coach_login_answer(session.nextSerialNo(), header.getMobileNo());
+        result.setPacketNo(request.getPacketNo());
+        result.setTerminalNo(request.getTerminalNo());
         result.setLoginResult(loginResult);
         result.setCoachNo(request.getCoachNo());
-        result.setIsRead(0);
-
+        //TODO 播报附加消息
+        String str = "登录成功";
+        result.setIsRead(1);
+        int addLength = str.getBytes(Charset.forName("GBK")).length;
+        result.setAddLength(addLength);
+        result.setAddMsg(str);
+        result.setDataLength(19+addLength);
         return result;
     }
 
@@ -228,9 +246,13 @@ public class JT808Endpoint {
 
         int loginResult = service.coachLogout(request);
 
-        T8900_0900_coach_logout_answer result = new T8900_0900_coach_logout_answer();
+        T8900_0900_coach_logout_answer result = new T8900_0900_coach_logout_answer(session.nextSerialNo(), header.getMobileNo());
+        result.setPacketNo(request.getPacketNo());
+        result.setTerminalNo(request.getTerminalNo());
+
         result.setLoginResult(loginResult);
         result.setCoachNo(request.getCoachNo());
+        result.setDataLength(17);
         return result;
     }
 
@@ -238,7 +260,16 @@ public class JT808Endpoint {
     public T8900_0900_student_login_answer 上报学员登录(T8900_0900_student_login request, Session session) {
         StudentService service = (StudentService) BeanHelper.getBean("studentServiceImpl");
 
-        T8900_0900_student_login_answer result = service.studentLogin(request);
+        T8900_0900_student_login_answer result = service.studentLogin(request,session.nextSerialNo());
+        result.setPacketNo(request.getPacketNo());
+        result.setTerminalNo(request.getTerminalNo());
+        //TODO 播报附加消息
+        String str = "登录成功";
+        result.setIsRead(1);
+        int addLength = str.getBytes(Charset.forName("GBK")).length;
+        result.setAddLength(addLength);
+        result.setAddMsg(str);
+        result.setDataLength(27+addLength);
         return result;
     }
     //
@@ -246,7 +277,10 @@ public class JT808Endpoint {
     public T8900_0900_student_logout_answer 上报学员登出(T8900_0900_student_logout request, Session session) {
         StudentService service = (StudentService) BeanHelper.getBean("studentServiceImpl");
 
-        T8900_0900_student_logout_answer result = service.studentLogout(request);
+        T8900_0900_student_logout_answer result = service.studentLogout(request,session.nextSerialNo());
+        result.setPacketNo(request.getPacketNo());
+        result.setTerminalNo(request.getTerminalNo());
+        result.setDataLength(17);
         return result;
     }
 
@@ -286,7 +320,7 @@ public class JT808Endpoint {
         //TODO:处理终端注册的相关业务逻辑
         deviceService.register(message,result);
 
-//        ClientChannelUtils.getClient().writeObject(message);//转发
+//        TcpServerUtils.getClient().writeObject(message);//像平台转发
         return result;
     }
 
@@ -312,20 +346,19 @@ public class JT808Endpoint {
         result.setSerialNo(header.getSerialNo());
         result.setReplyId(header.getMessageId());
         //TODO:处理终端注册的相关业务逻辑
-        log.info("终端鉴权，{}{}", session.getChannel(), request);
-
         Boolean isAuth = deviceService.authentication(request);
         if (isAuth) {
             log.info("终端鉴权成功");
-            TcpClientUtils.setClientChannel(header.getMobileNo(),session.getChannel());
-//            session.register(header, device);
             result.setResultCode(T0001.Success);
+            //加入客户端channel
+            TcpClientUtils.setClientChannel(header.getMobileNo(),session.getChannel());
             return result;
         }
-        log.warn("终端鉴权失败，{}{}", session, request);
+        log.warn("终端鉴权失败");
         result.setResultCode(T0001.Failure);
         return result;
     }
+
 
     //异步批量处理默认 4线程 最大累积100条记录处理一次 最大等待时间1秒
     @AsyncBatch
@@ -395,8 +428,11 @@ public class JT808Endpoint {
     @Mapping(types = 上报照片查询结果, desc = "上报照片查询结果")
     public T8900_0900_photo_search_result_up_answer 上报照片查询结果应答(T8900_0900_photo_search_result_up request, Session session) {
         Header header = request.getHeader();
+
         String phone = header.getMobileNo();
-        T8900_0900_photo_search_result_up_answer answer = new T8900_0900_photo_search_result_up_answer(header.getMobileNo(),header.getSerialNo());
+        T8900_0900_photo_search_result_up_answer answer = new T8900_0900_photo_search_result_up_answer(header.getMobileNo(),session.nextSerialNo());
+        answer.setPacketNo(request.getPacketNo());
+        answer.setDataLength(1);
         //TODO:获得上报图片查询结果逻辑
 
         answer.setTerminalNo(request.getTerminalNo());
@@ -428,7 +464,9 @@ public class JT808Endpoint {
         request.getPhotoNum();
         //TODO:获得照片上传初始化逻辑
 
-        T8900_0900_photo_up_init_answer  answer = new T8900_0900_photo_up_init_answer(header.getMobileNo(),header.getSerialNo());
+        T8900_0900_photo_up_init_answer  answer = new T8900_0900_photo_up_init_answer(header.getMobileNo(),session.nextSerialNo());
+        answer.setPacketNo(request.getPacketNo());
+        answer.setDataLength(1);
         answer.setTerminalNo(request.getTerminalNo());
 
         answer.setResult(0);
@@ -437,13 +475,20 @@ public class JT808Endpoint {
 
     @Mapping(types = 照片上传数据包, desc = "照片上传数据包")
     public void 上传照片数据包(T8900_0900_photo_up_data request, Session session) {
-        Header header = request.getHeader();
-        request.getPhotoNum();
-        request.getPhotoData();//照片数据
+        log.info("照片名称：{}",request.getTerminalNo()+"_"+request.getPhotoNum());
+//        int photoLength = request.getPhotoData().length - 256;
+//        byte[] photoBytes = new byte[photoLength];
+//        byte[] signBytes = new byte[256];
+//        System.arraycopy(request.getPhotoData(),0,photoBytes,0,photoLength);
+//        System.arraycopy(request.getPhotoData(),photoLength,signBytes,0,256);
+//        log.info("signBytes:{}",signBytes);
+        log.info("图片包：{}",request.getPhotoData());
         //TODO:处理图片上传
-        try (FileOutputStream fileOuputStream = new FileOutputStream("F://jt808_img/demo1.txt")) {
+        try (FileOutputStream fileOuputStream = new FileOutputStream("F://jt808_img/"+request.getTerminalNo()+"_"+request.getPhotoNum()+".jpeg")) {
+            log.info("处理中");
             fileOuputStream.write(request.getPhotoData());
         } catch (IOException e) {
+            log.info("处理失败");
             e.printStackTrace();
         }
 
