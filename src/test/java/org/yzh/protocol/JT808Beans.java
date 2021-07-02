@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yzh.framework.commons.transform.Bin;
 import org.yzh.framework.orm.annotation.Message;
+import org.yzh.framework.orm.model.AbstractHeader;
 import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.protocol.basics.BytesAttribute;
 import org.yzh.protocol.basics.BytesParameter;
@@ -59,7 +60,7 @@ public class JT808Beans {
     public static AbstractMessage H2019(AbstractMessage message) {
         Header header = new Header();
         Message type = message.getClass().getAnnotation(Message.class);
-        if (type != null){
+        if (type != null && message.getMessageId() == 0){
             if(type.value()[0].indexOf("_")  > -1){
                 String[] value = type.value()[0].split("_");
                 header.setMessageId(Integer.parseInt(value[0].substring(2),16));
@@ -67,6 +68,8 @@ public class JT808Beans {
             }else{
                 header.setMessageId(Integer.parseInt(type.value()[0].substring(2),16));
             }
+        }else{
+            header.setMessageId(message.getMessageId());
         }
         header.setVersionNo(0);
         header.setMobileNo("17299841738");
@@ -207,7 +210,7 @@ public class JT808Beans {
 
     //位置信息汇报
     public static T0200 T0200() {
-        T0200 bean = new T0200();
+        T0200 bean = new T0200(1,"17299841738");
         log.info("int:{}",Integer.parseInt("1001100110100001010100011100",2));
         bean.setWarningMark(Integer.parseInt("00001001100110100001010100011100",2));
         bean.setStatus(Integer.parseInt("100011100",2));
@@ -233,8 +236,10 @@ public class JT808Beans {
         attributes.put(SignalStrength.attributeId, new SignalStrength(30));
         attributes.put(GnssCount.attributeId, new GnssCount(40));
         bean.setAttributes(attributes);
+        log.info("m----s---g:{}",bean.getMessageId());
         return bean;
     }
+
 
     //上报照片查询结果
     public static T8900_0900_photo_search_result_up T8900_0900_photo_search_result_up(){
@@ -270,7 +275,7 @@ public class JT808Beans {
         bean.setPhotoNum("ph001");
         bean.setTerminalNo("0");
 //        File file = new File("F:\\timg.jpg");
-        File file = new File("F:\\demo.txt");
+        File file = new File("F:\\ResponseData.txt");
         byte buf[] = new byte[(int)file.length()];
         try{
             FileInputStream fileInputStream = new FileInputStream(file);

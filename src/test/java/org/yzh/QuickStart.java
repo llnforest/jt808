@@ -21,7 +21,7 @@ public class QuickStart {
                 .setDelimiters(new byte[][]{{0x7e}})
                 .setDecoder(new JTMessageDecoder("org.yzh.protocol"))
                 .setEncoder(new JTMessageEncoder("org.yzh.protocol"))
-                .setHandlerMapping(new DefaultHandlerMapping("org.yzh.web.endpoint"))
+                .setHandlerMapping(new DefaultHandlerMapping("org.yzh.server"))
                 .setHandlerInterceptor(new JTHandlerInterceptor())
                 .setMultiPacketListener(new JTMultiPacketListener(5))
                 .setSessionManager(new SessionManager())

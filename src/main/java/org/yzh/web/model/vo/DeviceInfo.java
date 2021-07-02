@@ -14,7 +14,7 @@ public class DeviceInfo {
     /** 有效期 （日） */
     private int validAt;
     /** 车牌颜色 */
-    private byte plateColor;
+    private String plateColor;
     /** 车牌号 */
     private String plateNo;
     /** 设备ID */
@@ -39,11 +39,11 @@ public class DeviceInfo {
         this.validAt = validAt;
     }
 
-    public byte getPlateColor() {
+    public String getPlateColor() {
         return plateColor;
     }
 
-    public void setPlateColor(byte plateColor) {
+    public void setPlateColor(String plateColor) {
         this.plateColor = plateColor;
     }
 

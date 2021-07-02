@@ -3,29 +3,20 @@ package org.yzh.framework.commons;
 import com.mysql.cj.util.Base64Decoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
-import io.netty.channel.ChannelHandlerContext;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yzh.framework.orm.model.AbstractMessage;
-import org.yzh.framework.session.Session;
 import org.yzh.web.commons.BeanHelper;
 import org.yzh.web.model.entity.JsDevice;
-import org.yzh.web.model.entity.JsDeviceAuthRecord;
-import org.yzh.web.service.DeviceService;
-import org.yzh.web.service.TerminalConfigService;
+import org.yzh.web.service.JsDeviceService;
+import org.yzh.web.service.impl.JsDeviceServiceImpl;
 import org.yzh.web.sign.IVerify;
 import org.yzh.web.sign.Verify;
 
 import java.io.ByteArrayInputStream;
 import java.security.KeyStore;
 import java.security.cert.X509Certificate;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 
 public class CommonUtils {
     private static final Logger log = LoggerFactory.getLogger(CommonUtils.class);
@@ -74,7 +65,7 @@ public class CommonUtils {
 //        ByteBuf paramBuf = bodyBuf.slice(0,length-256);
         log.info("paramBuf:{}",ByteBufUtil.hexDump(paramBytes));
         log.info("signBuf:{}",ByteBufUtil.hexDump(signBytes));
-        DeviceService service = BeanHelper.getBean("deviceServiceImpl");
+        JsDeviceService service = BeanHelper.getBean(JsDeviceServiceImpl.class);
         JsDevice jsDevice = service.getDeviceByMobile(mobile);
 
         log.info("js:{}",jsDevice);
@@ -111,5 +102,11 @@ public class CommonUtils {
 
     }
 
-
+    public static String getHexString(byte[] b) {
+        String result = "";
+        for (int i=0; i < b.length; i++) {
+            result += Integer.toString( ( b[i] & 0xff ) + 0x100,16).substring( 1 );
+        }
+        return result;
+    }
 }

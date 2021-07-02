@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yzh.web.mapper.JsTrainRecordTimeMapper">
+  <resultMap id="BaseResultMap" type="org.yzh.web.model.entity.JsTrainRecordTime">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="rnum" jdbcType="CHAR" property="rnum" />
+    <result column="stunum" jdbcType="CHAR" property="stunum" />
+    <result column="coachnum" jdbcType="CHAR" property="coachnum" />
+    <result column="class_id" jdbcType="CHAR" property="classId" />
+    <result column="subjcode" jdbcType="CHAR" property="subjcode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="up_type" jdbcType="INTEGER" property="upType" />
+    <result column="maxspeed" jdbcType="VARCHAR" property="maxspeed" />
+    <result column="mileage" jdbcType="VARCHAR" property="mileage" />
+    <result column="sync_status" jdbcType="INTEGER" property="syncStatus" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, rnum, stunum, coachnum, class_id, subjcode,  status, up_type, maxspeed, mileage, sync_status, reason, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from js_train_record_time
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from js_train_record_time
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.yzh.web.model.entity.JsTrainRecordTime">
+    insert into js_train_record_time (id, rnum, stunum, coachnum, 
+      class_id,  subjcode,
+      status, up_type, maxspeed, 
+      mileage, sync_status, reason, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{rnum,jdbcType=CHAR}, #{stunum,jdbcType=CHAR}, #{coachnum,jdbcType=CHAR}, 
+      #{classId,jdbcType=CHAR},   #{subjcode,jdbcType=CHAR},
+      #{status,jdbcType=INTEGER}, #{upType,jdbcType=INTEGER}, #{maxspeed,jdbcType=VARCHAR}, 
+      #{mileage,jdbcType=VARCHAR}, #{syncStatus,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsTrainRecordTime">
+    insert into js_train_record_time
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="rnum != null">
+        rnum,
+      </if>
+      <if test="stunum != null">
+        stunum,
+      </if>
+      <if test="coachnum != null">
+        coachnum,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="subjcode != null">
+        subjcode,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="upType != null">
+        up_type,
+      </if>
+      <if test="maxspeed != null">
+        maxspeed,
+      </if>
+      <if test="mileage != null">
+        mileage,
+      </if>
+      <if test="syncStatus != null">
+        sync_status,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="rnum != null">
+        #{rnum,jdbcType=CHAR},
+      </if>
+      <if test="stunum != null">
+        #{stunum,jdbcType=CHAR},
+      </if>
+      <if test="coachnum != null">
+        #{coachnum,jdbcType=CHAR},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=CHAR},
+      </if>
+      <if test="subjcode != null">
+        #{subjcode,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="upType != null">
+        #{upType,jdbcType=INTEGER},
+      </if>
+      <if test="maxspeed != null">
+        #{maxspeed,jdbcType=VARCHAR},
+      </if>
+      <if test="mileage != null">
+        #{mileage,jdbcType=VARCHAR},
+      </if>
+      <if test="syncStatus != null">
+        #{syncStatus,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.yzh.web.model.entity.JsTrainRecordTime">
+    update js_train_record_time
+    <set>
+      <if test="rnum != null">
+        rnum = #{rnum,jdbcType=CHAR},
+      </if>
+      <if test="stunum != null">
+        stunum = #{stunum,jdbcType=CHAR},
+      </if>
+      <if test="coachnum != null">
+        coachnum = #{coachnum,jdbcType=CHAR},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=CHAR},
+      </if>
+
+      <if test="subjcode != null">
+        subjcode = #{subjcode,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="upType != null">
+        up_type = #{upType,jdbcType=INTEGER},
+      </if>
+      <if test="maxspeed != null">
+        maxspeed = #{maxspeed,jdbcType=VARCHAR},
+      </if>
+      <if test="mileage != null">
+        mileage = #{mileage,jdbcType=VARCHAR},
+      </if>
+      <if test="syncStatus != null">
+        sync_status = #{syncStatus,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.yzh.web.model.entity.JsTrainRecordTime">
+    update js_train_record_time
+    set rnum = #{rnum,jdbcType=CHAR},
+      stunum = #{stunum,jdbcType=CHAR},
+      coachnum = #{coachnum,jdbcType=CHAR},
+      class_id = #{classId,jdbcType=CHAR},
+      subjcode = #{subjcode,jdbcType=CHAR},
+      status = #{status,jdbcType=INTEGER},
+      up_type = #{upType,jdbcType=INTEGER},
+      maxspeed = #{maxspeed,jdbcType=VARCHAR},
+      mileage = #{mileage,jdbcType=VARCHAR},
+      sync_status = #{syncStatus,jdbcType=INTEGER},
+      reason = #{reason,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

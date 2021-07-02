@@ -17,7 +17,7 @@ import org.yzh.web.component.mybatis.PageInfo;
 import org.yzh.web.component.mybatis.Pagination;
 import org.yzh.web.model.vo.Location;
 import org.yzh.web.model.vo.LocationQuery;
-import org.yzh.web.service.LocationService;
+import org.yzh.web.service.JsDeviceLocationService;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Api(description = "位置信息")
@@ -26,7 +26,7 @@ import springfox.documentation.annotations.ApiIgnore;
 public class LocationController {
 
     @Autowired
-    private LocationService locationService;
+    private JsDeviceLocationService jsDeviceLocationService;
 
     @ApiIgnore
     @GetMapping
@@ -38,7 +38,7 @@ public class LocationController {
     @GetMapping("location")
     @ResponseBody
     public Pagination<Location> find(LocationQuery query, PageInfo pageInfo) {
-        Pagination<Location> result = Page.start(() -> locationService.find(query), pageInfo);
+        Pagination<Location> result = Page.start(() -> jsDeviceLocationService.find(query), pageInfo);
         return result;
     }
 

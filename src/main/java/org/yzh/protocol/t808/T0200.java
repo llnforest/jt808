@@ -18,7 +18,7 @@ import java.util.Map;
  * @author yezhihao
  * @home https://gitee.com/yezhihao/jt808-server
  */
-@Message(JT808.位置信息汇报)
+@Message({JT808.位置信息汇报,JT808.位置信息查询应答})
 public class T0200 extends AbstractMessage<Header> {
 
     private int warningMark;
@@ -30,6 +30,17 @@ public class T0200 extends AbstractMessage<Header> {
     private int direction;
     private LocalDateTime dateTime;
     private List<BytesAttribute> bytesAttributes;
+
+    public T0200() {
+    }
+
+    public T0200(String mobileNo, int serialNo) {
+        super(new Header(Integer.parseInt(JT808.位置信息汇报.substring(2),16), serialNo, mobileNo));
+    }
+
+    public T0200(int serialNo, String mobileNo) {
+        super(new Header(Integer.parseInt(JT808.位置信息查询应答.substring(2),16), serialNo, mobileNo));
+    }
 
     @Field(index = 0, type = DataType.DWORD, desc = "报警标志")
     public int getWarningMark() {

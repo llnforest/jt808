@@ -23,11 +23,11 @@ public class T01F0 extends AbstractMessage<Header> {
     }
 
     public T01F0(String mobileNo, int serialNo) {
-        super(new Header(Integer.parseInt(JT808.查询终端参数应答.substring(2),16), serialNo, mobileNo));
+        super(new Header(Integer.parseInt(JT808.平台登录请求.substring(2),16), serialNo, mobileNo));
     }
 
     public T01F0(int serialNo, String mobileNo) {
-        super(new Header(Integer.parseInt(JT808.查询终端参数应答.substring(2),16), serialNo, mobileNo));
+        super(new Header(Integer.parseInt(JT808.平台登录请求.substring(2),16), serialNo, mobileNo));
     }
 
     /** 平台编号 */

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yzh.web.mapper.JsUserCoachMapper">
+  <resultMap id="BaseResultMap" type="org.yzh.web.model.entity.JsUserCoach">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="coachnum" jdbcType="CHAR" property="coachnum" />
+    <result column="inscode" jdbcType="CHAR" property="inscode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    <result column="fingerprint" jdbcType="VARCHAR" property="fingerprint" />
+    <result column="drilicence" jdbcType="VARCHAR" property="drilicence" />
+    <result column="fstdrilicdate" jdbcType="VARCHAR" property="fstdrilicdate" />
+    <result column="occupationno" jdbcType="VARCHAR" property="occupationno" />
+    <result column="occupationlevel" jdbcType="VARCHAR" property="occupationlevel" />
+    <result column="dripermitted" jdbcType="VARCHAR" property="dripermitted" />
+    <result column="teachpermitted" jdbcType="VARCHAR" property="teachpermitted" />
+    <result column="employstatus" jdbcType="VARCHAR" property="employstatus" />
+    <result column="hiredate" jdbcType="VARCHAR" property="hiredate" />
+    <result column="leavedate" jdbcType="VARCHAR" property="leavedate" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="status" jdbcType="INTEGER" property="sort" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, coachnum, inscode, name, sex, idcard, mobile, address, photo, fingerprint, drilicence, 
+    fstdrilicdate, occupationno, occupationlevel, dripermitted, teachpermitted, employstatus, 
+    hiredate, leavedate, sort,status, create_time, update_time
+  </sql>
+  <select id="isCoachLogin" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from js_user_coach
+    where coachnum = #{coachnum,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from js_user_coach
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from js_user_coach
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.yzh.web.model.entity.JsUserCoach">
+    insert into js_user_coach (id, coachnum, inscode, 
+      name, sex, idcard, 
+      mobile, address, photo, 
+      fingerprint, drilicence, fstdrilicdate, 
+      occupationno, occupationlevel, dripermitted, 
+      teachpermitted, employstatus, hiredate, 
+      leavedate, sort, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{coachnum,jdbcType=CHAR}, #{inscode,jdbcType=CHAR}, 
+      #{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, 
+      #{fingerprint,jdbcType=VARCHAR}, #{drilicence,jdbcType=VARCHAR}, #{fstdrilicdate,jdbcType=VARCHAR}, 
+      #{occupationno,jdbcType=VARCHAR}, #{occupationlevel,jdbcType=VARCHAR}, #{dripermitted,jdbcType=VARCHAR}, 
+      #{teachpermitted,jdbcType=VARCHAR}, #{employstatus,jdbcType=VARCHAR}, #{hiredate,jdbcType=VARCHAR}, 
+      #{leavedate,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsUserCoach">
+    insert into js_user_coach
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="coachnum != null">
+        coachnum,
+      </if>
+      <if test="inscode != null">
+        inscode,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="idcard != null">
+        idcard,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="photo != null">
+        photo,
+      </if>
+      <if test="fingerprint != null">
+        fingerprint,
+      </if>
+      <if test="drilicence != null">
+        drilicence,
+      </if>
+      <if test="fstdrilicdate != null">
+        fstdrilicdate,
+      </if>
+      <if test="occupationno != null">
+        occupationno,
+      </if>
+      <if test="occupationlevel != null">
+        occupationlevel,
+      </if>
+      <if test="dripermitted != null">
+        dripermitted,
+      </if>
+      <if test="teachpermitted != null">
+        teachpermitted,
+      </if>
+      <if test="employstatus != null">
+        employstatus,
+      </if>
+      <if test="hiredate != null">
+        hiredate,
+      </if>
+      <if test="leavedate != null">
+        leavedate,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="coachnum != null">
+        #{coachnum,jdbcType=CHAR},
+      </if>
+      <if test="inscode != null">
+        #{inscode,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="fingerprint != null">
+        #{fingerprint,jdbcType=VARCHAR},
+      </if>
+      <if test="drilicence != null">
+        #{drilicence,jdbcType=VARCHAR},
+      </if>
+      <if test="fstdrilicdate != null">
+        #{fstdrilicdate,jdbcType=VARCHAR},
+      </if>
+      <if test="occupationno != null">
+        #{occupationno,jdbcType=VARCHAR},
+      </if>
+      <if test="occupationlevel != null">
+        #{occupationlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="dripermitted != null">
+        #{dripermitted,jdbcType=VARCHAR},
+      </if>
+      <if test="teachpermitted != null">
+        #{teachpermitted,jdbcType=VARCHAR},
+      </if>
+      <if test="employstatus != null">
+        #{employstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="hiredate != null">
+        #{hiredate,jdbcType=VARCHAR},
+      </if>
+      <if test="leavedate != null">
+        #{leavedate,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.yzh.web.model.entity.JsUserCoach">
+    update js_user_coach
+    <set>
+      <if test="coachnum != null">
+        coachnum = #{coachnum,jdbcType=CHAR},
+      </if>
+      <if test="inscode != null">
+        inscode = #{inscode,jdbcType=CHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="fingerprint != null">
+        fingerprint = #{fingerprint,jdbcType=VARCHAR},
+      </if>
+      <if test="drilicence != null">
+        drilicence = #{drilicence,jdbcType=VARCHAR},
+      </if>
+      <if test="fstdrilicdate != null">
+        fstdrilicdate = #{fstdrilicdate,jdbcType=VARCHAR},
+      </if>
+      <if test="occupationno != null">
+        occupationno = #{occupationno,jdbcType=VARCHAR},
+      </if>
+      <if test="occupationlevel != null">
+        occupationlevel = #{occupationlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="dripermitted != null">
+        dripermitted = #{dripermitted,jdbcType=VARCHAR},
+      </if>
+      <if test="teachpermitted != null">
+        teachpermitted = #{teachpermitted,jdbcType=VARCHAR},
+      </if>
+      <if test="employstatus != null">
+        employstatus = #{employstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="hiredate != null">
+        hiredate = #{hiredate,jdbcType=VARCHAR},
+      </if>
+      <if test="leavedate != null">
+        leavedate = #{leavedate,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.yzh.web.model.entity.JsUserCoach">
+    update js_user_coach
+    set coachnum = #{coachnum,jdbcType=CHAR},
+      inscode = #{inscode,jdbcType=CHAR},
+      name = #{name,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      idcard = #{idcard,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      photo = #{photo,jdbcType=VARCHAR},
+      fingerprint = #{fingerprint,jdbcType=VARCHAR},
+      drilicence = #{drilicence,jdbcType=VARCHAR},
+      fstdrilicdate = #{fstdrilicdate,jdbcType=VARCHAR},
+      occupationno = #{occupationno,jdbcType=VARCHAR},
+      occupationlevel = #{occupationlevel,jdbcType=VARCHAR},
+      dripermitted = #{dripermitted,jdbcType=VARCHAR},
+      teachpermitted = #{teachpermitted,jdbcType=VARCHAR},
+      employstatus = #{employstatus,jdbcType=VARCHAR},
+      hiredate = #{hiredate,jdbcType=VARCHAR},
+      leavedate = #{leavedate,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

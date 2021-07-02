@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.yzh.framework.commons.Const;
 import org.yzh.framework.commons.TcpServerUtils;
 import org.yzh.framework.netty.client.TCPClient;
 import org.yzh.protocol.codec.JTMessageDecoder;
@@ -34,10 +35,10 @@ public class ClientConfig implements InitializingBean, DisposableBean {
                 .setIp(ip)
                 .setPort(port)
                 .setMaxFrameLength(1024)
-                .setDelimiters(new byte[]{0x7e})
+                .setDelimiters(Const.delimiter)
                 .setDecoder(new JTMessageDecoder("org.yzh.protocol"))
                 .setEncoder(new JTMessageEncoder("org.yzh.protocol"))
-                .setHandlerMapping(new org.yzh.framework.netty.client.HandlerMapping("org.yzh.client"))
+                .setHandlerMapping(new org.yzh.framework.netty.client.HandlerMapping("org.yzh.web.endpoint"))
                 .build();
         System.out.println("----------808客户端服务------------");
         return new TCPClient(jtConfig);

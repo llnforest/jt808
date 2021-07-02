@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yzh.web.mapper.JsUserStudentLoginMapper">
+  <resultMap id="BaseResultMap" type="org.yzh.web.model.entity.JsUserStudentLogin">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="class_id" jdbcType="INTEGER" property="classId" />
+    <result column="stunum" jdbcType="CHAR" property="stunum" />
+    <result column="coachnum" jdbcType="CHAR" property="coachnum" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="mileage" jdbcType="VARCHAR" property="mileage" />
+    <result column="logout_time" jdbcType="TIMESTAMP" property="logoutTime" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, class_id, stunum, coachnum, time, mileage, logout_time, login_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from js_user_student_login
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getLastRecord" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from js_user_student_login
+    where stunum = #{stunum,jdbcType=CHAR} order by id desc limit 1;
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from js_user_student_login
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.yzh.web.model.entity.JsUserStudentLogin">
+    insert into js_user_student_login (id, class_id, stunum, 
+      coachnum, time, mileage, 
+      logout_time, login_time)
+    values (#{id,jdbcType=INTEGER}, #{classId,jdbcType=INTEGER}, #{stunum,jdbcType=CHAR},
+      #{coachnum,jdbcType=CHAR}, #{time,jdbcType=VARCHAR}, #{mileage,jdbcType=VARCHAR}, 
+      #{logoutTime,jdbcType=TIMESTAMP}, #{loginTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsUserStudentLogin">
+    insert into js_user_student_login
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="stunum != null">
+        stunum,
+      </if>
+      <if test="coachnum != null">
+        coachnum,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="mileage != null">
+        mileage,
+      </if>
+      <if test="logoutTime != null">
+        logout_time,
+      </if>
+      <if test="loginTime != null">
+        login_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="stunum != null">
+        #{stunum,jdbcType=CHAR},
+      </if>
+      <if test="coachnum != null">
+        #{coachnum,jdbcType=CHAR},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="mileage != null">
+        #{mileage,jdbcType=VARCHAR},
+      </if>
+      <if test="logoutTime != null">
+        #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null">
+        #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.yzh.web.model.entity.JsUserStudentLogin">
+    update js_user_student_login
+    <set>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=INTEGER},
+      </if>
+      <if test="stunum != null">
+        stunum = #{stunum,jdbcType=CHAR},
+      </if>
+      <if test="coachnum != null">
+        coachnum = #{coachnum,jdbcType=CHAR},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="mileage != null">
+        mileage = #{mileage,jdbcType=VARCHAR},
+      </if>
+      <if test="logoutTime != null">
+        logout_time = #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginTime != null">
+        login_time = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.yzh.web.model.entity.JsUserStudentLogin">
+    update js_user_student_login
+    set class_id = #{classId,jdbcType=INTEGER},
+      stunum = #{stunum,jdbcType=CHAR},
+      coachnum = #{coachnum,jdbcType=CHAR},
+      time = #{time,jdbcType=VARCHAR},
+      mileage = #{mileage,jdbcType=VARCHAR},
+      logout_time = #{logoutTime,jdbcType=TIMESTAMP},
+      login_time = #{loginTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

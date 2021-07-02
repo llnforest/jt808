@@ -7,14 +7,19 @@ import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yzh.web.model.ResponseModel;
+import org.yzh.web.model.entity.JsDevice;
+import org.yzh.web.model.vo.DeviceInfo;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TcpClientUtils {
     private static final Logger log = LoggerFactory.getLogger(TcpClientUtils.class);
 
     public static Map<String, Channel> clientMap = new HashMap<>();
+
+    public static Map<String, DeviceInfo> clientDeviceMap = new HashMap<>();
 
     private static ChannelHandlerContext ctx;
 
@@ -24,6 +29,22 @@ public class TcpClientUtils {
 
     public static ChannelHandlerContext getCtx(){
         return ctx;
+    }
+
+    public  static void setClientDevice(String phone, DeviceInfo deviceInfo){
+        clientDeviceMap.put(phone,deviceInfo);
+
+    }
+
+    public static DeviceInfo getClientDevice(String phone){
+        try {
+            if(clientDeviceMap.containsKey(phone)){
+                return clientDeviceMap.get(phone);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public  static void setClientChannel(String phone, Channel cx){
@@ -42,6 +63,11 @@ public class TcpClientUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void removeClientChannel(String phone){
+        clientMap.remove(phone);
+        clientDeviceMap.remove(phone);
     }
 
     public static void write(Channel channel, Object model){

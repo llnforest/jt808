@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yzh.web.mapper.JsTrainCarMapper">
+  <resultMap id="BaseResultMap" type="org.yzh.web.model.entity.JsTrainCar">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="carnum" jdbcType="CHAR" property="carnum" />
+    <result column="inscode" jdbcType="CHAR" property="inscode" />
+    <result column="franum" jdbcType="VARCHAR" property="franum" />
+    <result column="engnum" jdbcType="VARCHAR" property="engnum" />
+    <result column="licnum" jdbcType="VARCHAR" property="licnum" />
+    <result column="platecolor" jdbcType="VARCHAR" property="platecolor" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    <result column="manufacture" jdbcType="VARCHAR" property="manufacture" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="model" jdbcType="VARCHAR" property="model" />
+    <result column="perdritype" jdbcType="VARCHAR" property="perdritype" />
+    <result column="buydate" jdbcType="VARCHAR" property="buydate" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="sync_status" jdbcType="TINYINT" property="syncStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="VARCHAR" property="deleteTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, carnum, inscode, franum, engnum, licnum, platecolor, photo, manufacture, brand, 
+    model, perdritype, buydate, sort, sync_status, create_time, update_time, delete_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from js_train_car
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="find" parameterType="org.yzh.web.model.entity.JsTrainCar" resultType="org.yzh.web.model.entity.JsTrainCar">
+    select *
+    from js_train_car
+    <where>
+      <if test="carnum != null">
+        and carnum = #{carnum,jdbcType=CHAR}
+      </if>
+      <if test="inscode != null">
+        and inscode = #{inscode,jdbcType=CHAR}
+      </if>
+      <if test="franum != null">
+        and franum = #{franum,jdbcType=VARCHAR}
+      </if>
+      <if test="engnum != null">
+        and engnum = #{engnum,jdbcType=VARCHAR}
+      </if>
+      <if test="licnum != null">
+        and licnum = #{licnum,jdbcType=VARCHAR}
+      </if>
+      <if test="platecolor != null">
+        and platecolor = #{platecolor,jdbcType=VARCHAR}
+      </if>
+      <if test="photo != null">
+        and photo = #{photo,jdbcType=VARCHAR}
+      </if>
+      <if test="manufacture != null">
+        and manufacture = #{manufacture,jdbcType=VARCHAR}
+      </if>
+      <if test="brand != null">
+        and brand = #{brand,jdbcType=VARCHAR}
+      </if>
+      <if test="model != null">
+        and model = #{model,jdbcType=VARCHAR}
+      </if>
+      <if test="perdritype != null">
+        and perdritype = #{perdritype,jdbcType=VARCHAR}
+      </if>
+      <if test="buydate != null">
+        and buydate = #{buydate,jdbcType=VARCHAR}
+      </if>
+      <if test="sort != null">
+        and sort = #{sort,jdbcType=INTEGER}
+      </if>
+      <if test="syncStatus != null">
+        and sync_status = #{syncStatus,jdbcType=TINYINT}
+      </if>
+
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from js_train_car
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.yzh.web.model.entity.JsTrainCar">
+    insert into js_train_car (id, carnum, inscode, 
+      franum, engnum, licnum, 
+      platecolor, photo, manufacture, 
+      brand, model, perdritype, 
+      buydate, sort, sync_status, 
+      create_time, update_time, delete_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{carnum,jdbcType=CHAR}, #{inscode,jdbcType=CHAR}, 
+      #{franum,jdbcType=VARCHAR}, #{engnum,jdbcType=VARCHAR}, #{licnum,jdbcType=VARCHAR}, 
+      #{platecolor,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, #{manufacture,jdbcType=VARCHAR}, 
+      #{brand,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, #{perdritype,jdbcType=VARCHAR}, 
+      #{buydate,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{syncStatus,jdbcType=TINYINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsTrainCar">
+    insert into js_train_car
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="carnum != null">
+        carnum,
+      </if>
+      <if test="inscode != null">
+        inscode,
+      </if>
+      <if test="franum != null">
+        franum,
+      </if>
+      <if test="engnum != null">
+        engnum,
+      </if>
+      <if test="licnum != null">
+        licnum,
+      </if>
+      <if test="platecolor != null">
+        platecolor,
+      </if>
+      <if test="photo != null">
+        photo,
+      </if>
+      <if test="manufacture != null">
+        manufacture,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="model != null">
+        model,
+      </if>
+      <if test="perdritype != null">
+        perdritype,
+      </if>
+      <if test="buydate != null">
+        buydate,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="syncStatus != null">
+        sync_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="deleteTime != null">
+        delete_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="carnum != null">
+        #{carnum,jdbcType=CHAR},
+      </if>
+      <if test="inscode != null">
+        #{inscode,jdbcType=CHAR},
+      </if>
+      <if test="franum != null">
+        #{franum,jdbcType=VARCHAR},
+      </if>
+      <if test="engnum != null">
+        #{engnum,jdbcType=VARCHAR},
+      </if>
+      <if test="licnum != null">
+        #{licnum,jdbcType=VARCHAR},
+      </if>
+      <if test="platecolor != null">
+        #{platecolor,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacture != null">
+        #{manufacture,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="perdritype != null">
+        #{perdritype,jdbcType=VARCHAR},
+      </if>
+      <if test="buydate != null">
+        #{buydate,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="syncStatus != null">
+        #{syncStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        #{deleteTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.yzh.web.model.entity.JsTrainCar">
+    update js_train_car
+    <set>
+      <if test="carnum != null">
+        carnum = #{carnum,jdbcType=CHAR},
+      </if>
+      <if test="inscode != null">
+        inscode = #{inscode,jdbcType=CHAR},
+      </if>
+      <if test="franum != null">
+        franum = #{franum,jdbcType=VARCHAR},
+      </if>
+      <if test="engnum != null">
+        engnum = #{engnum,jdbcType=VARCHAR},
+      </if>
+      <if test="licnum != null">
+        licnum = #{licnum,jdbcType=VARCHAR},
+      </if>
+      <if test="platecolor != null">
+        platecolor = #{platecolor,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null">
+        photo = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="manufacture != null">
+        manufacture = #{manufacture,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null">
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null">
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="perdritype != null">
+        perdritype = #{perdritype,jdbcType=VARCHAR},
+      </if>
+      <if test="buydate != null">
+        buydate = #{buydate,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="syncStatus != null">
+        sync_status = #{syncStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null">
+        delete_time = #{deleteTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.yzh.web.model.entity.JsTrainCar">
+    update js_train_car
+    set carnum = #{carnum,jdbcType=CHAR},
+      inscode = #{inscode,jdbcType=CHAR},
+      franum = #{franum,jdbcType=VARCHAR},
+      engnum = #{engnum,jdbcType=VARCHAR},
+      licnum = #{licnum,jdbcType=VARCHAR},
+      platecolor = #{platecolor,jdbcType=VARCHAR},
+      photo = #{photo,jdbcType=VARCHAR},
+      manufacture = #{manufacture,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      perdritype = #{perdritype,jdbcType=VARCHAR},
+      buydate = #{buydate,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      sync_status = #{syncStatus,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,12 +1,13 @@
 package org.yzh.web.endpoint;
 
 import io.netty.channel.Channel;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.yzh.framework.commons.TcpServerUtils;
+import org.yzh.framework.commons.Const;
 import org.yzh.framework.commons.TcpClientUtils;
 import org.yzh.framework.commons.WsHandlerUtils;
 import org.yzh.framework.mvc.annotation.AsyncBatch;
@@ -19,10 +20,13 @@ import org.yzh.protocol.basics.Header;
 import org.yzh.protocol.t808.*;
 import org.yzh.web.commons.BeanHelper;
 import org.yzh.web.commons.DateUtils;
+import org.yzh.web.commons.HttpRequestUtil;
 import org.yzh.web.model.ResponseModel;
-import org.yzh.web.model.entity.JsClassrecordUp;
+import org.yzh.web.model.entity.JsTrainRecordTime;
+import org.yzh.web.model.entity.ResponseData;
 import org.yzh.web.reply.*;
 import org.yzh.web.service.*;
+import org.yzh.web.service.impl.*;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,28 +45,17 @@ public class JT808Endpoint {
     private MessageManager messageManager;
 
     @Autowired
-    private LocationService locationService;
+    private JsDeviceLocationService jsDeviceLocationService;
 
     @Autowired
-    private DeviceService deviceService;
+    private JsDeviceService jsDeviceService;
 
     //-----------------------公共部分---------------------------
 
     @Mapping(types = 终端心跳, desc = "终端心跳")
     public void heartBeat(Header header, Session session) {
         log.info("心跳{}",header);
-        TcpClientUtils.setClientChannel(header.getMobileNo(),session.getChannel());
-    }
-
-    @Mapping(types = 平台登录应答, desc = "平台登录应答")
-    public void 平台登录应答(T81F0 message, Session session) {
-        //TODO
-        if(message.getResult() == 0){//成功
-
-        }else{//失败
-
-        }
-
+//        TcpClientUtils.setClientChannel(header.getMobileNo(),session.getChannel());
     }
 
     //-----------------------已完成---------------------------
@@ -78,7 +71,7 @@ public class JT808Endpoint {
                 //设置终端参数
                 log.info("设置终端参数应答");
                 channel = Msg0x8103.getMsg(phone);
-                TerminalConfigService service = BeanHelper.getBean("terminalConfigServiceImpl");
+                JsTerminalParamService service = BeanHelper.getBean(JsTerminalParamServiceImpl.class);
                 if(message.getResultCode() == 0){
                     //成功
                     service.updateTerminalConfigStatus(phone,2);
@@ -127,6 +120,15 @@ public class JT808Endpoint {
         return null;
     }
 
+    @Mapping(types = 未鉴权通用应答, desc = "未鉴权通用应答")
+    public T0001 平台通用应答(Header header, Session session) {
+        T0001 result = new T0001(session.nextSerialNo(), header.getMobileNo());
+        result.setSerialNo(header.getSerialNo());
+        result.setReplyId(header.getMessageId());
+        result.setResultCode(T0001.Failure);
+        return result;
+    }
+
     @Mapping(types = 查询终端参数应答, desc = "查询终端参数")
     public void 查询终端参数应答(T0104 request,Session session) {
         log.info("查询终端参数应答",request);
@@ -148,7 +150,7 @@ public class JT808Endpoint {
         log.info("设置禁训状态应答");
         String phone = request.getHeader().getMobileNo();
         ResponseModel responseModel = null;
-        TerminalStatusService service = BeanHelper.getBean("terminalStatusServiceImpl");
+        JsTerminalStatusService service = BeanHelper.getBean(JsTerminalStatusServiceImpl.class);
         if(request.getResult() == 1 || request.getResult() == 0){
             //0默认 1成功
             service.updateTerminalStatusStatus(phone,2,request);
@@ -170,7 +172,7 @@ public class JT808Endpoint {
         log.info("设置计时终端应用参数应答");
         String phone = request.getHeader().getMobileNo();
         ResponseModel responseModel = null;
-        TerminalAppConfigService service = BeanHelper.getBean("terminalAppConfigServiceImpl");
+        JsTerminalOperateParamService service = BeanHelper.getBean(JsTerminalOperateParamServiceImpl.class);
         if(request.getResult() == 1 || request.getResult() == 0){
             //0默认 1成功
             service.updateTerminalAppConfigStatus(phone,2);
@@ -220,7 +222,7 @@ public class JT808Endpoint {
     @Mapping(types = 上报教练员登录, desc = "上报教练员登录")
     public T8900_0900_coach_login_answer 上报教练员登录(T8900_0900_coach_login request, Session session) {
         Header header = request.getHeader();
-        CoachService service = (CoachService) BeanHelper.getBean("coachServiceImpl");
+        JsUserCoachService service = (JsUserCoachService) BeanHelper.getBean(JsUserCoachServiceImpl.class);
 
         int loginResult = service.coachLogin(request);
 
@@ -230,7 +232,20 @@ public class JT808Endpoint {
         result.setLoginResult(loginResult);
         result.setCoachNo(request.getCoachNo());
         //TODO 播报附加消息
-        String str = "登录成功";
+        String str = "";
+        switch(loginResult){
+            case 1:
+                str = "登录成功";
+                break;
+            case 2:
+                str = "无效的教练员编号";
+            case 3:
+                str = "准教车型不符";
+            case 9:
+                str = "其他错误";
+            default:
+                break;
+        }
         result.setIsRead(1);
         int addLength = str.getBytes(Charset.forName("GBK")).length;
         result.setAddLength(addLength);
@@ -242,7 +257,7 @@ public class JT808Endpoint {
     @Mapping(types = 上报教练员登出, desc = "上报教练员登出")
     public T8900_0900_coach_logout_answer 上报教练员登出(T8900_0900_coach_logout request, Session session) {
         Header header = request.getHeader();
-        CoachService service = (CoachService) BeanHelper.getBean("coachServiceImpl");
+        JsUserCoachService service = (JsUserCoachService) BeanHelper.getBean(JsUserCoachServiceImpl.class);
 
         int loginResult = service.coachLogout(request);
 
@@ -258,11 +273,12 @@ public class JT808Endpoint {
 
     @Mapping(types = 上报学员登录, desc = "上报学员登录")
     public T8900_0900_student_login_answer 上报学员登录(T8900_0900_student_login request, Session session) {
-        StudentService service = (StudentService) BeanHelper.getBean("studentServiceImpl");
+        JsUserStudentService service = (JsUserStudentService) BeanHelper.getBean(JsUserStudentServiceImpl.class);
 
         T8900_0900_student_login_answer result = service.studentLogin(request,session.nextSerialNo());
         result.setPacketNo(request.getPacketNo());
         result.setTerminalNo(request.getTerminalNo());
+
         //TODO 播报附加消息
         String str = "登录成功";
         result.setIsRead(1);
@@ -275,20 +291,26 @@ public class JT808Endpoint {
     //
     @Mapping(types = 上报学员登出, desc = "上报学员登出")
     public T8900_0900_student_logout_answer 上报学员登出(T8900_0900_student_logout request, Session session) {
-        StudentService service = (StudentService) BeanHelper.getBean("studentServiceImpl");
+        JsUserStudentService service = (JsUserStudentService) BeanHelper.getBean(JsUserStudentServiceImpl.class);
 
         T8900_0900_student_logout_answer result = service.studentLogout(request,session.nextSerialNo());
         result.setPacketNo(request.getPacketNo());
         result.setTerminalNo(request.getTerminalNo());
         result.setDataLength(17);
+
+        String param = "stuNum=" + request.getStudentNo() + "&classId=" + request.getClassId() ;
+        String response = HttpRequestUtil.sendPost(Const.logoutUrl,param,false);
+        JSONObject jsonObject = JSONObject.fromObject(response);
+        ResponseData map= (ResponseData)JSONObject.toBean(jsonObject, ResponseData.class);
+        log.info("code:{}",map.getCode());
         return result;
     }
 
     @Mapping(types = 上报学时记录, desc = "上报学时记录")
     public void 上报学时记录(T8900_0900_time_up request, Session session) {
         Header header = request.getHeader();
-        ClassRecordUpService service = (ClassRecordUpService) BeanHelper.getBean("classRecordUpServiceImpl");
-        JsClassrecordUp result = service.addRecord(request);
+        JsTrainRecordTimeService service = (JsTrainRecordTimeService) BeanHelper.getBean(JsTrainRecordTimeServiceImpl.class);
+        JsTrainRecordTime result = service.addRecord(request);
     }
 
     @Mapping(types = 命令上报学时记录应答, desc = "命令上报学时记录应答")
@@ -312,15 +334,14 @@ public class JT808Endpoint {
     }
 
     @Mapping(types = 终端注册, desc = "终端注册")
-    public T8100 register(T0100 message, Session session) {
+    public T8100 终端注册(T0100 message, Session session) {
         Header header = message.getHeader();
 //        返回终端注册应答
         T8100 result = new T8100(session.nextSerialNo(), header.getMobileNo());
         result.setSerialNo(header.getSerialNo());
         //TODO:处理终端注册的相关业务逻辑
-        deviceService.register(message,result);
+        jsDeviceService.register(message,result);
 
-//        TcpServerUtils.getClient().writeObject(message);//像平台转发
         return result;
     }
 
@@ -329,9 +350,15 @@ public class JT808Endpoint {
         T0001 result = new T0001(session.nextSerialNo(), header.getMobileNo());
         result.setSerialNo(header.getSerialNo());
         result.setReplyId(header.getMessageId());
-        Boolean isLogout = deviceService.logout(header.getMobileNo());
+        Boolean isLogout = jsDeviceService.logout(header.getMobileNo());
         if (isLogout) {
             result.setResultCode(T0001.Success);
+            //去除保存的状态
+            session.setIsAuth(false);
+            if(!session.getPhone().isEmpty()){
+                TcpClientUtils.removeClientChannel(session.getPhone());
+            }
+            session.setPhone("");
             return result;
         }
         result.setResultCode(T0001.Failure);
@@ -346,12 +373,14 @@ public class JT808Endpoint {
         result.setSerialNo(header.getSerialNo());
         result.setReplyId(header.getMessageId());
         //TODO:处理终端注册的相关业务逻辑
-        Boolean isAuth = deviceService.authentication(request);
+        Boolean isAuth = jsDeviceService.authentication(request,session);
         if (isAuth) {
             log.info("终端鉴权成功");
-            result.setResultCode(T0001.Success);
+            session.setIsAuth(true);
             //加入客户端channel
+            session.setPhone(header.getMobileNo());
             TcpClientUtils.setClientChannel(header.getMobileNo(),session.getChannel());
+            result.setResultCode(T0001.Success);
             return result;
         }
         log.warn("终端鉴权失败");
@@ -364,17 +393,18 @@ public class JT808Endpoint {
     @AsyncBatch
     @Mapping(types = 位置信息汇报, desc = "位置信息汇报")
     public void 位置信息汇报(List<T0200> list) {
-        locationService.batchInsert(list);
+        jsDeviceLocationService.batchInsert(list);
     }
 
-    @AsyncBatch
     @Mapping(types = 位置信息查询应答, desc = "位置信息查询应答")
-    public void 位置信息查询(List<T0200> list) {
-        T0200 t0200 = list.get(0);
-        locationService.batchInsert(list);
-        Channel channel = Msg0x8201.getMsg(t0200.getHeader().getMobileNo());
+    public void 位置信息查询(T0200 request) {
+        List<T0200> list = new ArrayList<>();
+        list.add( request);
+//        T0200 t0200 = list.get(0);
+        jsDeviceLocationService.batchInsert(list);
+        Channel channel = Msg0x8201.getMsg(request.getHeader().getMobileNo());
         ResponseModel responseModel = new ResponseModel("执行成功，查询的记录正在上传");
-        Msg0x8205.delMsg(t0200.getHeader().getMobileNo());
+        Msg0x8205.delMsg(request.getHeader().getMobileNo());
         WsHandlerUtils.write(channel,responseModel);
     }
 
@@ -463,6 +493,8 @@ public class JT808Endpoint {
         Header header = request.getHeader();
         request.getPhotoNum();
         //TODO:获得照片上传初始化逻辑
+        JsTrainImgService jsTrainImgService = BeanHelper.getBean(JsTrainImgServiceImpl.class);
+        jsTrainImgService.insert(request);
 
         T8900_0900_photo_up_init_answer  answer = new T8900_0900_photo_up_init_answer(header.getMobileNo(),session.nextSerialNo());
         answer.setPacketNo(request.getPacketNo());
@@ -475,18 +507,16 @@ public class JT808Endpoint {
 
     @Mapping(types = 照片上传数据包, desc = "照片上传数据包")
     public void 上传照片数据包(T8900_0900_photo_up_data request, Session session) {
-        log.info("照片名称：{}",request.getTerminalNo()+"_"+request.getPhotoNum());
-//        int photoLength = request.getPhotoData().length - 256;
-//        byte[] photoBytes = new byte[photoLength];
-//        byte[] signBytes = new byte[256];
-//        System.arraycopy(request.getPhotoData(),0,photoBytes,0,photoLength);
-//        System.arraycopy(request.getPhotoData(),photoLength,signBytes,0,256);
-//        log.info("signBytes:{}",signBytes);
-        log.info("图片包：{}",request.getPhotoData());
         //TODO:处理图片上传
-        try (FileOutputStream fileOuputStream = new FileOutputStream("F://jt808_img/"+request.getTerminalNo()+"_"+request.getPhotoNum()+".jpeg")) {
+        String path = Const.photoPath +request.getTerminalNo()+"_"+request.getPhotoNum()+".jpeg";
+        try (FileOutputStream fileOuputStream = new FileOutputStream(path)) {
             log.info("处理中");
             fileOuputStream.write(request.getPhotoData());
+            String param = "photoNum=" + request.getPhotoNum() + "&devNum=" + request.getTerminalNo() + "&photoPath="+path;
+            String response = HttpRequestUtil.sendPost(Const.uploadPhotoUrl,param,false);
+            JSONObject jsonObject = JSONObject.fromObject(response);
+            ResponseData map= (ResponseData)JSONObject.toBean(jsonObject, ResponseData.class);
+            log.info("code:{}",map.getCode());
         } catch (IOException e) {
             log.info("处理失败");
             e.printStackTrace();
@@ -567,21 +597,6 @@ public class JT808Endpoint {
     public void 终端升级结果通知(T0108 message, Session session) {
         Header header = message.getHeader();
     }
-
-
-    @Mapping(types = 定位数据批量上传, desc = "定位数据批量上传")
-    public void 定位数据批量上传(T0704 message) {
-        Header header = message.getHeader();
-        List<T0704.Item> items = message.getItems();
-        List<T0200> list = new ArrayList<>(items.size());
-        for (T0704.Item item : items) {
-            T0200 position = item.getPosition();
-            position.setHeader(header);
-            list.add(position);
-        }
-        locationService.batchInsert(list);
-    }
-
 
 
     @Mapping(types = 事件报告, desc = "事件报告")

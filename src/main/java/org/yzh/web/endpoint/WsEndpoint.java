@@ -8,14 +8,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.yzh.framework.commons.TcpClientUtils;
 import org.yzh.framework.commons.WsHandlerUtils;
 import org.yzh.framework.session.Session;
-import org.yzh.protocol.t808.T8106;
 import org.yzh.web.commons.BeanHelper;
 import org.yzh.web.model.ResponseModel;
 import org.yzh.web.protocol.JT808Beans;
 import org.yzh.web.reply.*;
-import org.yzh.web.service.TerminalAppConfigService;
-import org.yzh.web.service.TerminalConfigService;
-import org.yzh.web.service.TerminalStatusService;
+import org.yzh.web.service.JsTerminalOperateParamService;
+import org.yzh.web.service.JsTerminalParamService;
+import org.yzh.web.service.JsTerminalStatusService;
+import org.yzh.web.service.impl.JsTerminalOperateParamServiceImpl;
+import org.yzh.web.service.impl.JsTerminalParamServiceImpl;
+import org.yzh.web.service.impl.JsTerminalStatusServiceImpl;
 
 import java.util.Map;
 
@@ -69,7 +71,7 @@ public class WsEndpoint {
         String phone = (String)map.get("phone");
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
-            TerminalConfigService service = BeanHelper.getBean("terminalConfigServiceImpl");
+            JsTerminalParamService service = BeanHelper.getBean(JsTerminalParamServiceImpl.class);
             service.updateTerminalConfigStatus(phone,1);//下发中
             Msg0x8103.setMsg(phone,channel);
             Session session = tcpChannel.attr(Session.KEY).get();
@@ -212,7 +214,7 @@ public class WsEndpoint {
         String phone = (String)map.get("phone");
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
-            TerminalAppConfigService service = BeanHelper.getBean("terminalAppConfigServiceImpl");
+            JsTerminalOperateParamService service = BeanHelper.getBean(JsTerminalOperateParamServiceImpl.class);
             service.updateTerminalAppConfigStatus(phone,1);//下发中
             Msg0x8501.setMsg(phone,channel);
             Session session = tcpChannel.attr(Session.KEY).get();
@@ -254,7 +256,7 @@ public class WsEndpoint {
         String phone = (String)map.get("phone");
         Channel tcpChannel = TcpClientUtils.getClientChannel(phone);
         if(tcpChannel != null){
-            TerminalStatusService service = BeanHelper.getBean("terminalStatusServiceImpl");
+            JsTerminalStatusService service = BeanHelper.getBean(JsTerminalStatusServiceImpl.class);
             service.updateTerminalStatusStatus(phone,1,null);//下发中
             Msg0x8502.setMsg(phone,channel);
             Session session = tcpChannel.attr(Session.KEY).get();

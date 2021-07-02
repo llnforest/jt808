@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -198,5 +200,9 @@ public class DateUtils {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_MONTH, days);
         return c.getTime();
+    }
+
+    public static Date localDateTime2Date(LocalDateTime localDateTime){
+        return Date.from(localDateTime.atZone( ZoneId.systemDefault()).toInstant());
     }
 }

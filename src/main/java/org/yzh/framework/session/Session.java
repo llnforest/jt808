@@ -4,6 +4,8 @@ import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yzh.framework.commons.TcpClientUtils;
+import org.yzh.framework.commons.TcpServerUtils;
 import org.yzh.framework.orm.model.AbstractHeader;
 
 import java.util.Collection;
@@ -24,6 +26,8 @@ public class Session {
 
     private volatile int serialNo = 0;
     private volatile int packetNo = 1;
+    private volatile boolean isAuth = false;
+    private volatile String phone = "";
 
     private boolean registered = false;
     private String clientId;
@@ -71,6 +75,20 @@ public class Session {
         return packetNo ++;
     }
 
+    public void setIsAuth(boolean isAuth){
+        this.isAuth = isAuth;
+    }
+
+    public boolean isAuth() {
+        return isAuth;
+    }
+
+    public String setPhone(String phone){
+        return this.phone = phone;
+    }
+    public String getPhone(){
+        return phone;
+    }
     public boolean isRegistered() {
         return registered;
     }
@@ -127,13 +145,6 @@ public class Session {
         return attributes.remove(name);
     }
 
-    public Object getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Object subject) {
-        this.subject = subject;
-    }
 
     public Object getSnapshot() {
         return snapshot;
@@ -153,6 +164,12 @@ public class Session {
     }
 
     public void invalidate() {
+        if(!phone.equals("")){
+            TcpClientUtils.removeClientChannel(phone);
+            TcpServerUtils.removeMsgByPhone(phone);
+        }
+        isAuth = false;
+        phone = "";
         channel.close();
         sessionManager.callSessionDestroyedListener(this);
     }

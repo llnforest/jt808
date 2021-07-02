@@ -13,13 +13,13 @@ import org.yzh.protocol.commons.JT808;
  */
 @Message({JT808.平台登录应答})
 public class T81F0 extends AbstractMessage<Header> {
-    private int result_success = 0;//成功
-    private int result_error_ip = 1;//IP地址不正确
-    private int result_error_platcode = 2;//接入码不正确
-    private int result_error_unregister = 3;//该平台没有注册
-    private int result_error_platsercet = 4;//密码错误
-    private int result_error_full = 5;//资源紧张，稍后再连接（已经占用）
-    private int result_error_other = 9;//其他
+//    private int result_success = 0;//成功
+//    private int result_error_ip = 1;//IP地址不正确
+//    private int result_error_platcode = 2;//接入码不正确
+//    private int result_error_unregister = 3;//该平台没有注册
+//    private int result_error_platsercet = 4;//密码错误
+//    private int result_error_full = 5;//资源紧张，稍后再连接（已经占用）
+//    private int result_error_other = 9;//其他
 
     private int result;
 
@@ -27,11 +27,11 @@ public class T81F0 extends AbstractMessage<Header> {
     }
 
     public T81F0(String mobileNo, int serialNo) {
-        super(new Header(Integer.parseInt(JT808.查询终端参数应答.substring(2),16), serialNo, mobileNo));
+        super(new Header(Integer.parseInt(JT808.平台登录应答.substring(2),16), serialNo, mobileNo));
     }
 
     public T81F0(int serialNo, String mobileNo) {
-        super(new Header(Integer.parseInt(JT808.查询终端参数应答.substring(2),16), serialNo, mobileNo));
+        super(new Header(Integer.parseInt(JT808.平台登录应答.substring(2),16), serialNo, mobileNo));
     }
 
     /** 应答结果 */

@@ -18,7 +18,7 @@ import java.util.Map;
  * @author yezhihao
  * @home https://gitee.com/yezhihao/jt808-server
  */
-@Message({JT808.位置信息查询应答, JT808.车辆控制应答})
+@Message({JT808.车辆控制应答})
 public class T0201 extends AbstractMessage<Header> {
 
     private int warningMark;

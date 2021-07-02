@@ -65,4 +65,18 @@ public class Bytes {
         }
         return valueArr;
     }
+
+    /**
+     * byte[]转int
+     * @param bytes 需要转换成int的数组
+     * @return int值
+     */
+    public static int byteArrayToInt(byte[] bytes) {
+        int value=0;
+        for(int i = 0; i < bytes.length; i++) {
+            int shift= (bytes.length-1-i) * 8;
+            value +=(bytes[i] & 0xFF) << shift;
+        }
+        return value;
+    }
 }

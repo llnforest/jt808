@@ -9,6 +9,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yzh.framework.commons.Const;
 import org.yzh.framework.commons.TcpClientUtils;
 import org.yzh.framework.commons.TcpServerUtils;
 import org.yzh.framework.commons.MsgUtils;
@@ -20,6 +21,9 @@ import org.yzh.framework.orm.MessageHelper;
 import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.session.Session;
 import org.yzh.framework.session.SessionManager;
+import org.yzh.protocol.commons.JT808;
+
+import java.util.Arrays;
 
 /**
  * @author yezhihao
@@ -50,16 +54,26 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
             return;
         AbstractMessage request = (AbstractMessage) msg;
         log.info("收到》》{}",request);
+
         AbstractMessage response;
         Channel channel = ctx.channel();
         Session session = channel.attr(Session.KEY).get();
-//        request.setSession(session);
+
         long time = session.access();
         try {
             Handler handler;
+            //终端心跳、终端注册、终端鉴权
+            //先判断终端是否鉴权
+            if(Const.isAuth && Arrays.binarySearch(new int[]{1,3,256,258},request.getMessageId()) < 0 && session.getPhone().isEmpty()){
+                //通用回答失败
+                handler = handlerMapping.getHandler(JT808.未鉴权通用应答);
+                response = handler.invoke(request, session);
+                ctx.writeAndFlush(response);
+                return;
+            }
+
             handler = handlerMapping.getHandler(((AbstractMessage) msg).getMarkId());
             log.info("handler:{}",handler);
-//            log.info("request:{}",request);
             if (handler != null) {
                 if (!interceptor.beforeHandle(request, session))
                     return;
@@ -138,6 +152,12 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
                 //不需要分包
                 ctx.writeAndFlush(response);
             }
+
+            //转发消息
+            log.info("msgId:{}",request.getMarkId());
+            TcpServerUtils.replayMsg(request,response);
+
+
         }
     }
 
@@ -157,6 +177,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         Session session = ctx.channel().attr(Session.KEY).get();
+
         session.invalidate();
         log.info("<<<<<断开连接{}", session);
     }

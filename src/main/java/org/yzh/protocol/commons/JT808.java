@@ -9,6 +9,7 @@ package org.yzh.protocol.commons;
 public interface JT808 {
 
     String 终端通用应答 = "0x0001";
+    String 未鉴权通用应答 = "0x0000";
     String 终端心跳 = "0x0002";
     String 终端注销 = "0x0003";
     String 查询服务器时间 = "0x0004";//2019 new
@@ -73,9 +74,9 @@ public interface JT808 {
     String 终端RSA公钥 = "0x0A00";
 
 
-    String 平台登录请求 = "0x01F0";
-    String 平台登录应答 = "0x81F0";
-    String 平台登出请求 = "0x01F1";
+    String 平台登录请求 = "0x01f0";
+    String 平台登录应答 = "0x81f0";
+    String 平台登出请求 = "0x01f1";
 
     String 终端上行消息保留 = "0x0F00 - 0x0FFF";
 

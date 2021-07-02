@@ -3,6 +3,7 @@ package org.yzh.web.protocol;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yzh.framework.commons.Const;
 import org.yzh.framework.commons.transform.Bytes;
 import org.yzh.framework.orm.annotation.Message;
 import org.yzh.framework.orm.model.AbstractMessage;
@@ -12,12 +13,10 @@ import org.yzh.protocol.basics.Header;
 import org.yzh.protocol.commons.transform.ParameterType;
 import org.yzh.protocol.t808.*;
 import org.yzh.web.commons.BeanHelper;
-import org.yzh.web.model.entity.JsPlatInfo;
-import org.yzh.web.service.ClassRecordUpService;
-import org.yzh.web.service.PlatInfoService;
-import org.yzh.web.service.impl.PlatInfoServiceImpl;
+import org.yzh.web.model.entity.JsPlat;
+import org.yzh.web.service.JsPlatService;
+import org.yzh.web.service.impl.JsPlatServiceImpl;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -81,23 +80,25 @@ public class JT808Beans {
     //平台登录
     public static T01F0 T01F0() {
         T01F0 bean = new T01F0(1,"17299841738");
-        PlatInfoService platInfoService = BeanHelper.getBean("platInfoServiceImpl");
-        JsPlatInfo jsPlatInfo = platInfoService.findById(1);
-        bean.setPlatNum(jsPlatInfo.getPlatNum());
-        bean.setPlatSecret(jsPlatInfo.getPassword());
-        bean.setPlatCode(jsPlatInfo.getJoinCode());
-        log.info("platNum:{}",jsPlatInfo.getPlatNum());
+        JsPlatService jsPlatService = BeanHelper.getBean(JsPlatServiceImpl.class);
+        JsPlat jsPlat = jsPlatService.findById(1);
+        bean.setPlatNum(jsPlat.getPlatNum());
+        bean.setPlatSecret(jsPlat.getPassword());
+        bean.setPlatCode(jsPlat.getJoinCode());
+        log.info("登录platNum:{}", jsPlat.getPlatNum());
+        Const.setPlatNum(jsPlat.getPlatNum());
         return bean;
     }
 
     //平台登出
     public static T01F1 T01F1() {
         T01F1 bean = new T01F1(1,"17299841738");
-        PlatInfoService platInfoService = BeanHelper.getBean(PlatInfoServiceImpl.class);
-        JsPlatInfo jsPlatInfo = platInfoService.findById(1);
-        bean.setPlatNum(jsPlatInfo.getPlatNum());
-        bean.setPlatSecret(jsPlatInfo.getPassword());
-        log.info("platNum:{}",jsPlatInfo.getPlatNum());
+        JsPlatService jsPlatService = BeanHelper.getBean(JsPlatService.class);
+        JsPlat jsPlat = jsPlatService.findById(1);
+        bean.setPlatNum(jsPlat.getPlatNum());
+        bean.setPlatSecret(jsPlat.getPassword());
+        log.info("登出platNum:{}", jsPlat.getPlatNum());
+        Const.setPlatNum("");
         return bean;
     }
 
@@ -112,8 +113,8 @@ public class JT808Beans {
     }
 
     //终端心跳
-    public static T0003 T0003() {
-        T0003 bean = new T0003();
+    public static T0002 T0002() {
+        T0002 bean = new T0002();
         return bean;
     }
 

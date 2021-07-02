@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.yzh.web.mapper.JsTrainImgMapper">
+  <resultMap id="BaseResultMap" type="org.yzh.web.model.entity.JsTrainImg">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="class_id" jdbcType="CHAR" property="classId" />
+    <result column="inscode" jdbcType="CHAR" property="inscode" />
+    <result column="stunum" jdbcType="CHAR" property="stunum" />
+    <result column="coachnum" jdbcType="CHAR" property="coachnum" />
+    <result column="subjcode" jdbcType="CHAR" property="subjcode" />
+    <result column="devnum" jdbcType="CHAR" property="devnum" />
+    <result column="recnum" jdbcType="VARCHAR" property="recnum" />
+    <result column="photonum" jdbcType="VARCHAR" property="photonum" />
+    <result column="ptime" jdbcType="TIMESTAMP" property="ptime" />
+    <result column="fileid" jdbcType="VARCHAR" property="fileid" />
+    <result column="uptype" jdbcType="TINYINT" property="uptype" />
+    <result column="upmode" jdbcType="TINYINT" property="upmode" />
+    <result column="sync_status" jdbcType="TINYINT" property="syncStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, class_id, inscode, stunum, coachnum, subjcode, devnum, recnum, photonum, ptime, 
+    fileid, uptype, upmode, sync_status, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from js_train_img
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from js_train_img
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.yzh.web.model.entity.JsTrainImg">
+    insert into js_train_img (id, class_id, inscode, 
+      stunum, coachnum, subjcode, 
+      devnum, recnum, photonum, 
+      ptime, fileid, uptype, 
+      upmode, sync_status, create_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{classId,jdbcType=CHAR}, #{inscode,jdbcType=CHAR}, 
+      #{stunum,jdbcType=CHAR}, #{coachnum,jdbcType=CHAR}, #{subjcode,jdbcType=CHAR}, 
+      #{devnum,jdbcType=CHAR}, #{recnum,jdbcType=VARCHAR}, #{photonum,jdbcType=VARCHAR}, 
+      #{ptime,jdbcType=TIMESTAMP}, #{fileid,jdbcType=VARCHAR}, #{uptype,jdbcType=TINYINT},
+      #{upmode,jdbcType=TINYINT}, #{syncStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.yzh.web.model.entity.JsTrainImg">
+    insert into js_train_img
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="inscode != null">
+        inscode,
+      </if>
+      <if test="stunum != null">
+        stunum,
+      </if>
+      <if test="coachnum != null">
+        coachnum,
+      </if>
+      <if test="subjcode != null">
+        subjcode,
+      </if>
+      <if test="devnum != null">
+        devnum,
+      </if>
+      <if test="recnum != null">
+        recnum,
+      </if>
+      <if test="photonum != null">
+        photonum,
+      </if>
+      <if test="ptime != null">
+        ptime,
+      </if>
+      <if test="fileid != null">
+        fileid,
+      </if>
+      <if test="uptype != null">
+        uptype,
+      </if>
+      <if test="upmode != null">
+        upmode,
+      </if>
+      <if test="syncStatus != null">
+        sync_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=CHAR},
+      </if>
+      <if test="inscode != null">
+        #{inscode,jdbcType=CHAR},
+      </if>
+      <if test="stunum != null">
+        #{stunum,jdbcType=CHAR},
+      </if>
+      <if test="coachnum != null">
+        #{coachnum,jdbcType=CHAR},
+      </if>
+      <if test="subjcode != null">
+        #{subjcode,jdbcType=CHAR},
+      </if>
+      <if test="devnum != null">
+        #{devnum,jdbcType=CHAR},
+      </if>
+      <if test="recnum != null">
+        #{recnum,jdbcType=VARCHAR},
+      </if>
+      <if test="photonum != null">
+        #{photonum,jdbcType=VARCHAR},
+      </if>
+      <if test="ptime != null">
+        #{ptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fileid != null">
+        #{fileid,jdbcType=VARCHAR},
+      </if>
+      <if test="uptype != null">
+        #{uptype,jdbcType=TINYINT},
+      </if>
+      <if test="upmode != null">
+        #{upmode,jdbcType=TINYINT},
+      </if>
+      <if test="syncStatus != null">
+        #{syncStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.yzh.web.model.entity.JsTrainImg">
+    update js_train_img
+    <set>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=CHAR},
+      </if>
+      <if test="inscode != null">
+        inscode = #{inscode,jdbcType=CHAR},
+      </if>
+      <if test="stunum != null">
+        stunum = #{stunum,jdbcType=CHAR},
+      </if>
+      <if test="coachnum != null">
+        coachnum = #{coachnum,jdbcType=CHAR},
+      </if>
+      <if test="subjcode != null">
+        subjcode = #{subjcode,jdbcType=CHAR},
+      </if>
+      <if test="devnum != null">
+        devnum = #{devnum,jdbcType=CHAR},
+      </if>
+      <if test="recnum != null">
+        recnum = #{recnum,jdbcType=VARCHAR},
+      </if>
+      <if test="photonum != null">
+        photonum = #{photonum,jdbcType=VARCHAR},
+      </if>
+      <if test="ptime != null">
+        ptime = #{ptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fileid != null">
+        fileid = #{fileid,jdbcType=VARCHAR},
+      </if>
+      <if test="uptype != null">
+        uptype = #{uptype,jdbcType=TINYINT},
+      </if>
+      <if test="upmode != null">
+        upmode = #{upmode,jdbcType=TINYINT},
+      </if>
+      <if test="syncStatus != null">
+        sync_status = #{syncStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.yzh.web.model.entity.JsTrainImg">
+    update js_train_img
+    set class_id = #{classId,jdbcType=CHAR},
+      inscode = #{inscode,jdbcType=CHAR},
+      stunum = #{stunum,jdbcType=CHAR},
+      coachnum = #{coachnum,jdbcType=CHAR},
+      subjcode = #{subjcode,jdbcType=CHAR},
+      devnum = #{devnum,jdbcType=CHAR},
+      recnum = #{recnum,jdbcType=VARCHAR},
+      photonum = #{photonum,jdbcType=VARCHAR},
+      ptime = #{ptime,jdbcType=TIMESTAMP},
+      fileid = #{fileid,jdbcType=VARCHAR},
+      uptype = #{uptype,jdbcType=TINYINT},
+      upmode = #{upmode,jdbcType=TINYINT},
+      sync_status = #{syncStatus,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -38,6 +38,7 @@ public class DelimiterBasedFrameDecoder extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        log.info("收到解码前：{}", ByteBufUtil.hexDump(in));
         Object decoded = decode(ctx, in);
         if (decoded != null) {
             out.add(decoded);
@@ -45,7 +46,6 @@ public class DelimiterBasedFrameDecoder extends ByteToMessageDecoder {
     }
 
     protected Object decode(ChannelHandlerContext ctx, ByteBuf buffer) throws Exception {
-        log.info("收到解码前：{}", ByteBufUtil.hexDump(buffer));
         // Try all delimiters and choose the delimiter which yields the shortest frame.
         int minFrameLength = Integer.MAX_VALUE;
         Delimiter minDelim = null;

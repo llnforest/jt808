@@ -3,42 +3,28 @@ package org.yzh.web.controller;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
-import io.netty.util.CharsetUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.LoggerConfig;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.yzh.framework.codec.MessageEncoder;
-import org.yzh.framework.codec.MessageEncoderWrapper;
 import org.yzh.framework.commons.transform.Bcd;
 import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.session.MessageManager;
-import org.yzh.framework.session.Session;
 import org.yzh.framework.session.SessionManager;
 import org.yzh.protocol.codec.JTMessageDecoder;
 import org.yzh.protocol.codec.JTMessageEncoder;
-import org.yzh.protocol.commons.JT808;
 import org.yzh.protocol.t808.T0001;
 import org.yzh.web.Application;
-import org.yzh.web.component.mybatis.Page;
-import org.yzh.web.component.mybatis.PageInfo;
-import org.yzh.web.component.mybatis.Pagination;
-import org.yzh.web.model.vo.Location;
-import org.yzh.web.model.vo.LocationQuery;
-import org.yzh.web.service.LocationService;
-import springfox.documentation.annotations.ApiIgnore;
+import org.yzh.web.commons.HttpRequestUtil;
+import org.yzh.web.model.entity.ResponseData;
 
-import java.util.Collection;
+import java.io.*;
 
 @Api(description = "测试接口")
 @Controller
@@ -60,22 +46,64 @@ public class DemoController {
 
     @ApiOperation(value = "获得通用应答")
     @GetMapping("demo/test")
-    public String test() {
-        if (0X8001 == 32769) {
-            log.info("ok1");
-        }
-        String hex = "0X8001";
-        Integer x = Integer.parseInt(hex.substring(2), 16);
-        Integer a = 32769;
-        String h = a.toHexString(a);
-        log.info("ok");
+    public void test() {
+        String url = "http://192.168.100.53:8080/xh/trainTimeImgUpload";
+        String param = "photoNum=照片编号&devNum=abcdefg&photoPath=/public/in/upload";
+        String result = HttpRequestUtil.sendPost(url,param,false);
+        log.info("结果：{}",result);
+//        Map<String,String> map = (Map<String,String>)JSON.parse(result);
+//        log.info(map.get("msg"));
+//        log.info(map.get("data"));
+    //    JSONObject maps =  JSONObject.parseObject(result);
 
-        byte[] bytes = str2Bcd("19156017290");
-        
-        log.info("bcd码转10进制:{}",ByteBufUtil.hexDump(bytes));
-        String phone = bcd2Str(bytes);
-        log.info("bcd码字节转字符串：{}",phone);
-        return "111";
+      //  maps.getString("")
+        JSONObject jsonObject= JSONObject.fromObject(result);
+        ResponseData maps=(ResponseData)JSONObject.toBean(jsonObject, ResponseData.class);
+//        System.out.println("这个是用JSON类来解析JSON字符串!!!");
+        log.info("结果：{}",maps.getCode());
+//        for(int i = 0;i < list.size();i++){
+//            Map<String,String> map1 = (Map<String, String>) list.get(i);
+//            log.info("value:{}",map1.get("ll"));
+//        }
+
+//        for (Object map : maps.entrySet()){
+//            log.info("key:{},value:{}",((Map.Entry)map).getKey(),((Map.Entry)map).getValue());
+//            if(((Map.Entry)map).getKey().equals("data")){
+//                List<Map<String,String>> list = (List<Map<String,String>>)((Map.Entry)map).getValue();
+//                for(int i = 0;i < list.size();i++){
+//                    Map<String,String> map1 = list.get(i);
+//                    log.info("value:{}",map1.get("ll"));
+//                }
+//            }
+//        }
+
+    }
+
+    @ApiOperation(value = "获得通用应答")
+    @GetMapping("demo/test1")
+    public void test1() {
+        String file = "F://jt808_img/fd6lM3nhl5SElvmV_0624163944.jpeg";
+        try {
+            FileInputStream is = new FileInputStream(file);
+            // 设置数据缓冲
+            byte[] bs = new byte[1024 * 2];
+    // 读取到的数据长度
+            int len;
+    // 输出的文件流保存图片至本地
+            OutputStream os = new FileOutputStream("http://192.168.100.53:8080/uploads/traintimeimg/a.jpg");
+            while ((len = is.read(bs)) != -1) {
+                os.write(bs, 0, len);
+            }
+            os.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        log.info("ok");
+//        Map<String,String> map = (Map<String,String>)JSON.parse(result);
+
     }
 
 

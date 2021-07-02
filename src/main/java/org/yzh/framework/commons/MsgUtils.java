@@ -7,9 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.session.Session;
+import org.yzh.protocol.commons.JT808;
+import org.yzh.protocol.t808.T0001;
+import org.yzh.protocol.t808.T8100;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class MsgUtils {
@@ -26,11 +28,13 @@ public class MsgUtils {
 
     private static Map<Integer,Map<String, SendMsg>> msgMap = new HashMap<>();
 
+    //删除消息
     public static void delMsg(String key,Session session){
         Map<String,SendMsg> channelMap = msgMap.get(session.getId());
         channelMap.remove(key);
     }
 
+    //添加消息
     public static void addMsg(String key, AbstractMessage msg, Session session){
         SendMsg sendMsg = new SendMsg();
         log.info("初始：{}",sendMsg.times);
@@ -43,6 +47,7 @@ public class MsgUtils {
         msgMap.put(session.getId(),channelMap);
     }
 
+    //添加消息
     public static void addMsg(String key,SendMsg sendMsg,Map<String,SendMsg> channelMap){
         sendMsg.times = sendMsg.times + 1;
         sendMsg.time = System.currentTimeMillis() + retransTime * sendMsg.times * 1000;
@@ -50,6 +55,7 @@ public class MsgUtils {
     }
 
 
+    //检查消息并重传
     public static void checkMsg(ChannelHandlerContext ctx){
         int channelId = ctx.channel().id().hashCode();
         ctx.executor().scheduleAtFixedRate(() -> {
@@ -73,5 +79,7 @@ public class MsgUtils {
             }
         }, 3, 3, TimeUnit.SECONDS);
     }
+
+
 
 }

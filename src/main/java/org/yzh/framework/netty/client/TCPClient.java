@@ -11,11 +11,19 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.MessageToByteEncoder;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yzh.framework.commons.CommonUtils;
+import org.yzh.framework.commons.transform.ByteBufUtils;
 import org.yzh.framework.orm.model.AbstractMessage;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author yezhihao
@@ -61,14 +69,17 @@ public class TCPClient {
                                             buf.skipBytes(buf.readableBytes());
                                         }
                                     })
-                                    .addLast("encoder", new MessageToByteEncoder<AbstractMessage>() {
-                                        @Override
-                                        protected void encode(ChannelHandlerContext ctx, AbstractMessage msg, ByteBuf out) {
-                                            ByteBuf buf = config.encoder.encode(msg);
-                                            log.info("<<<<<发送报文[ip={}],hex={}", ctx.channel().remoteAddress(), ByteBufUtil.hexDump(buf));
-                                            out.writeBytes(config.delimiter).writeBytes(buf).writeBytes(config.delimiter);
-                                        }
-                                    })
+//                                    .addLast("encoder", new MessageToByteEncoder<AbstractMessage>() {
+//                                        @Override
+//                                        protected void encode(ChannelHandlerContext ctx, AbstractMessage msg, ByteBuf out) {
+//                                            log.info("发送前:{}",msg);
+//                                            ByteBuf buf = config.encoder.encode(msg);
+//                                            log.info("<<<<<发送报文[ip={}],hex={}", ctx.channel().remoteAddress(), ByteBufUtil.hexDump(buf));
+//                                            out.writeBytes(config.delimiter).writeBytes(buf).writeBytes(config.delimiter);
+//                                        }
+//                                    })
+                                    .addLast("encoder",new ObjectEncoder())
+                                    .addLast(new IdleStateHandler(0,5,0, TimeUnit.SECONDS))
                                     .addLast("adapter", config.adapter);
                         }
                     });
@@ -82,9 +93,26 @@ public class TCPClient {
     }
 
     public void writeObject(Object message) {
-        channel.writeAndFlush(message);
+        byte[] newMessage;
+        if(message instanceof byte[]){
+            newMessage = new byte[((byte[]) message).length+config.delimiter.length*2];
+            System.arraycopy(config.delimiter,0,newMessage,0,config.delimiter.length);
+            System.arraycopy(message,0,newMessage,config.delimiter.length,((byte[]) message).length);
+            System.arraycopy(config.delimiter,0,newMessage,config.delimiter.length + ((byte[]) message).length,config.delimiter.length);
+        }else{
+            ByteBuf byteBuf = config.encoder.encode((AbstractMessage) message);
+            ByteBuf buf = Unpooled.buffer(1024);
+            buf.writeBytes(config.delimiter).writeBytes(byteBuf).writeBytes(config.delimiter);
+            newMessage = new byte[buf.readableBytes()];
+            buf.readBytes(newMessage);
+        }
+        channel.writeAndFlush(Unpooled.copiedBuffer(newMessage));
+        log.info("<<<<<<<<<<发送报文:{}", CommonUtils.getHexString(newMessage));
         log.info("<<<<<<<<<<发送消息:{}", message);
     }
+
+
+
 
     public synchronized TCPClient start() {
         startInternal();

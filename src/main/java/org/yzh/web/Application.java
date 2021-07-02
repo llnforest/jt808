@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.yzh.framework.commons.Const;
 import org.yzh.framework.commons.TcpClientUtils;
 import org.yzh.framework.commons.TcpServerUtils;
 import org.yzh.framework.netty.websocket.WebSocketChannelHandlerPool;
@@ -25,10 +26,10 @@ public class Application {
         while (true) {
             while (scanner.hasNext()) {
                 int i = scanner.nextInt();
-                String phone = "17299841738";
+                String phone = Const.phone;
                 switch (i) {
                     case 0:
-                        JT808Beans.T01F0();
+                        TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T01F0(),phone,1));
                         break;
                     case 1:
                         TcpServerUtils.getClient().writeObject(JT808Beans.H2019(JT808Beans.T01F1(),phone,1));
