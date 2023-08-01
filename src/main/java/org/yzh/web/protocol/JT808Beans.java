@@ -13,9 +13,6 @@ import org.yzh.protocol.basics.Header;
 import org.yzh.protocol.commons.transform.ParameterType;
 import org.yzh.protocol.t808.*;
 import org.yzh.web.commons.BeanHelper;
-import org.yzh.web.model.entity.JsPlat;
-import org.yzh.web.service.JsPlatService;
-import org.yzh.web.service.impl.JsPlatServiceImpl;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -77,30 +74,7 @@ public class JT808Beans {
         return message;
     }
     //-----------------------平台部分---------------------------
-    //平台登录
-    public static T01F0 T01F0() {
-        T01F0 bean = new T01F0(1,"17299841738");
-        JsPlatService jsPlatService = BeanHelper.getBean(JsPlatServiceImpl.class);
-        JsPlat jsPlat = jsPlatService.findById(1);
-        bean.setPlatNum(jsPlat.getPlatNum());
-        bean.setPlatSecret(jsPlat.getPassword());
-        bean.setPlatCode(jsPlat.getJoinCode());
-        log.info("登录platNum:{}", jsPlat.getPlatNum());
-        Const.setPlatNum(jsPlat.getPlatNum());
-        return bean;
-    }
 
-    //平台登出
-    public static T01F1 T01F1() {
-        T01F1 bean = new T01F1(1,"17299841738");
-        JsPlatService jsPlatService = BeanHelper.getBean(JsPlatService.class);
-        JsPlat jsPlat = jsPlatService.findById(1);
-        bean.setPlatNum(jsPlat.getPlatNum());
-        bean.setPlatSecret(jsPlat.getPassword());
-        log.info("登出platNum:{}", jsPlat.getPlatNum());
-        Const.setPlatNum("");
-        return bean;
-    }
 
     //-----------------------公共部分---------------------------
 

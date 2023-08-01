@@ -18,11 +18,15 @@ public class ClientTest {
 
     private static TCPClient tcpClient;
 
+
+//    private static final int port;
+
     //7611
     static {
         ClientConfig jtConfig = new ClientConfig.Builder()
-                .setIp("127.0.0.1")
-                .setPort(7611)
+//                .setIp("127.0.0.1")
+                .setIp("36.155.130.31")
+                .setPort(8885)
                 .setMaxFrameLength(1024)
                 .setDelimiters(new byte[]{0x7e})
                 .setDecoder(new JTMessageDecoder("org.yzh.protocol"))
@@ -36,7 +40,7 @@ public class ClientTest {
     public static void main(String[] args) {
         System.out.println(tcpClient);
         while (true) {
-            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报 3.注销 4.上行 5.上报学员登录 6.终端鉴权 7.上报教练员登录 8.教练登出 9.学员登出 10.上报学时记录 11.上报照片查询结果 12.照片上传初始化 13.上传照片数据包");
+            System.out.println("选择发送的消息：0.心跳 1.注册 2.位置信息上报 3.注销 4.上行 5.上报学员登录 6.终端鉴权 7.上报教练员登录 8.教练登出 9.学员登出 10.上报学时记录 11.上报照片查询结果 12.照片上传初始化 13.上传照片数据包 14.平台登录  15.平台退出");
             while (scanner.hasNext()) {
                 int i = scanner.nextInt();
                 switch (i) {
@@ -84,6 +88,12 @@ public class ClientTest {
                         break;
                     case 13:
                         tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T8900_0900_photo_up_data()));//上传照片数据包
+                        break;
+                    case 14:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T01F0()));//上传平台登录
+                        break;
+                    case 15:
+                        tcpClient.writeObject(JT808Beans.H2019(JT808Beans.T01F1()));//上传平台登出
                         break;
                 }
             }

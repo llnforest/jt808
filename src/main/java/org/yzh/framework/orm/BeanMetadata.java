@@ -43,7 +43,6 @@ public class BeanMetadata<T> {
             for (int i = 0; i < fields.length; i++) {
 
                 field = fields[i];
-
                 if (!field.readTo(source, target))
                     break;
                 isEmpty = false;

@@ -20,8 +20,6 @@ import org.yzh.framework.codec.LengthFieldAndDelimiterFrameDecoder;
 import org.yzh.framework.codec.MessageDecoderWrapper;
 import org.yzh.framework.codec.MessageEncoderWrapper;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -54,7 +52,7 @@ public class TCPServer {
             bootstrap.group(bossGroup, workerGroup);
             bootstrap.option(NioChannelOption.SO_BACKLOG, 2048)
                     .option(NioChannelOption.SO_REUSEADDR, true)
-//                    .option(NioChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(65535))
+                    .option(NioChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(65535))
                     .childOption(NioChannelOption.TCP_NODELAY, true)
                     .childHandler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
@@ -62,7 +60,7 @@ public class TCPServer {
                             channel.pipeline()
                                     .addLast(new IdleStateHandler(10, 0, 0, TimeUnit.MINUTES))
                                     .addLast("frameDecoder", frameDecoder())
-                                    .addLast("decoder",new MessageDecoderWrapper(config.decoder))
+                                    .addLast("decoder", new MessageDecoderWrapper(config.decoder))
                                     .addLast("encoder", new MessageEncoderWrapper(config.encoder, config.delimiter[config.delimiter.length - 1].getValue()))
                                     .addLast("adapter", config.adapter);
                         }
@@ -79,7 +77,6 @@ public class TCPServer {
     }
 
     public ByteToMessageDecoder frameDecoder() {
-        log.info("进入1");
         if (config.lengthField == null)
             return new DelimiterBasedFrameDecoder(config.maxFrameLength, config.delimiter);
         return new LengthFieldAndDelimiterFrameDecoder(config.maxFrameLength, config.lengthField, config.delimiter);

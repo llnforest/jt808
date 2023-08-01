@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.yzh.web.component.mybatis.Page;
 import org.yzh.web.component.mybatis.PageInfo;
 import org.yzh.web.component.mybatis.Pagination;
-import org.yzh.web.model.vo.Location;
 import org.yzh.web.model.vo.LocationQuery;
-import org.yzh.web.service.JsDeviceLocationService;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Api(description = "位置信息")
@@ -25,23 +23,11 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping
 public class LocationController {
 
-    @Autowired
-    private JsDeviceLocationService jsDeviceLocationService;
-
     @ApiIgnore
     @GetMapping
     public String doc() {
         return "redirect:doc.html";
     }
-
-    @ApiOperation(value = "位置信息查询")
-    @GetMapping("location")
-    @ResponseBody
-    public Pagination<Location> find(LocationQuery query, PageInfo pageInfo) {
-        Pagination<Location> result = Page.start(() -> jsDeviceLocationService.find(query), pageInfo);
-        return result;
-    }
-
 
     @ApiOperation(value = "修改日志级别")
     @GetMapping("logger")

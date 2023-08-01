@@ -1,32 +1,7 @@
 spring:
-  datasource:
-    url: jdbc:mysql://101.201.149.34:3306/js_trace?useSSL=false&allowMultiQueries=true&rewriteBatchedStatements=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
-    username: root
-    password: T!fc!Gqy5T@wLqMA
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.zaxxer.hikari.HikariDataSource
-    schema: classpath:sql/schema_h2.sql # 数据库文件C:\Users\xxx\.h2
-    #    data: classpath:sql/initial.sql
-    hikari:
-      minimum-idle: 1
-      maximum-pool-size: 5
-      idle-timeout: 60000
-      data-source-properties:
-        cachePrepStmts: true
-        prepStmtCacheSize: 250
-        prepStmtCacheSqlLimit: 2048
-        useServerPrepStmts: true
-        useLocalSessionState: true
-        useLocalTransactionState: true
-        rewriteBatchedStatements: true
-        cacheResultSetMetadata: true
-        cacheServerConfiguration: true
-        elideSetAutoCommits: true
-        maintainTimeStats: false
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
-  mvc:
-    date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    active: dev
+    include: pay,rkey
 
 mybatis:
   config-location: classpath:mybatis-config.xml
@@ -34,18 +9,21 @@ mybatis:
     - classpath:/mapper/*.xml
 
 server:
-  port: 8000
+  port: 8884
 
 websocket:
   server:
-    enable: true
+    enable: false
     port: 7755
 
 tcp:
   server:
     enable: true
-    port: 7611
+    port: 8885
   client:
-    enable: true
-    ip: 127.0.0.1
-    port: 7615
+    enable: false
+    ip: 112.30.143.184
+    port: 8885
+
+sign:
+  key: Yss52KA3diLaB0

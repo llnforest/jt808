@@ -193,7 +193,7 @@ public class T8900_0900_time_up extends AbstractMessage<Header> {
         this.km = km;
     }
 
-    @Field(index = 103, type = DataType.OBJ,length = 28, desc = "基本GNSS数据包")
+    @Field(index = 103, type = DataType.OBJ, desc = "基本GNSS数据包")
     public T0200 getT0200() {
         return t0200;
     }

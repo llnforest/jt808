@@ -16,7 +16,7 @@ public class MessageId {
     private static final Map<String, String> messageId = new HashMap<>(81);
 
     public static String get(int id) {
-        String msgId = "0x"+StringUtils.leftPad(Integer.toHexString(id),4,"0");
+        String msgId = "0x" + StringUtils.leftPad(Integer.toHexString(id), 4, "0");
         String name = messageId.get(msgId);
         if (name != null)
             return name;
@@ -53,34 +53,36 @@ public class MessageId {
         messageId.put(数据上行透传, "数据上行透传");
         messageId.put(数据下行透传, "数据下行透传");
 
-        messageId.put(上报教练员登录,"上报教练员登录");
-        messageId.put(教练员登录应答,"教练员登录应答");
-        messageId.put(上报教练员登出,"上报教练员登出");
-        messageId.put(教练员登出应答,"教练员登出应答");
-        messageId.put(上报学员登录,"上报学员登录");
-        messageId.put(学员登录应答,"学员登录应答");
-        messageId.put(上报学员登出,"上报学员登出");
-        messageId.put(学员登出应答,"学员登出应答");
-        messageId.put(上报学时记录,"上报学时记录");
-        messageId.put(命令上报学时记录,"命令上报学时记录");
-        messageId.put(命令上报学时记录应答,"命令上报学时记录应答");
-        messageId.put(立即拍照,"立即拍照");
-        messageId.put(立即拍照应答,"立即拍照应答");
-        messageId.put(查询照片,"查询照片");
-        messageId.put(查询照片应答,"查询照片应答");
-        messageId.put(上报照片查询结果,"上报照片查询结果");
-        messageId.put(上报照片查询结果应答,"上报照片查询结果应答");
-        messageId.put(上传指定照片,"上传指定照片");
-        messageId.put(上传指定照片应答,"上传指定照片应答");
-        messageId.put(照片上传初始化,"照片上传初始化");
-        messageId.put(照片上传初始化应答,"照片上传初始化应答");
-        messageId.put(照片上传数据包,"照片上传数据包");
-        messageId.put(设置计时终端应用参数,"设置计时终端应用参数");
-        messageId.put(设置计时终端应用参数应答,"设置计时终端应用参数应答");
-        messageId.put(设置禁训状态,"设置禁训状态");
-        messageId.put(设置禁训状态应答,"设置禁训状态应答");
-        messageId.put(查询计时终端应用参数,"查询计时终端应用参数");
-        messageId.put(查询计时终端应用参数应答,"查询计时终端应用参数应答");
+        messageId.put(平台登录请求, "平台登录请求");
+        messageId.put(平台登出请求, "平台登出请求");
+        messageId.put(上报教练员登录, "上报教练员登录");
+        messageId.put(教练员登录应答, "教练员登录应答");
+        messageId.put(上报教练员登出, "上报教练员登出");
+        messageId.put(教练员登出应答, "教练员登出应答");
+        messageId.put(上报学员登录, "上报学员登录");
+        messageId.put(学员登录应答, "学员登录应答");
+        messageId.put(上报学员登出, "上报学员登出");
+        messageId.put(学员登出应答, "学员登出应答");
+        messageId.put(上报学时记录, "上报学时记录");
+        messageId.put(命令上报学时记录, "命令上报学时记录");
+        messageId.put(命令上报学时记录应答, "命令上报学时记录应答");
+        messageId.put(立即拍照, "立即拍照");
+        messageId.put(立即拍照应答, "立即拍照应答");
+        messageId.put(查询照片, "查询照片");
+        messageId.put(查询照片应答, "查询照片应答");
+        messageId.put(上报照片查询结果, "上报照片查询结果");
+        messageId.put(上报照片查询结果应答, "上报照片查询结果应答");
+        messageId.put(上传指定照片, "上传指定照片");
+        messageId.put(上传指定照片应答, "上传指定照片应答");
+        messageId.put(照片上传初始化, "照片上传初始化");
+        messageId.put(照片上传初始化应答, "照片上传初始化应答");
+        messageId.put(照片上传数据包, "照片上传数据包");
+        messageId.put(设置计时终端应用参数, "设置计时终端应用参数");
+        messageId.put(设置计时终端应用参数应答, "设置计时终端应用参数应答");
+        messageId.put(设置禁训状态, "设置禁训状态");
+        messageId.put(设置禁训状态应答, "设置禁训状态应答");
+        messageId.put(查询计时终端应用参数, "查询计时终端应用参数");
+        messageId.put(查询计时终端应用参数应答, "查询计时终端应用参数应答");
 
 
         messageId.put(数据压缩上报, "数据压缩上报");

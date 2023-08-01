@@ -1,0 +1,12 @@
+pay:
+  abc:
+    account: 12060262700000213
+    name: 池州建投商业发展有限公司
+    notifyUrl: http://36.155.130.31:8886/api/abc/paymentResult
+
+  wx:
+    appId: Wx912909324234
+    notifyUrl: http://36.155.130.31:8886/api/wechatPay/paymentResult
+
+  alipay:
+    notifyUrl: http://36.155.130.31:8886/api/aliPay/paymentResult

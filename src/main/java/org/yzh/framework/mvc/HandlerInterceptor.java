@@ -1,26 +1,58 @@
 package org.yzh.framework.mvc;
 
+import org.yzh.framework.orm.model.AbstractHeader;
 import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.session.Session;
 
 /**
  * 消息拦截器
+ *
  * @author yezhihao
  * @home https://gitee.com/yezhihao/jt808-server
  */
 public interface HandlerInterceptor {
-    /** 未找到对应的Handle */
+    /**
+     * 未找到对应的Handle
+     */
     AbstractMessage notSupported(AbstractMessage<?> request, Session session);
 
-    /** 调用之前 */
+    /**
+     * 调用之前
+     */
     boolean beforeHandle(AbstractMessage<?> request, Session session);
 
-    /** 调用之后，返回值为void的 */
+    /**
+     * 调用之后，返回值为void的
+     */
     AbstractMessage successful(AbstractMessage<?> request, Session session);
 
-    /** 调用之后，有返回值的 */
+    /**
+     * 返回失败的
+     */
+    AbstractMessage failure(AbstractMessage<?> request, Session session);
+
+    /**
+     * 返回失败的
+     */
+    AbstractMessage error(AbstractMessage<?> request, Session session);
+
+    /**
+     * 返回失败的
+     */
+    AbstractMessage error(AbstractHeader header);
+
+    /**
+     * 返回失败的
+     */
+    AbstractMessage error();
+
+    /**
+     * 调用之后，有返回值的
+     */
     void afterHandle(AbstractMessage<?> request, AbstractMessage<?> response, Session session);
 
-    /** 调用之后抛出异常的 */
+    /**
+     * 调用之后抛出异常的
+     */
     AbstractMessage exceptional(AbstractMessage<?> request, Session session, Exception e);
 }

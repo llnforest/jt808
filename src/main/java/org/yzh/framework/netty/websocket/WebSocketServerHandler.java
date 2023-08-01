@@ -6,12 +6,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yzh.framework.commons.WsHandlerUtils;
-import org.yzh.framework.netty.TCPServerHandler;
 import org.yzh.web.model.ResponseModel;
 
 import java.util.HashMap;
@@ -23,7 +20,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("与客户端建立连接，通道开启！");
-
         //添加到channelGroup通道组
         WebSocketChannelHandlerPool.channelGroup.add(ctx.channel());
     }
@@ -42,28 +38,28 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
             FullHttpRequest request = (FullHttpRequest) msg;
             String uri = request.uri();
 
-            Map paramMap=getUrlParams(uri);
+            Map paramMap = getUrlParams(uri);
 //            System.out.println("接收到的参数是："+ JSON.toJSONString(paramMap));
-            log.info("接收到的参数是：{}",JSON.toJSONString(paramMap));
+            log.info("接收到的参数是：{}", JSON.toJSONString(paramMap));
             //如果url包含参数，需要处理
-            if(uri.contains("?")){
-                String newUri=uri.substring(0,uri.indexOf("?"));
+            if (uri.contains("?")) {
+                String newUri = uri.substring(0, uri.indexOf("?"));
                 System.out.println(newUri);
                 request.setUri(newUri);
             }
-
-        }else if(msg instanceof TextWebSocketFrame){
+            WsHandlerUtils.write(ctx.channel(), new ResponseModel());
+        } else if (msg instanceof TextWebSocketFrame) {
             //正常的TEXT消息类型
-            TextWebSocketFrame frame=(TextWebSocketFrame)msg;
-            log.info("接收到的text是：{}",frame.text());
+            TextWebSocketFrame frame = (TextWebSocketFrame) msg;
+            log.info("接收到的text是：{}", frame.text());
             Gson gson = new Gson();
             Map<String, Object> map = new HashMap<String, Object>();
             map = gson.fromJson(frame.text(), map.getClass());
-            ResponseModel model = WsHandlerUtils.invokeMethod(String.valueOf(map.get("msgId")),map,ctx.channel());
-            if(model == null){
-                model = new ResponseModel("1","异常请求");
+            ResponseModel model = WsHandlerUtils.invokeMethod(String.valueOf(map.get("msgId")), map, ctx.channel());
+            if (model == null) {
+                model = new ResponseModel("1", "异常请求");
             }
-            WsHandlerUtils.write(ctx.channel(),model);
+            WsHandlerUtils.write(ctx.channel(), model);
         }
         super.channelRead(ctx, msg);
     }
@@ -73,28 +69,28 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
 
     }
 
-    private void sendAllMessage(String message){
+    private void sendAllMessage(String message) {
         //收到信息后，群发给所有channel
-        log.info("channelGroup:{}",WebSocketChannelHandlerPool.channelGroup);
-        WebSocketChannelHandlerPool.channelGroup.writeAndFlush( new TextWebSocketFrame(message));
+        log.info("channelGroup:{}", WebSocketChannelHandlerPool.channelGroup);
+        WebSocketChannelHandlerPool.channelGroup.writeAndFlush(new TextWebSocketFrame(message));
     }
 
-    private static Map getUrlParams(String url){
-        Map<String,String> map = new HashMap<>();
-        url = url.replace("?",";");
-        if (!url.contains(";")){
+    private static Map getUrlParams(String url) {
+        Map<String, String> map = new HashMap<>();
+        url = url.replace("?", ";");
+        if (!url.contains(";")) {
             return map;
         }
-        if (url.split(";").length > 0){
+        if (url.split(";").length > 0) {
             String[] arr = url.split(";")[1].split("&");
-            for (String s : arr){
+            for (String s : arr) {
                 String key = s.split("=")[0];
                 String value = s.split("=")[1];
-                map.put(key,value);
+                map.put(key, value);
             }
-            return  map;
+            return map;
 
-        }else{
+        } else {
             return map;
         }
     }

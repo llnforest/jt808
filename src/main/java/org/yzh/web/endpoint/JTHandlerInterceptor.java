@@ -9,13 +9,13 @@ import org.yzh.framework.session.Session;
 import org.yzh.protocol.commons.JT808;
 import org.yzh.protocol.t808.T0001;
 
-import static org.yzh.protocol.commons.JT808.平台通用应答;
-
 public class JTHandlerInterceptor implements HandlerInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(JTHandlerInterceptor.class.getSimpleName());
 
-    /** 未找到对应的Handle */
+    /**
+     * 未找到对应的Handle
+     */
     @Override
     public AbstractMessage notSupported(AbstractMessage<?> request, Session session) {
         log.warn(">>>>>>>>>>未识别的消息{},{}", session, request);
@@ -31,7 +31,9 @@ public class JTHandlerInterceptor implements HandlerInterceptor {
     }
 
 
-    /** 调用之后，返回值为void的 */
+    /**
+     * 调用之后，返回值为void的
+     */
     @Override
     public AbstractMessage successful(AbstractMessage<?> request, Session session) {
         log.info(">>>>>>>>>>消息请求成功{},{}", session, request);
@@ -46,7 +48,71 @@ public class JTHandlerInterceptor implements HandlerInterceptor {
         return response;
     }
 
-    /** 调用之后抛出异常的 */
+    /**
+     * 返回失败的
+     */
+    @Override
+    public AbstractMessage failure(AbstractMessage<?> request, Session session) {
+        log.info(">>>>>>>>>>消息请求成功{},{}", session, request);
+
+        AbstractHeader header = request.getHeader();
+        T0001 response = new T0001(session.nextSerialNo(), header.getClientId());
+        response.setSerialNo(header.getSerialNo());
+        response.setReplyId(header.getMessageId());
+        response.setResultCode(T0001.Failure);
+
+        log.info("<<<<<<<<<<通用应答消息{},{}", session, response);
+        return response;
+    }
+
+    /**
+     * 返回失败的
+     */
+    @Override
+    public AbstractMessage error(AbstractMessage<?> request, Session session) {
+        log.info(">>>>>>>>>>消息请求成功{},{}", session, request);
+
+        AbstractHeader header = request.getHeader();
+        T0001 response = new T0001(session.nextSerialNo(), header.getClientId());
+        response.setSerialNo(header.getSerialNo());
+        response.setReplyId(header.getMessageId());
+        response.setResultCode(T0001.MessageError);
+
+        log.info("<<<<<<<<<<通用应答消息{},{}", session, response);
+        return response;
+    }
+
+    /**
+     * 返回失败的
+     */
+    @Override
+    public AbstractMessage error(AbstractHeader header) {
+
+        T0001 response = new T0001(0, header.getClientId());
+        response.setSerialNo(header.getSerialNo());
+        response.setReplyId(header.getMessageId());
+        response.setResultCode(T0001.MessageError);
+
+        return response;
+    }
+
+    /**
+     * 返回失败的
+     */
+    @Override
+    public AbstractMessage error() {
+
+        T0001 response = new T0001(0,"000");
+        response.setSerialNo(0);
+        response.setReplyId(0);
+        response.setResultCode(T0001.MessageError);
+
+        return response;
+    }
+
+    /**
+     * 调用之后抛出异常的
+     */
     @Override
     public AbstractMessage exceptional(AbstractMessage<?> request, Session session, Exception ex) {
         log.warn(">>>>>>>>>>消息处理异常{},{}", session, request);
@@ -61,13 +127,15 @@ public class JTHandlerInterceptor implements HandlerInterceptor {
         return response;
     }
 
-    /** 调用之前 */
+    /**
+     * 调用之前
+     */
     @Override
     public boolean beforeHandle(AbstractMessage<?> request, Session session) {
         int messageId = request.getMessageId();
-        if (messageId == Integer.parseInt(JT808.终端注册.substring(2),16) || messageId == Integer.parseInt(JT808.终端鉴权.substring(2),16))
+        if (messageId == Integer.parseInt(JT808.终端注册.substring(2), 16) || messageId == Integer.parseInt(JT808.终端鉴权.substring(2), 16))
             return true;
-        if (messageId == Integer.parseInt(JT808.位置信息汇报.substring(2),16))
+        if (messageId == Integer.parseInt(JT808.位置信息汇报.substring(2), 16))
             session.setSnapshot(request);
 
         if (!session.isRegistered()) {
@@ -77,7 +145,9 @@ public class JTHandlerInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    /** 调用之后 */
+    /**
+     * 调用之后
+     */
     @Override
     public void afterHandle(AbstractMessage<?> request, AbstractMessage<?> response, Session session) {
         log.info(">>>>>>>>>>收到消息{},{}", session, request);

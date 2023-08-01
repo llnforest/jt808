@@ -8,25 +8,15 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioChannelOption;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.NettyRuntime;
 import io.netty.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yzh.framework.codec.DelimiterBasedFrameDecoder;
-import org.yzh.framework.codec.LengthFieldAndDelimiterFrameDecoder;
-import org.yzh.framework.codec.MessageDecoderWrapper;
-import org.yzh.framework.codec.MessageEncoderWrapper;
 import org.yzh.framework.commons.WsHandlerUtils;
-import org.yzh.framework.netty.NettyConfig;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author yezhihao
@@ -61,14 +51,16 @@ public class WebSocketServer {
 
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            System.out.println("收到新连接");
                             //websocket协议本身是基于http协议的，所以这边也要使用http解编码器
                             ch.pipeline().addLast(new HttpServerCodec());
                             //以块的方式来写的处理器
                             ch.pipeline().addLast(new ChunkedWriteHandler());
+                            // netty是基于分段请求的，HttpObjectAggregator的作用是将请求分段再聚合,参数是聚合字节的最大长度
                             ch.pipeline().addLast(new HttpObjectAggregator(8192));
+//                            ch.pipeline().addLast(new WebSocketServerProtocolHandler("/ws", "WebSocket", true, 65536 * 10));
+                            ch.pipeline().addLast(new WebSocketServerProtocolHandler("/"));
+                            // 在管道中添加我们自己的接收数据实现方法
                             ch.pipeline().addLast(new WebSocketServerHandler());
-                            ch.pipeline().addLast(new WebSocketServerProtocolHandler("/ws", "WebSocket", true, 65536 * 10));
                         }
                     });
 
@@ -85,7 +77,7 @@ public class WebSocketServer {
 
     public synchronized void start() {
         if (this.isRunning) {
-            log.warn("===websocket已经启动, port={}===",  port);
+            log.warn("===websocket已经启动, port={}===", port);
             return;
         }
         this.isRunning = true;

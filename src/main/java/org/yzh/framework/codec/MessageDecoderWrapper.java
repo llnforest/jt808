@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * 基础消息解码
+ *
  * @author yezhihao
  * @home https://gitee.com/yezhihao/jt808-server
  */
@@ -30,7 +31,6 @@ public class MessageDecoderWrapper extends ByteToMessageDecoder {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> out) {
-        log.info("进入3");
         Channel channel = ctx.channel();
         if (log.isInfoEnabled()) {
             String hex;
@@ -43,8 +43,9 @@ public class MessageDecoderWrapper extends ByteToMessageDecoder {
 
         Session session = channel.attr(Session.KEY).get();
         AbstractMessage message = decoder.decode(buf, session.getProtocolVersion());
-        if (message != null)
-            out.add(message);
+//        if (message != null)
+//            out.add(message);
+        out.add(message);
         buf.skipBytes(buf.readableBytes());
     }
 }

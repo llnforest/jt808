@@ -51,8 +51,8 @@ public abstract class AbstractHandlerMapping implements HandlerMapping {
     }
 
     public Handler getHandler(int messageId) {
-        String msgId = "0x"+ StringUtils.leftPad(Integer.toHexString(messageId),4,"0");
-        return handlerMap.get("0x"+msgId);
+        String msgId = "0x" + StringUtils.leftPad(Integer.toHexString(messageId), 4, "0");
+        return handlerMap.get("0x" + msgId);
     }
 
     public Handler getHandler(String messageId) {

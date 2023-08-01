@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
     <context id="MyBatis3NoClient" targetRuntime="MyBatis3" defaultModelType="flat">
@@ -11,7 +12,9 @@
             <property name="suppressDate" value="false"/>
         </commentGenerator>
 
-        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" connectionURL="jdbc:mysql://101.201.149.34:3306/js_trace?tinyInt1isBit=false" userId="root" password="T!fc!Gqy5T@wLqMA"/>
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/jgpt?serverTimezone=UTC" userId="root"
+                        password="123456"/>
 
         <javaModelGenerator targetPackage="org.yzh.web.model.entity" targetProject="src\main\java">
             <property name="enableSubPackages" value="true"/>
@@ -25,6 +28,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="js_train_img" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"/>
+        <table tableName="cz_plat_config_time_checks" enableCountByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" enableUpdateByExample="false"/>
     </context>
 </generatorConfiguration>

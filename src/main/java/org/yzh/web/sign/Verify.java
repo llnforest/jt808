@@ -3,7 +3,7 @@ package org.yzh.web.sign;
 import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yzh.web.service.impl.JsDeviceServiceImpl;
+import org.yzh.web.service.impl.CzJsDevicesServiceImpl;
 
 import javax.crypto.Cipher;
 import java.security.MessageDigest;
@@ -11,7 +11,7 @@ import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
 public class Verify implements IVerify {
-	private static final Logger log = LoggerFactory.getLogger(JsDeviceServiceImpl.class.getSimpleName());
+	private static final Logger log = LoggerFactory.getLogger(CzJsDevicesServiceImpl.class.getSimpleName());
 	public boolean verify(String data, long timestamp, String encodedEncryptedStr,
 			X509Certificate userCert, String version) throws Exception {
 		String signType = version.equals("e1")?"SHA1":(version.equals("e3")?"SHA-512":"SHA-256");

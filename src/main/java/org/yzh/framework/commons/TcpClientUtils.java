@@ -2,16 +2,11 @@ package org.yzh.framework.commons;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yzh.web.model.ResponseModel;
-import org.yzh.web.model.entity.JsDevice;
 import org.yzh.web.model.vo.DeviceInfo;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TcpClientUtils {

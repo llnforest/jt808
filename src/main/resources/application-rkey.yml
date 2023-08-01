@@ -1,0 +1,12 @@
+redisKey:
+  studentPhoto: 'photo:student:'
+  configTimeCheck: 'config:timeCheck:'
+
+async:
+  executor:
+    thread:
+      core_pool_size: 2
+      max_pool_size: 8
+      queue_capacity: 40
+      name:
+        prefix: thread-pool1-

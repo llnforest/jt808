@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <properties>
-        <property name="LOG_HOME">logs/</property>
+        <property name="LOG_HOME">/www/logs/java</property>
         <property name="LOG_NAME">jt808</property>
     </properties>
 

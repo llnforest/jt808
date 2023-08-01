@@ -8,6 +8,7 @@ import io.netty.handler.codec.TooLongFrameException;
 import io.netty.util.internal.ObjectUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -39,10 +40,19 @@ public class DelimiterBasedFrameDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         log.info("收到解码前：{}", ByteBufUtil.hexDump(in));
-        Object decoded = decode(ctx, in);
-        if (decoded != null) {
-            out.add(decoded);
+        if(StringUtils.endsWithIgnoreCase(ByteBufUtil.hexDump(in),"7e")){
+            log.info("接收全包");
+            Object decoded = decode(ctx, in);
+            log.info("收到解码前decode：{}", decoded);
+            if (decoded != null) {
+                out.add(decoded);
+            }else{
+                in.clear();
+            }
+        }else{
+            log.info("接收半包");
         }
+
     }
 
     protected Object decode(ChannelHandlerContext ctx, ByteBuf buffer) throws Exception {

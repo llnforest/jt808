@@ -10,9 +10,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yzh.framework.commons.Const;
-import org.yzh.framework.commons.TcpClientUtils;
-import org.yzh.framework.commons.TcpServerUtils;
 import org.yzh.framework.commons.MsgUtils;
+import org.yzh.framework.commons.TcpClientUtils;
 import org.yzh.framework.mvc.HandlerInterceptor;
 import org.yzh.framework.mvc.HandlerMapping;
 import org.yzh.framework.mvc.handler.Handler;
@@ -22,6 +21,7 @@ import org.yzh.framework.orm.model.AbstractMessage;
 import org.yzh.framework.session.Session;
 import org.yzh.framework.session.SessionManager;
 import org.yzh.protocol.commons.JT808;
+import org.yzh.protocol.t808.T0001;
 
 import java.util.Arrays;
 
@@ -49,22 +49,35 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        log.info("原始消息：{}",msg);
+        log.info("收到原始消息：{}", msg);
         if (!(msg instanceof AbstractMessage))
             return;
         AbstractMessage request = (AbstractMessage) msg;
-        log.info("收到》》{}",request);
 
         AbstractMessage response;
         Channel channel = ctx.channel();
         Session session = channel.attr(Session.KEY).get();
-
         long time = session.access();
         try {
             Handler handler;
+            //异常请求/消息错误
+            if (request.getMessageId() == 32769) {
+                //消息错误
+                request.getHeader().setMessageId(((T0001) request).getReplyId());
+                response = interceptor.error(request, session);
+                ctx.writeAndFlush(response);
+                return;
+            }
+            // 判断平台是否登录(平台未登录)
+            if (!session.isAuth() && Arrays.binarySearch(new int[]{496, 497}, request.getMessageId()) < 0) {
+                //消息不支持
+                response = interceptor.notSupported(request, session);
+                ctx.writeAndFlush(response);
+                return;
+            }
             //终端心跳、终端注册、终端鉴权
             //先判断终端是否鉴权
-            if(Const.isAuth && Arrays.binarySearch(new int[]{1,3,256,258},request.getMessageId()) < 0 && session.getPhone().isEmpty()){
+            if (Const.isAuth && Arrays.binarySearch(new int[]{1, 3, 256, 258}, request.getMessageId()) < 0 && session.getPhone().isEmpty()) {
                 //通用回答失败
                 handler = handlerMapping.getHandler(JT808.未鉴权通用应答);
                 response = handler.invoke(request, session);
@@ -73,7 +86,6 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
             }
 
             handler = handlerMapping.getHandler(((AbstractMessage) msg).getMarkId());
-            log.info("handler:{}",handler);
             if (handler != null) {
                 if (!interceptor.beforeHandle(request, session))
                     return;
@@ -94,7 +106,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
         long nowTime = System.currentTimeMillis();
         time = nowTime - time;
-        if (time > 200){
+        if (time > 200) {
             log.info("=========消息ID{},处理耗时{}ms,", Integer.toHexString(request.getMessageId()), time);
         }
 
@@ -105,13 +117,13 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 //            MsgUtils.delMsg(req_key,session);
 //        }
 
-        if (response != null){
+        if (response != null) {
 //            发送消息入map
 //            String key = String.valueOf(response.getHeader().getSerialNo());
 //            MsgUtils.addMsg(key,response,session);
 
             //判断是否需要分包发送
-            log.info("response:{}",response);
+            log.info("response:{}", response);
 //            MessageEncoder encoder;
 //            ByteBuf buf = encoder.encode(response);
 
@@ -119,7 +131,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
             BeanMetadata bodyMetadata = MessageHelper.getBeanMetadata(response.getClass(), version);
             ByteBuf bodyBuf;
             if (bodyMetadata != null) {
-                bodyBuf = PooledByteBufAllocator.DEFAULT.heapBuffer(bodyMetadata.getLength(), 5*1024*1024);
+                bodyBuf = PooledByteBufAllocator.DEFAULT.heapBuffer(bodyMetadata.getLength(), 5 * 1024 * 1024);
                 bodyMetadata.encode(bodyBuf, response);
             } else {
                 bodyBuf = Unpooled.EMPTY_BUFFER;
@@ -130,33 +142,31 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 
             int length = 1000;
 //            int totalLength = buf.readableBytes();
-            log.info("总长度：{}",totalLength);
-            if(totalLength > length + 20){
+            log.info("总长度：{}", totalLength);
+            if (totalLength > length + 20) {
                 //需要分包
-                int packageTotal = (int)Math.ceil((double) totalLength/length);
+                int packageTotal = (int) Math.ceil((double) totalLength / length);
                 response.getHeader().setSubpackage(true);
                 response.getHeader().setPackageTotal(packageTotal);
-                for(int packageNo = 1;packageNo <= packageTotal;packageNo ++){
+                for (int packageNo = 1; packageNo <= packageTotal; packageNo++) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     response.getHeader().setPackageNo(packageNo);
-                    int bodyLength = (totalLength - length*(packageNo-1))>length?length:(totalLength - length*(packageNo-1));
+                    int bodyLength = (totalLength - length * (packageNo - 1)) > length ? length : (totalLength - length * (packageNo - 1));
                     response.getHeader().setBodyLength(bodyLength);
-                    log.info("第{}包",packageNo);
+                    log.info("第{}包", packageNo);
                     ctx.writeAndFlush(response);
                 }
-            }else{
+            } else {
                 //不需要分包
                 ctx.writeAndFlush(response);
             }
 
             //转发消息
-            log.info("msgId:{}",request.getMarkId());
-            TcpServerUtils.replayMsg(request,response);
-
+            log.info("msgId:{}", request.getMarkId());
 
         }
     }
@@ -169,7 +179,7 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
         channel.attr(Session.KEY).set(session);
         // 检查消息，触发重发机制
         MsgUtils.checkMsg(ctx);
-        log.info("channel:{}",session.getChannel());
+        log.info("channel:{}", session.getChannel());
         log.info(">>>>>终端连接{}", session);
         TcpClientUtils.setCtx(ctx);
     }
